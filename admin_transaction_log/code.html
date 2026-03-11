@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ProBank Admin - Transactions</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e53734",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#211111",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-64 flex flex-col border-r border-primary/10 bg-white dark:bg-background-dark shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="size-10 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined">account_balance</span>
+</div>
+<div>
+<h1 class="font-bold text-lg leading-tight tracking-tight">ProBank</h1>
+<p class="text-xs text-primary font-medium">Admin Portal</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1 overflow-y-auto">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5 transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary text-white shadow-sm shadow-primary/20" href="#">
+<span class="material-symbols-outlined">swap_horiz</span>
+<span class="text-sm font-medium">Transactions</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5 transition-colors" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="text-sm font-medium">Accounts</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5 transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Customers</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5 transition-colors" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-sm font-medium">Reports</span>
+</a>
+</nav>
+<div class="p-4 border-t border-primary/10">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col min-w-0 overflow-hidden">
+<!-- Header -->
+<header class="h-16 flex items-center justify-between px-8 border-b border-primary/10 bg-white dark:bg-background-dark/50 shrink-0">
+<div class="flex items-center gap-4">
+<h2 class="text-xl font-bold">Transactions</h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+<input class="w-full pl-10 pr-4 py-1.5 rounded-lg border-primary/20 bg-primary/5 focus:ring-primary focus:border-primary text-sm" placeholder="Global search..." type="text"/>
+</div>
+<div class="flex items-center gap-3">
+<button class="size-9 rounded-lg flex items-center justify-center hover:bg-primary/10 transition-colors text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-8 w-[1px] bg-primary/10"></div>
+<div class="flex items-center gap-3 pl-2 cursor-pointer group">
+<div class="size-9 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Admin user profile picture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjQ9mASODJqwkb3O_PBq3bip_UyCn2f73AcxrSGHYkqsOxhu_yqCXzwgNvgoW6tDCeAAx1W1d-2wk2_gL24yN8t4_-mO3wXMZY_b2i4ETmwRFCX9Rk-ON5xK9MSK3salHs-c2MF-0-K9NjJ7MXets27CUPtmE6sd6wCc2j4lf9k064yGhOCe4IAPhiURJEreptX4R0kSlaBVbUtHQi6o6TkUmFyVMCrqKT9VnMZq_PzVfhex_8y1yuybFNXscHxLxx0HRr-PEVjudx"/>
+</div>
+<div class="hidden sm:block text-left">
+<p class="text-xs font-semibold leading-none mb-1">Jane Doe</p>
+<p class="text-[10px] text-slate-500 font-medium">Senior Admin</p>
+</div>
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">expand_more</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<div class="flex-1 overflow-y-auto p-8 space-y-6">
+<!-- Filter Bar -->
+<div class="bg-white dark:bg-background-dark/30 p-4 rounded-xl border border-primary/10 shadow-sm flex flex-wrap gap-4 items-end">
+<div class="flex-1 min-w-[240px]">
+<label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wider">Search</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">manage_search</span>
+<input class="w-full pl-10 pr-4 py-2 rounded-lg border-primary/20 bg-background-light dark:bg-background-dark/50 focus:ring-primary focus:border-primary text-sm" placeholder="Transaction ID or Customer Name" type="text"/>
+</div>
+</div>
+<div class="w-44">
+<label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wider">Date Range</label>
+<select class="w-full px-3 py-2 rounded-lg border-primary/20 bg-background-light dark:bg-background-dark/50 focus:ring-primary focus:border-primary text-sm">
+<option>Last 30 Days</option>
+<option>Last 7 Days</option>
+<option>Custom Range</option>
+</select>
+</div>
+<div class="w-44">
+<label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wider">Type</label>
+<select class="w-full px-3 py-2 rounded-lg border-primary/20 bg-background-light dark:bg-background-dark/50 focus:ring-primary focus:border-primary text-sm">
+<option>All Types</option>
+<option>Deposit</option>
+<option>Withdrawal</option>
+<option>Transfer</option>
+<option>Refund</option>
+</select>
+</div>
+<div class="w-44">
+<label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wider">Status</label>
+<select class="w-full px-3 py-2 rounded-lg border-primary/20 bg-background-light dark:bg-background-dark/50 focus:ring-primary focus:border-primary text-sm">
+<option>All Statuses</option>
+<option>Completed</option>
+<option>Pending</option>
+<option>Failed</option>
+</select>
+</div>
+<button class="bg-primary text-white font-semibold text-sm px-6 py-2 rounded-lg hover:bg-primary/90 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">filter_list</span>
+                    Apply Filters
+                </button>
+</div>
+<!-- Table Container -->
+<div class="bg-white dark:bg-background-dark/30 rounded-xl border border-primary/10 shadow-sm overflow-hidden flex flex-col">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-primary/5 border-b border-primary/10">
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Date &amp; Time</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Transaction ID</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Customer</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Type</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Amount</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Status</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-primary/5">
+<!-- Row 1 -->
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4">
+<p class="text-sm font-medium">Oct 24, 2023</p>
+<p class="text-[10px] text-slate-400">14:30:22 PM</p>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm font-mono font-medium text-primary">TXN-88291</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">AR</div>
+<div>
+<p class="text-sm font-semibold">Alex Rivera</p>
+<p class="text-[11px] text-slate-500">alex@email.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 px-2.5 py-1 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 w-fit">
+<span class="material-symbols-outlined text-sm">south_west</span>
+<span class="text-xs font-bold">Deposit</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm font-bold text-green-600">+$2,500.00</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5">
+<span class="size-2 rounded-full bg-green-500"></span>
+<span class="text-xs font-semibold text-green-600">Completed</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-sm font-bold text-primary hover:underline underline-offset-4">View Details</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4">
+<p class="text-sm font-medium">Oct 24, 2023</p>
+<p class="text-[10px] text-slate-400">12:15:45 PM</p>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm font-mono font-medium text-primary">TXN-88290</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 font-bold text-xs">SC</div>
+<div>
+<p class="text-sm font-semibold">Sarah Chen</p>
+<p class="text-[11px] text-slate-500">sarah@email.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 px-2.5 py-1 rounded-full bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 w-fit">
+<span class="material-symbols-outlined text-sm">history</span>
+<span class="text-xs font-bold">Refund</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm font-bold text-primary">-$45.00</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5">
+<span class="size-2 rounded-full bg-green-500"></span>
+<span class="text-xs font-semibold text-green-600">Completed</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-sm font-bold text-primary hover:underline underline-offset-4">View Details</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4">
+<p class="text-sm font-medium">Oct 23, 2023</p>
+<p class="text-[10px] text-slate-400">09:45:10 AM</p>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm font-mono font-medium text-primary">TXN-88289</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">MV</div>
+<div>
+<p class="text-sm font-semibold">Marcus Vane</p>
+<p class="text-[11px] text-slate-500">mv@email.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 px-2.5 py-1 rounded-full bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 w-fit">
+<span class="material-symbols-outlined text-sm">sync_alt</span>
+<span class="text-xs font-bold">Transfer</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm font-bold text-slate-700 dark:text-slate-300">$1,200.00</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5">
+<span class="size-2 rounded-full bg-amber-400"></span>
+<span class="text-xs font-semibold text-amber-600">Pending</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-sm font-bold text-primary hover:underline underline-offset-4">View Details</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4">
+<p class="text-sm font-medium">Oct 22, 2023</p>
+<p class="text-[10px] text-slate-400">16:20:00 PM</p>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm font-mono font-medium text-primary">TXN-88288</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 font-bold text-xs">JG</div>
+<div>
+<p class="text-sm font-semibold">Julia Grant</p>
+<p class="text-[11px] text-slate-500">jg@email.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 px-2.5 py-1 rounded-full bg-slate-50 dark:bg-slate-900/20 text-slate-600 dark:text-slate-400 w-fit">
+<span class="material-symbols-outlined text-sm">north_east</span>
+<span class="text-xs font-bold">Withdrawal</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm font-bold text-primary">-$500.00</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5">
+<span class="size-2 rounded-full bg-primary"></span>
+<span class="text-xs font-semibold text-primary">Failed</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-sm font-bold text-primary hover:underline underline-offset-4">View Details</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-6 py-4 border-t border-primary/10 flex items-center justify-between bg-white/50 dark:bg-background-dark/20">
+<p class="text-sm text-slate-500">
+                        Showing <span class="font-semibold">1</span> to <span class="font-semibold">4</span> of <span class="font-semibold">1,240</span> transactions
+                    </p>
+<div class="flex items-center gap-2">
+<button class="p-2 rounded-lg border border-primary/10 hover:bg-primary hover:text-white transition-all disabled:opacity-50 disabled:pointer-events-none">
+<span class="material-symbols-outlined text-xl">chevron_left</span>
+</button>
+<div class="flex items-center">
+<button class="px-4 py-2 rounded-lg bg-primary text-white font-semibold text-sm">1</button>
+<button class="px-4 py-2 rounded-lg hover:bg-primary/10 text-sm font-medium">2</button>
+<button class="px-4 py-2 rounded-lg hover:bg-primary/10 text-sm font-medium">3</button>
+<span class="px-2">...</span>
+<button class="px-4 py-2 rounded-lg hover:bg-primary/10 text-sm font-medium">124</button>
+</div>
+<button class="p-2 rounded-lg border border-primary/10 hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined text-xl">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Withdrawal History - ProBank</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e53734",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#211111",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="relative flex min-h-screen flex-col">
+<!-- Header -->
+<header class="flex items-center justify-between border-b border-primary/10 bg-white dark:bg-zinc-900 px-6 py-3 lg:px-40">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-8 flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl">account_balance</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-xl font-bold leading-tight tracking-tight">ProBank</h2>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary text-sm font-medium transition-colors" href="#">Dashboard</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary text-sm font-medium transition-colors" href="#">Accounts</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary text-sm font-medium transition-colors" href="#">Transfers</a>
+<a class="text-slate-900 dark:text-white text-sm font-bold border-b-2 border-primary pb-1" href="#">Settings</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-10 w-10 rounded-full bg-primary/20 border-2 border-primary/30 flex items-center justify-center overflow-hidden" data-alt="User profile avatar portrait" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDd9fotM1_uB99DeSFEzmFLw83o1cXYDJoH0I1oXPanCvfh3dKomthD3CkFIjVDXbN7SSz5TgMLZc7Vz639T6cjncBnCrTwfvpcTbC1xh5xO2CPWFqBtYtHKaaUO-Ijk7GbKxtbCoRNZAQkEi1IuvMi4ZhOXzRTWY2Sy1T-CBCw83gUh_ypxriw-qoxSACSCCL-ygfRSfuVzwRsgGt89_QIVDDERxsPRj2U5LfVxd4xIWVIiUTSJw6ZBZOCImnAozbeq7qWbfD8MOjK"); background-size: cover;'>
+</div>
+</div>
+</div>
+</header>
+<div class="flex flex-1 flex-col lg:flex-row lg:px-40 py-8 gap-8">
+<!-- Sidebar Navigation -->
+<aside class="w-full lg:w-64 flex flex-col gap-2 px-4 lg:px-0">
+<div class="flex items-center gap-3 px-3 py-4 mb-4 border-b border-primary/10">
+<div class="size-10 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-slate-900 dark:text-white text-sm font-bold">Alex Johnson</h1>
+<p class="text-primary text-xs font-semibold">Premium Member</p>
+</div>
+</div>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary/5 text-slate-700 dark:text-slate-300 transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Overview</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary/5 text-slate-700 dark:text-slate-300 transition-all" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="text-sm font-medium">Transactions</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-primary text-white shadow-lg shadow-primary/20 transition-all" href="#">
+<span class="material-symbols-outlined">outbox</span>
+<span class="text-sm font-medium">Withdrawals</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary/5 text-slate-700 dark:text-slate-300 transition-all" href="#">
+<span class="material-symbols-outlined">credit_card</span>
+<span class="text-sm font-medium">Cards</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary/5 text-slate-700 dark:text-slate-300 transition-all" href="#">
+<span class="material-symbols-outlined">support_agent</span>
+<span class="text-sm font-medium">Support</span>
+</a>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col gap-6 px-4 lg:px-0">
+<!-- Page Title -->
+<div class="flex flex-col gap-1">
+<h1 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">Withdrawal History</h1>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Monitor and export your historical withdrawal data.</p>
+</div>
+<!-- Summary Card -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-white dark:bg-zinc-900 p-6 rounded-xl border border-primary/10 shadow-sm flex flex-col gap-2 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-6xl">account_balance_wallet</span>
+</div>
+<p class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Total Withdrawn (Month)</p>
+<div class="flex items-baseline gap-2">
+<p class="text-3xl font-bold text-slate-900 dark:text-white">$4,250.00</p>
+<span class="text-green-600 text-sm font-bold flex items-center">
+<span class="material-symbols-outlined text-sm">trending_up</span> 12%
+                            </span>
+</div>
+</div>
+<div class="bg-white dark:bg-zinc-900 p-6 rounded-xl border border-primary/10 shadow-sm flex flex-col gap-2">
+<p class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Active Pending</p>
+<p class="text-3xl font-bold text-slate-900 dark:text-white">$1,120.00</p>
+<p class="text-xs text-slate-400">3 transactions in progress</p>
+</div>
+<div class="bg-white dark:bg-zinc-900 p-6 rounded-xl border border-primary/10 shadow-sm flex flex-col gap-2">
+<p class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">YTD Volume</p>
+<p class="text-3xl font-bold text-slate-900 dark:text-white">$42,900.50</p>
+<p class="text-xs text-slate-400">Updated today at 9:00 AM</p>
+</div>
+</div>
+<!-- Filters Section -->
+<div class="bg-white dark:bg-zinc-900 p-6 rounded-xl border border-primary/10 shadow-sm">
+<div class="flex flex-wrap items-center gap-4">
+<div class="flex flex-col gap-1 flex-1 min-w-[200px]">
+<label class="text-xs font-bold text-slate-500 uppercase">Search Transaction</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full pl-10 pr-4 py-2 rounded-lg border border-primary/10 bg-background-light dark:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm" placeholder="ID or recipient..." type="text"/>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-xs font-bold text-slate-500 uppercase">Date Range</label>
+<div class="flex items-center gap-2">
+<input class="px-3 py-2 rounded-lg border border-primary/10 bg-background-light dark:bg-zinc-800 text-sm" type="date"/>
+<span class="text-slate-400">to</span>
+<input class="px-3 py-2 rounded-lg border border-primary/10 bg-background-light dark:bg-zinc-800 text-sm" type="date"/>
+</div>
+</div>
+<div class="flex flex-col gap-1 min-w-[160px]">
+<label class="text-xs font-bold text-slate-500 uppercase">Method</label>
+<select class="px-3 py-2 rounded-lg border border-primary/10 bg-background-light dark:bg-zinc-800 text-sm focus:outline-none">
+<option>All Methods</option>
+<option>Bank Transfer</option>
+<option>PayPal</option>
+<option>Zelle</option>
+</select>
+</div>
+<div class="flex items-end self-end">
+<button class="bg-primary hover:bg-primary/90 text-white font-bold py-2 px-6 rounded-lg text-sm transition-all h-[38px]">
+                                Apply Filters
+                            </button>
+</div>
+</div>
+</div>
+<!-- History Table -->
+<div class="bg-white dark:bg-zinc-900 rounded-xl border border-primary/10 shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-background-light/50 dark:bg-zinc-800/50">
+<tr>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase">Date</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase">Amount</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase">Method</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase">Status</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-primary/5">
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-slate-900 dark:text-white">Oct 24, 2023</span>
+<span class="text-xs text-slate-500 tracking-tight">14:32 PM</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white">$1,500.00</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">account_balance</span>
+<span class="text-sm text-slate-600 dark:text-slate-400">Bank Transfer</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full text-[10px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">Completed</span>
+</td>
+<td class="px-6 py-4">
+<button class="text-primary hover:text-primary/70 transition-colors">
+<span class="material-symbols-outlined">receipt</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-slate-900 dark:text-white">Oct 22, 2023</span>
+<span class="text-xs text-slate-500">09:15 AM</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white">$450.00</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-blue-500 text-xl">payments</span>
+<span class="text-sm text-slate-600 dark:text-slate-400">PayPal</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full text-[10px] font-black uppercase bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400">Pending</span>
+</td>
+<td class="px-6 py-4">
+<button class="text-primary hover:text-primary/70 transition-colors">
+<span class="material-symbols-outlined">cancel</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-slate-900 dark:text-white">Oct 18, 2023</span>
+<span class="text-xs text-slate-500">18:45 PM</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white">$2,300.00</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-purple-500 text-xl">send_to_mobile</span>
+<span class="text-sm text-slate-600 dark:text-slate-400">Zelle</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full text-[10px] font-black uppercase bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">Completed</span>
+</td>
+<td class="px-6 py-4">
+<button class="text-primary hover:text-primary/70 transition-colors">
+<span class="material-symbols-outlined">receipt</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-slate-900 dark:text-white">Oct 12, 2023</span>
+<span class="text-xs text-slate-500">11:02 AM</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white">$100.00</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">account_balance</span>
+<span class="text-sm text-slate-600 dark:text-slate-400">Bank Transfer</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full text-[10px] font-black uppercase bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400">Canceled</span>
+</td>
+<td class="px-6 py-4">
+<button class="text-primary hover:text-primary/70 transition-colors">
+<span class="material-symbols-outlined">info</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 border-t border-primary/5 flex items-center justify-between">
+<span class="text-xs text-slate-500">Showing 1 to 4 of 28 entries</span>
+<div class="flex gap-2">
+<button class="px-3 py-1 rounded border border-primary/10 text-xs font-bold hover:bg-primary hover:text-white transition-all disabled:opacity-50">Prev</button>
+<button class="px-3 py-1 rounded bg-primary text-white text-xs font-bold">1</button>
+<button class="px-3 py-1 rounded border border-primary/10 text-xs font-bold hover:bg-primary hover:text-white transition-all">2</button>
+<button class="px-3 py-1 rounded border border-primary/10 text-xs font-bold hover:bg-primary hover:text-white transition-all">Next</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="mt-auto border-t border-primary/10 bg-white dark:bg-zinc-900 py-8 lg:px-40">
+<div class="flex flex-col md:flex-row justify-between items-center gap-4 px-6 lg:px-0">
+<div class="flex items-center gap-2 text-primary opacity-50">
+<span class="material-symbols-outlined">account_balance</span>
+<span class="font-bold">ProBank</span>
+</div>
+<p class="text-slate-400 text-xs">© 2024 ProBank Financial Services. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="text-slate-400 hover:text-primary text-xs transition-colors" href="#">Privacy Policy</a>
+<a class="text-slate-400 hover:text-primary text-xs transition-colors" href="#">Terms of Service</a>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

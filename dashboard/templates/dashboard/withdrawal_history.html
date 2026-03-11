@@ -1,0 +1,125 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}Withdrawal History | ProBank{% endblock %}
+
+{% block dashboard_content %}
+<div class="flex flex-col gap-10">
+    <div class="flex flex-wrap justify-between items-end gap-6">
+        <div class="flex flex-col gap-2">
+            <h1 class="text-4xl font-black text-slate-900 dark:text-white tracking-tighter">Withdrawal History</h1>
+            <p class="text-slate-500 dark:text-slate-400 font-medium">Monitor and export your historical withdrawal data.</p>
+        </div>
+        <button class="flex items-center gap-2 px-6 py-3 bg-white dark:bg-background-dark border-2 border-primary text-primary hover:bg-primary hover:text-white font-black rounded-xl text-sm transition-all shadow-sm">
+            <span class="material-symbols-outlined text-xl">download</span>
+            Download Statement
+        </button>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white dark:bg-background-dark p-6 rounded-2xl border border-primary/10 shadow-sm relative overflow-hidden group">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:rotate-12 transition-transform">
+                <span class="material-symbols-outlined text-6xl text-primary">account_balance_wallet</span>
+            </div>
+            <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Total Withdrawn (Month)</p>
+            <div class="flex items-baseline gap-3">
+                <p class="text-3xl font-black text-slate-900 dark:text-white">$4,250.00</p>
+                <span class="text-green-600 text-xs font-black flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm">trending_up</span> 12%
+                </span>
+            </div>
+        </div>
+        <div class="bg-white dark:bg-background-dark p-6 rounded-2xl border border-primary/10 shadow-sm">
+            <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Active Pending</p>
+            <p class="text-3xl font-black text-slate-900 dark:text-white">$1,120.00</p>
+            <p class="text-[10px] text-slate-400 font-bold mt-1">3 transactions in progress</p>
+        </div>
+        <div class="bg-white dark:bg-background-dark p-6 rounded-2xl border border-primary/10 shadow-sm">
+            <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">YTD Volume</p>
+            <p class="text-3xl font-black text-slate-900 dark:text-white">$42,900.50</p>
+            <p class="text-[10px] text-slate-400 font-bold mt-1">Updated today at 9:00 AM</p>
+        </div>
+    </div>
+
+    <!-- Filters & Table -->
+    <div class="bg-white dark:bg-background-dark rounded-2xl border border-primary/10 shadow-sm overflow-hidden text-sm">
+        <div class="p-8 border-b border-primary/5 bg-slate-50/50 dark:bg-primary/5">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Search</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+                        <input type="text" class="w-full h-11 pl-10 pr-4 rounded-xl border border-primary/10 bg-white dark:bg-background-dark focus:ring-2 focus:ring-primary/20 outline-none font-bold" placeholder="ID or recipient...">
+                    </div>
+                </div>
+                <div class="md:col-span-2 space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Date Range</label>
+                    <div class="flex items-center gap-3">
+                        <input type="date" class="flex-1 h-11 px-4 rounded-xl border border-primary/10 bg-white dark:bg-background-dark font-bold outline-none">
+                        <span class="text-slate-400 font-black">TO</span>
+                        <input type="date" class="flex-1 h-11 px-4 rounded-xl border border-primary/10 bg-white dark:bg-background-dark font-bold outline-none">
+                    </div>
+                </div>
+                <button class="h-11 bg-primary text-white font-black rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/10">
+                    Apply Filters
+                </button>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="bg-slate-50/50 dark:bg-primary/5 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-primary/5">
+                        <th class="px-8 py-4">Date</th>
+                        <th class="px-8 py-4">Amount</th>
+                        <th class="px-8 py-4">Method</th>
+                        <th class="px-8 py-4">Status</th>
+                        <th class="px-8 py-4 text-right">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-primary/5 font-bold">
+                    {% for tx in withdrawals %}
+                    <tr class="hover:bg-primary/5 transition-colors group">
+                        <td class="px-8 py-5">
+                            <p class="text-slate-900 dark:text-white">{{ tx.date|date:"M d, Y" }}</p>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">{{ tx.date|date:"H:i A" }}</p>
+                        </td>
+                        <td class="px-8 py-5 text-slate-900 dark:text-white text-base font-black">${{ tx.amount|floatformat:2 }}</td>
+                        <td class="px-8 py-5">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-primary text-xl">account_balance</span>
+                                <span class="text-slate-700 dark:text-slate-300">Bank Transfer</span>
+                            </div>
+                        </td>
+                        <td class="px-8 py-5">
+                            <span class="px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">Completed</span>
+                        </td>
+                        <td class="px-8 py-5 text-right">
+                            <button class="text-primary hover:scale-110 transition-transform">
+                                <span class="material-symbols-outlined">receipt</span>
+                            </button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="px-8 py-20 text-center">
+                            <p class="text-slate-400 font-bold">No withdrawal transactions found.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="p-8 border-t border-primary/5 flex items-center justify-between">
+            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Showing 1 to 4 of 28 entries</span>
+            <div class="flex gap-2">
+                <button class="px-4 py-2 rounded-lg border border-primary/10 text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 transition-all disabled:opacity-30">Prev</button>
+                <button class="size-8 rounded-lg bg-primary text-white text-[10px] font-black">1</button>
+                <button class="size-8 rounded-lg border border-primary/10 text-slate-600 dark:text-slate-400 text-[10px] font-black hover:bg-slate-50 transition-all">2</button>
+                <button class="px-4 py-2 rounded-lg border border-primary/10 text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 transition-all">Next</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

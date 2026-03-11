@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>User Management - Banking Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e53734",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#211111",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-nav {
+            background-color: rgba(229, 55, 52, 0.1);
+            color: #e53734;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+<div class="flex min-h-screen">
+<!-- Side Navigation -->
+<aside class="w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="bg-primary rounded-lg p-2 text-white">
+<span class="material-symbols-outlined block">account_balance</span>
+</div>
+<div>
+<h1 class="text-base font-bold leading-none">Banking Admin</h1>
+<p class="text-xs text-slate-500 mt-1">Global Admin Access</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-500">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg active-nav" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">User Management</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-500">receipt_long</span>
+<span class="text-sm font-medium">Transactions</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-500">account_balance_wallet</span>
+<span class="text-sm font-medium">Accounts</span>
+</a>
+<div class="pt-4 pb-2 px-3">
+<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">System</p>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-500">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-500">shield</span>
+<span class="text-sm font-medium">Security</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3 p-2">
+<img alt="Admin" class="w-8 h-8 rounded-full border border-slate-200 dark:border-slate-700" data-alt="Portrait of a professional male administrator" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRYKTIxtSYTbbIx7c-QStUtHVTdp7NFiLQxOgkMMnxAPGx39SbFJnwYEzY7UWAMSc4yL8sD473MslhqedkZAmFc6bVLQSBHMCu5FGPuIdeeIGu87eUQ3rqokQr8szBanzqC0_xd097wX5zjTX9RdFwlgwUGqv4OJM-nIWlie7r1aKi9ODOW-vMyCephmJwp05F6g7Y4HDpxaOg_D9_k2glTwBLX5a8G6F8vWPcFeR-c5dIDHCYIP1WYvcl7lAaEECJjKnUb1KFQIA2"/>
+<div class="min-w-0">
+<p class="text-xs font-bold truncate">Alex Rivera</p>
+<p class="text-[10px] text-slate-500 truncate">System Manager</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col min-w-0">
+<!-- Header -->
+<header class="h-16 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-8 flex items-center justify-between sticky top-0 z-10">
+<div class="flex items-center gap-4 flex-1 max-w-xl">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary/20 placeholder:text-slate-400" placeholder="Search users by name, email or ID..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-3 ml-4">
+<button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full border-2 border-white dark:border-slate-900"></span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+<span class="material-symbols-outlined">chat_bubble_outline</span>
+</button>
+<div class="h-8 w-[1px] bg-slate-200 dark:bg-slate-800 mx-2"></div>
+<img alt="Admin" class="w-8 h-8 rounded-full" data-alt="Small round profile picture of admin" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_CXFsvrqHKGyKfk9377Sleczd33xh8j3A0xVdjkGzt557e9bMPvuyesAX5_IzheKnIR2ephlMailEShmIKBReaD-njBrstPCjTD8khYWbdeUAPeTwAfVritF2HFvL0HBhzcspgOWvtD_i1OeB34suehBvpvpUnyKvRPJJlUlnDqwzizFu08rx-x3pHJA5YkRxCC67u2Mk2nprGNDOj1lu-44MA4OkWXcYTIS83SqkOAxfeht5mULfSRNXxokHiRCIarQ_dP-A2js_"/>
+</div>
+</header>
+<!-- Page Body -->
+<div class="p-8">
+<!-- Title & Actions -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+<div>
+<h2 class="text-2xl font-black text-slate-900 dark:text-white tracking-tight">User Management</h2>
+<p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Configure user roles, permissions and monitor administrative access.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-lg text-slate-500">filter_list</span>
+                            Filter
+                        </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-bold hover:bg-primary/90 transition-all shadow-sm shadow-primary/20">
+<span class="material-symbols-outlined text-lg">add</span>
+                            Add New User
+                        </button>
+</div>
+</div>
+<!-- Filters/Tabs -->
+<div class="flex items-center gap-2 mb-6 border-b border-slate-200 dark:border-slate-800">
+<button class="px-4 py-2 text-sm font-semibold border-b-2 border-primary text-primary">All Users</button>
+<button class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">Active</button>
+<button class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">Moderator</button>
+<button class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">Suspended</button>
+<button class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">Pending</button>
+</div>
+<!-- Table Container -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50/50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Name &amp; Email</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Role</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Last Login</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<!-- User Row 1 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img alt="Sarah Connor" class="w-10 h-10 rounded-full object-cover" data-alt="Female user avatar profile picture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwABMEBxZHvG0brdh2HEjmLR7E__PP76GEjQOoALt-SBOspMyW5wEdkDe8NWV0Ycp2B5eNwQBLuNwOkl_3TtH90_hA1LmJyLM8xHL-IQALv84Ni193JPPg0OFCXMfqAqlANV_O90Ry_XX4SSinKq675tCIK8Zip_XXxT5GIpraiKWdmawRdW9REc4lyR4psCT2j1pv24wt-rWZngy7Y1AlEtIeYiLmjf-WHflk6ew6JHgFLEEg-QshQxU6nubnitAekOMWjQL8qVdV"/>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-white leading-none">Sarah Connor</p>
+<p class="text-xs text-slate-500 mt-1">s.connor@bank.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">Admin</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<span class="text-sm font-medium text-emerald-600 dark:text-emerald-400">Active</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm text-slate-500">2 mins ago</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-1.5 text-slate-400 hover:text-primary transition-colors" title="Edit User">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="p-1.5 text-slate-400 hover:text-amber-500 transition-colors" title="Suspend User">
+<span class="material-symbols-outlined text-xl">block</span>
+</button>
+<button class="p-1.5 text-slate-400 hover:text-red-500 transition-colors" title="Delete User">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- User Row 2 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img alt="Marcus Wright" class="w-10 h-10 rounded-full object-cover" data-alt="Male user avatar profile picture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVr_vAuRczGULQm0sFQFqJ-Vwtyj3BUev45U85RWP9-Yi7o9RmKh5EkYBeskm-w2uWf_eulkQ4g8Aufnyw_lbAsRNhI6QXfkmUhM1aQrxirum9i6FQ-PWYEaEK1vfwwLknXTYHBRqtiQd7rPNwUxV87c-nZUQ2YfNN-QjlUT0zGVpOc4NRhu7ApWd_owx5UZnYT_vHggyW4cnSDbrSJDSnd_dIGRUWcyeOY55FtbbJCgPERREMwApFRvN_zlB4Ah0KYU-B2eVkdpgv"/>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-white leading-none">Marcus Wright</p>
+<p class="text-xs text-slate-500 mt-1">m.wright@bank.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">Moderator</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<span class="text-sm font-medium text-emerald-600 dark:text-emerald-400">Active</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm text-slate-500">1 hour ago</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-1.5 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="p-1.5 text-slate-400 hover:text-amber-500 transition-colors">
+<span class="material-symbols-outlined text-xl">block</span>
+</button>
+<button class="p-1.5 text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- User Row 3 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img alt="Robert Brown" class="w-10 h-10 rounded-full object-cover" data-alt="Male user avatar profile picture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBVmKvicHyBeuqg6yHp71NQkF5OYxwk_27Ly0x6HFd79agbkcjGPdwy7Mw0g-gevqFJkMlUveSoOUFZVCBN4mQca97ufyqFjHVbJ5JH3aU9hix1Qs9XNB-J_55T_-tghcLTscjGR74CLKDNs6H9gn8sHqRXQWyvg3FT5LuynA9bW7Uil5dJxz2MWSgZ0revyn8Sd3dRqrvEeKu0yGZ_UoO95NF3BKGcLxamnbuzA50NuHMkfJ437dJEsQGK-60aP-kID-mfU329kyc"/>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-white leading-none">Robert Brown</p>
+<p class="text-xs text-slate-500 mt-1">r.brown@bank.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">User</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span class="text-sm font-medium text-primary">Suspended</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm text-slate-500">Yesterday</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-1.5 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="p-1.5 text-emerald-500 hover:text-emerald-600 transition-colors" title="Activate User">
+<span class="material-symbols-outlined text-xl">check_circle</span>
+</button>
+<button class="p-1.5 text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- User Row 4 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img alt="Alice Wilson" class="w-10 h-10 rounded-full object-cover" data-alt="Female user avatar profile picture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcaH8s8igEL1ocQ9rev5fbJV_iqOLlsX6sAVdYmWP5dV77wYfhO7nBGvuwh_uR1cVUxEph4DW90N9N_h-Q8-UOwpSXgfIpFS77-DAHnbjiZO8yjZkuYI_areI0PZH285C8FnZBcUWr6gUKnucIvCqhsM9QkxbHEW4pMMHTYyNAKqRilyCQ0FKuOn4ou6_Iy0R7OU2ZYxyBjNQHL-wX8Bg-L53cxly_RSMTDrWI4LZpuUawsIqO8Av6PPHt4TuAuOmrdBOi3hDELSks"/>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-white leading-none">Alice Wilson</p>
+<p class="text-xs text-slate-500 mt-1">a.wilson@bank.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">User</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+<span class="text-sm font-medium text-slate-500">Pending</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm text-slate-500">Never</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-1.5 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="p-1.5 text-slate-400 hover:text-emerald-500 transition-colors" title="Approve Registration">
+<span class="material-symbols-outlined text-xl">verified_user</span>
+</button>
+<button class="p-1.5 text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- User Row 5 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img alt="Michael Chen" class="w-10 h-10 rounded-full object-cover" data-alt="Male user avatar profile picture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2ipWKnX3The9KhxgQ-EuBb_q1Axp7ssiWFdd1fW1zhtn7vYbxEvkQBVLz_DzHCkSjRqzxbN43WdEIOvx1A7qpnsLWd1V9x0NY340NbB3fTSqo71_6GELxH7e7Nrp_ucNXiuU9y0wV_yKoIFu4ic0COmN8_bwgkYtiVB5Qz0udJf9SJv35eT8NM69gLSQqUQJ-HeWFDO2jX21kd5GeEHf4ylZhbqdc8mVWZlZ8o0k41qrTW8FL5AoThlYv6GCLBAazQoI8RiED2MdE"/>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-white leading-none">Michael Chen</p>
+<p class="text-xs text-slate-500 mt-1">m.chen@bank.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">Admin</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<span class="text-sm font-medium text-emerald-600 dark:text-emerald-400">Active</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm text-slate-500">5 hours ago</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-1.5 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="p-1.5 text-slate-400 hover:text-amber-500 transition-colors">
+<span class="material-symbols-outlined text-xl">block</span>
+</button>
+<button class="p-1.5 text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination Footer -->
+<div class="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between border-t border-slate-200 dark:border-slate-800">
+<p class="text-xs text-slate-500 font-medium">Showing 1 to 5 of 1,248 users</p>
+<div class="flex items-center gap-2">
+<button class="p-1.5 border border-slate-200 dark:border-slate-700 rounded bg-white dark:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="px-3 py-1 bg-primary text-white text-xs font-bold rounded">1</button>
+<button class="px-3 py-1 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-medium rounded">2</button>
+<button class="px-3 py-1 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-medium rounded">3</button>
+<span class="text-slate-400 mx-1">...</span>
+<button class="px-3 py-1 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-medium rounded">125</button>
+<button class="p-1.5 border border-slate-200 dark:border-slate-700 rounded bg-white dark:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

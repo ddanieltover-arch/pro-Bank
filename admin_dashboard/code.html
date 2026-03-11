@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ProBank Admin Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e53734",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#211111",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-64 flex-shrink-0 border-r border-primary/10 bg-white dark:bg-background-dark/50 flex flex-col">
+<div class="p-6 flex items-center gap-3">
+<div class="size-10 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">account_balance</span>
+</div>
+<div>
+<h1 class="text-lg font-bold text-slate-900 dark:text-white leading-tight">ProBank</h1>
+<p class="text-xs text-primary font-medium">Admin Dashboard</p>
+</div>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary text-white font-medium" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="text-sm">Overview</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span class="text-sm">User Management</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">assignment_return</span>
+<span class="text-sm">Refund Requests</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">receipt_long</span>
+<span class="text-sm">Transactions</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">terminal</span>
+<span class="text-sm">System Logs</span>
+</a>
+<div class="pt-4 mt-4 border-t border-slate-200 dark:border-slate-800">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="text-sm">Settings</span>
+</a>
+</div>
+</nav>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3 px-3 py-2">
+<div class="size-8 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">logout</span>
+</div>
+<span class="text-sm font-medium">Log out</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+<!-- Header -->
+<header class="h-16 flex items-center justify-between px-8 bg-white dark:bg-background-dark border-b border-primary/10">
+<div class="flex-1 max-w-xl">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-lg pl-10 pr-4 py-2 focus:ring-2 focus:ring-primary text-sm transition-all" placeholder="Search transactions, users, or tickets..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4 ml-8">
+<button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-primary rounded-full border-2 border-white dark:border-background-dark"></span>
+</button>
+<div class="h-8 w-px bg-slate-200 dark:bg-slate-700"></div>
+<div class="flex items-center gap-3 cursor-pointer group">
+<div class="text-right hidden sm:block">
+<p class="text-sm font-semibold leading-tight">Alexander Pierce</p>
+<p class="text-xs text-slate-500">Super Admin</p>
+</div>
+<div class="size-10 rounded-full bg-primary/10 border-2 border-primary/20 overflow-hidden">
+<img alt="Admin Avatar" class="w-full h-full object-cover" data-alt="Admin professional profile headshot avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVE5mtq3o0IehaqbOo0orY9W7UNGcieYkzY9Q-VpMfnEOpHpoonnwIPRrFKh433GSWNcnDcnyGBNQQ-V8kIU06R3JHoshhCNy_8CCsE1imacCEsRM8lCXC1fE4GhEAKJ7k5g3mFaSSoBMTGn6VLhEXn2g5LAuJa3-5I3s6tuWReWXpXxBJYRU8hwhMy8-5evIgQsanJy2ET4mwnrngwysfbOzh9oHM2UQXTCfWcnOIijpWtxBRNioGP1Hbg8qQoX9Ic3LMiBWFGYrU"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Scrollable Content -->
+<main class="flex-1 overflow-y-auto p-8 space-y-8 bg-background-light dark:bg-background-dark">
+<!-- KPI Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/5 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<div class="p-2 bg-primary/10 rounded-lg text-primary">
+<span class="material-symbols-outlined">group</span>
+</div>
+<span class="text-emerald-500 text-sm font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">trending_up</span> 5.2%
+                            </span>
+</div>
+<p class="text-slate-500 text-sm font-medium">Total Users</p>
+<h3 class="text-2xl font-bold mt-1">12,840</h3>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/5 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<div class="p-2 bg-primary/10 rounded-lg text-primary">
+<span class="material-symbols-outlined">pending_actions</span>
+</div>
+<span class="text-emerald-500 text-sm font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">trending_up</span> 12.4%
+                            </span>
+</div>
+<p class="text-slate-500 text-sm font-medium">Pending Refunds</p>
+<h3 class="text-2xl font-bold mt-1">142</h3>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/5 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<div class="p-2 bg-primary/10 rounded-lg text-primary">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<span class="text-emerald-500 text-sm font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">trending_up</span> 8.1%
+                            </span>
+</div>
+<p class="text-slate-500 text-sm font-medium">Total Processed</p>
+<h3 class="text-2xl font-bold mt-1">$2.4M</h3>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/5 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<div class="p-2 bg-primary/10 rounded-lg text-primary">
+<span class="material-symbols-outlined">gavel</span>
+</div>
+<span class="text-rose-500 text-sm font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">trending_down</span> 2.5%
+                            </span>
+</div>
+<p class="text-slate-500 text-sm font-medium">Active Disputes</p>
+<h3 class="text-2xl font-bold mt-1">18</h3>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Refund Requests Table -->
+<div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-xl border border-primary/5 shadow-sm overflow-hidden flex flex-col">
+<div class="px-6 py-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+<h2 class="text-lg font-bold">Recent Refund Requests</h2>
+<button class="text-primary text-sm font-semibold hover:underline">View All</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-slate-50 dark:bg-slate-800/50 text-slate-500 text-xs uppercase tracking-wider">
+<tr>
+<th class="px-6 py-4 font-semibold">Customer Name</th>
+<th class="px-6 py-4 font-semibold">Order ID</th>
+<th class="px-6 py-4 font-semibold">Amount</th>
+<th class="px-6 py-4 font-semibold">Status</th>
+<th class="px-6 py-4 font-semibold">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-200" data-alt="Customer avatar thumbnail placeholder"></div>
+<span class="text-sm font-medium">John Doe</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">#ORD-8821</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm font-semibold">$120.00</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">Pending</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<button class="text-primary text-sm font-bold hover:text-primary/80">Review</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-200" data-alt="Customer avatar thumbnail placeholder"></div>
+<span class="text-sm font-medium">Alice Smith</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">#ORD-7742</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm font-semibold">$45.50</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">Approved</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<button class="text-primary text-sm font-bold hover:text-primary/80">Review</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-200" data-alt="Customer avatar thumbnail placeholder"></div>
+<span class="text-sm font-medium">Robert Brown</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">#ORD-9910</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm font-semibold">$210.00</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400">Rejected</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<button class="text-primary text-sm font-bold hover:text-primary/80">Review</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-200" data-alt="Customer avatar thumbnail placeholder"></div>
+<span class="text-sm font-medium">Emily White</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">#ORD-1022</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm font-semibold">$15.99</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">Pending</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<button class="text-primary text-sm font-bold hover:text-primary/80">Review</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Platform Activity -->
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-primary/5 shadow-sm overflow-hidden flex flex-col">
+<div class="px-6 py-5 border-b border-slate-100 dark:border-slate-800">
+<h2 class="text-lg font-bold">Platform Activity</h2>
+</div>
+<div class="p-6 space-y-6 flex-1 overflow-y-auto max-h-[400px]">
+<div class="flex gap-4">
+<div class="relative flex flex-col items-center">
+<div class="size-2.5 bg-primary rounded-full ring-4 ring-primary/20"></div>
+<div class="flex-1 w-0.5 bg-slate-200 dark:bg-slate-800 mt-2"></div>
+</div>
+<div class="pb-6">
+<p class="text-sm font-semibold">Refund Processed</p>
+<p class="text-xs text-slate-500 mt-1">Refund for order #ORD-7742 was successfully processed to Alice Smith.</p>
+<p class="text-[10px] text-primary font-medium mt-2">12 mins ago</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="relative flex flex-col items-center">
+<div class="size-2.5 bg-slate-400 rounded-full ring-4 ring-slate-100 dark:ring-slate-800"></div>
+<div class="flex-1 w-0.5 bg-slate-200 dark:bg-slate-800 mt-2"></div>
+</div>
+<div class="pb-6">
+<p class="text-sm font-semibold text-slate-700 dark:text-slate-300">System Backup</p>
+<p class="text-xs text-slate-500 mt-1">Automatic weekly database backup completed successfully.</p>
+<p class="text-[10px] text-slate-400 font-medium mt-2">45 mins ago</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="relative flex flex-col items-center">
+<div class="size-2.5 bg-rose-500 rounded-full ring-4 ring-rose-100 dark:ring-rose-900/30"></div>
+<div class="flex-1 w-0.5 bg-slate-200 dark:bg-slate-800 mt-2"></div>
+</div>
+<div class="pb-6">
+<p class="text-sm font-semibold">Dispute Opened</p>
+<p class="text-xs text-slate-500 mt-1">User #USER-092 filed a dispute for transaction TX-9912.</p>
+<p class="text-[10px] text-primary font-medium mt-2">1 hour ago</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="relative flex flex-col items-center">
+<div class="size-2.5 bg-blue-500 rounded-full ring-4 ring-blue-100 dark:ring-blue-900/30"></div>
+</div>
+<div>
+<p class="text-sm font-semibold text-slate-700 dark:text-slate-300">New Admin Joined</p>
+<p class="text-xs text-slate-500 mt-1">Sarah Connor was added to the support team.</p>
+<p class="text-[10px] text-slate-400 font-medium mt-2">3 hours ago</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Summary Chart Visual Representation -->
+<div class="bg-white dark:bg-slate-900 p-8 rounded-xl border border-primary/5 shadow-sm">
+<div class="flex items-center justify-between mb-8">
+<div>
+<h2 class="text-lg font-bold">Transaction Overview</h2>
+<p class="text-sm text-slate-500">Weekly platform volume and success rates</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="flex items-center gap-1.5 text-xs font-medium text-slate-500">
+<span class="size-2 rounded-full bg-primary"></span> Volume
+                            </span>
+<span class="flex items-center gap-1.5 text-xs font-medium text-slate-500">
+<span class="size-2 rounded-full bg-slate-300"></span> Refunds
+                            </span>
+</div>
+</div>
+<!-- Abstract Chart Representation -->
+<div class="h-48 w-full flex items-end gap-4 px-2">
+<div class="flex-1 bg-slate-100 dark:bg-slate-800 rounded-t h-1/2 relative group">
+<div class="absolute bottom-0 w-full bg-primary/20 h-1/3 rounded-t transition-all group-hover:bg-primary/40"></div>
+</div>
+<div class="flex-1 bg-slate-100 dark:bg-slate-800 rounded-t h-2/3 relative group">
+<div class="absolute bottom-0 w-full bg-primary/20 h-1/4 rounded-t transition-all group-hover:bg-primary/40"></div>
+</div>
+<div class="flex-1 bg-slate-100 dark:bg-slate-800 rounded-t h-1/3 relative group">
+<div class="absolute bottom-0 w-full bg-primary/20 h-1/2 rounded-t transition-all group-hover:bg-primary/40"></div>
+</div>
+<div class="flex-1 bg-slate-100 dark:bg-slate-800 rounded-t h-4/5 relative group">
+<div class="absolute bottom-0 w-full bg-primary/20 h-1/5 rounded-t transition-all group-hover:bg-primary/40"></div>
+</div>
+<div class="flex-1 bg-slate-100 dark:bg-slate-800 rounded-t h-3/4 relative group">
+<div class="absolute bottom-0 w-full bg-primary/20 h-1/4 rounded-t transition-all group-hover:bg-primary/40"></div>
+</div>
+<div class="flex-1 bg-slate-100 dark:bg-slate-800 rounded-t h-1/2 relative group">
+<div class="absolute bottom-0 w-full bg-primary/20 h-1/3 rounded-t transition-all group-hover:bg-primary/40"></div>
+</div>
+<div class="flex-1 bg-slate-100 dark:bg-slate-800 rounded-t h-3/5 relative group">
+<div class="absolute bottom-0 w-full bg-primary/20 h-1/6 rounded-t transition-all group-hover:bg-primary/40"></div>
+</div>
+</div>
+<div class="flex justify-between mt-4 px-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+<span>Mon</span>
+<span>Tue</span>
+<span>Wed</span>
+<span>Thu</span>
+<span>Fri</span>
+<span>Sat</span>
+<span>Sun</span>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

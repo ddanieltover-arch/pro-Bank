@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %}Global Banking | ProBank{% endblock %}
+
+{% block content %}
+<main class="flex-1">
+    <!-- Hero Section -->
+    <div class="px-6 py-10 lg:px-40">
+        <div class="@container">
+            <div class="flex flex-col gap-6 @[480px]:gap-8 @[864px]:flex-row items-center">
+                <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl @[480px]:h-auto @[480px]:min-w-[400px] @[864px]:w-1/2 shadow-xl border border-primary/5" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDw8rjQ2lM8Eep_Ygx_6fOvOWSeOOtlRcQ-fk6s_PJEylYvVsqNks-lf5MsbyIxwbqF87PIaRXkqGoj3OB598ElesNxVRbXVExbz5PB82HxuVSYBHRjEGzrepRu7ivtnVGPzgRZvAFTAzuMRXjdZ6ZCw04A6la0IpssDRYFs2PQ2bVK9M7okBsCGQnREwdFaIM9ovXiiURwXXnD4STi1lA5WvTE1-NNx_DT_sd_02YV1N11Ea4nvt3niDGszmDWq7coXfVOebT8IT7S");'>
+                </div>
+                <div class="flex flex-col gap-6 @[480px]:min-w-[400px] @[480px]:gap-8 @[864px]:justify-center @[864px]:w-1/2">
+                    <div class="flex flex-col gap-4 text-left">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-primary/10 text-primary w-fit uppercase tracking-wider">
+                            Global Services
+                        </span>
+                        <h1 class="text-slate-900 dark:text-slate-100 text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl">
+                            Banking Without <span class="text-primary">Borders</span>
+                        </h1>
+                        <p class="text-slate-600 dark:text-slate-400 text-base font-normal leading-relaxed @[480px]:text-lg">
+                            Experience seamless international money transfers and multi-currency accounts designed for your global lifestyle. Send, spend, and save anywhere.
+                        </p>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <button class="flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary text-white text-base font-bold transition-transform active:scale-95">
+                            <span class="truncate">Get Started</span>
+                        </button>
+                        <button class="flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary/10 text-primary text-base font-bold hover:bg-primary/20 transition-all">
+                            <span class="truncate">View Rates</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Stats Bar -->
+    <div class="px-6 lg:px-40 pb-10">
+        <div class="flex flex-wrap gap-4">
+            <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-primary/10 bg-white dark:bg-primary/5 shadow-sm">
+                <p class="text-slate-500 dark:text-slate-400 text-sm font-medium uppercase tracking-wider">Currencies</p>
+                <p class="text-slate-900 dark:text-slate-100 tracking-tight text-3xl font-black">50+</p>
+            </div>
+            <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-primary/10 bg-white dark:bg-primary/5 shadow-sm">
+                <p class="text-slate-500 dark:text-slate-400 text-sm font-medium uppercase tracking-wider">Global ATMs</p>
+                <p class="text-slate-900 dark:text-slate-100 tracking-tight text-3xl font-black">2M+</p>
+            </div>
+            <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-primary/10 bg-white dark:bg-primary/5 shadow-sm">
+                <p class="text-slate-500 dark:text-slate-400 text-sm font-medium uppercase tracking-wider">Reach</p>
+                <p class="text-slate-900 dark:text-slate-100 tracking-tight text-3xl font-black">190+</p>
+            </div>
+        </div>
+    </div>
+    <!-- Features Section -->
+    <div class="px-6 lg:px-40 py-16 bg-primary/5">
+        <div class="flex flex-col gap-4 mb-12 max-w-[800px]">
+            <h2 class="text-slate-900 dark:text-slate-100 tracking-tight text-3xl font-black @[480px]:text-4xl">
+                Tailored for the Global Citizen
+            </h2>
+            <p class="text-slate-600 dark:text-slate-400 text-lg">ProBank provides the tools you need to manage your money anywhere in the world with zero hidden fees and enterprise-grade security.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Transfer Card -->
+            <div class="flex flex-col gap-4 bg-white dark:bg-background-dark p-2 rounded-2xl border border-primary/5 hover:shadow-xl transition-shadow group">
+                <div class="w-full bg-center bg-no-repeat aspect-[4/3] bg-cover rounded-xl overflow-hidden" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDV3yX50l-dDFhzEF8a0Cee0QBsl9CxmU7gsYk3yF78WOPjRmPtR406xx3iPqRHu8lrKgvMSpUjmhTyi5rMQnkSqEhGUzrPeinCkW8dHKz5Z-jGT9zkiLSxqrWMVdsQ6KTw_V0IWtcUECgL0W-cDatkZ9Omu3D44L-aa9gFbuENweSHn94gev5wn2gUvj1kkpzciFMV2Qa-frc-60haoiC5HtAL15xtDZw8qacOk34vcP10-0JHCZg5V1heAxUA87K6_vA_mQUlDrzV");'>
+                </div>
+                <div class="px-4 pb-6">
+                    <div class="flex items-center gap-2 mb-2 text-primary">
+                        <span class="material-symbols-outlined">send_money</span>
+                        <h3 class="text-slate-900 dark:text-slate-100 text-xl font-bold leading-normal">International Transfers</h3>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm font-normal leading-relaxed">
+                        Send money abroad with real-time mid-market exchange rates. Transfers arrive in minutes to 80+ countries.
+                    </p>
+                    <a class="mt-4 inline-flex items-center gap-1 text-primary text-sm font-bold hover:gap-2 transition-all" href="#">
+                        Learn More <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </a>
+                </div>
+            </div>
+            <!-- Wallet Card -->
+            <div class="flex flex-col gap-4 bg-white dark:bg-background-dark p-2 rounded-2xl border border-primary/5 hover:shadow-xl transition-shadow group">
+                <div class="w-full bg-center bg-no-repeat aspect-[4/3] bg-cover rounded-xl overflow-hidden" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAWBiEik5xlXxb8whyb-i11K8oxmte7i3ON84AOs5vaNd0MbHxRDQyT3xBJe4yqiinIbO5B3-nLm1Y8zoPfv1ogUyqX6Q9VnAqzBFHD63FBvLGNcrYgECI3igZ5BExvundQjvoQOpBAv2IIxv_EU-14cMmEu0zk0IvujpifJaqnxDU_CVKTrb3RJpWsP-_cxbcFUI-_smpQIkTVi8BGAFoE_qygx6Fdp1mD0Fdq6iFJGqzSuOLivLQx_-1ObjZPN-2tYdO69RgAsi1i");'>
+                </div>
+                <div class="px-4 pb-6">
+                    <div class="flex items-center gap-2 mb-2 text-primary">
+                        <span class="material-symbols-outlined">account_balance_wallet</span>
+                        <h3 class="text-slate-900 dark:text-slate-100 text-xl font-bold leading-normal">Multi-Currency Accounts</h3>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm font-normal leading-relaxed">
+                        Hold and manage over 50 currencies in a single digital wallet. Convert instantly with low transparent fees.
+                    </p>
+                    <a class="mt-4 inline-flex items-center gap-1 text-primary text-sm font-bold hover:gap-2 transition-all" href="#">
+                        Explore Account <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </a>
+                </div>
+            </div>
+            <!-- ATM Card -->
+            <div class="flex flex-col gap-4 bg-white dark:bg-background-dark p-2 rounded-2xl border border-primary/5 hover:shadow-xl transition-shadow group">
+                <div class="w-full bg-center bg-no-repeat aspect-[4/3] bg-cover rounded-xl overflow-hidden" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBtvpLc8Ts7VvlXVNKXlekllpnLuGGppH7Ys3oqAA4l-7jNczyoWyhXBHdTROoqRbMgHF9_j6-0LK8LA-87I8qh8TM7oF8dEIJtW4WkKzrSneepGiH7SmA835t7_GR2xGhx_p4Awm2bNikf706l1eAvd5oDf6Ifm7uzj62Zw96IaDuDQczoEX2D8mx1y-kyX7O4ndDxuMArX794NYKdrII806h-eeudFUnk1ffqM5-k64JdMZ_u54iu1L2GkPIzpGFIbpzel41BxmZ5");'>
+                </div>
+                <div class="px-4 pb-6">
+                    <div class="flex items-center gap-2 mb-2 text-primary">
+                        <span class="material-symbols-outlined">atm</span>
+                        <h3 class="text-slate-900 dark:text-slate-100 text-xl font-bold leading-normal">Global ATM Access</h3>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm font-normal leading-relaxed">
+                        Withdraw cash fee-free at over 2 million ATMs worldwide. Use our app to find the nearest partner location.
+                    </p>
+                    <a class="mt-4 inline-flex items-center gap-1 text-primary text-sm font-bold hover:gap-2 transition-all" href="#">
+                        Find ATM <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Map Section -->
+    <div class="px-6 lg:px-40 py-20 text-center">
+        <div class="max-w-3xl mx-auto mb-12">
+            <h2 class="text-3xl font-black mb-4">A Truly Global Network</h2>
+            <p class="text-slate-600 dark:text-slate-400">Our infrastructure spans across continents, ensuring your money is always where you need it to be.</p>
+        </div>
+        <div class="w-full h-96 rounded-2xl bg-slate-200 dark:bg-slate-800 relative overflow-hidden group shadow-inner">
+            <div class="absolute inset-0 opacity-40 mix-blend-multiply dark:mix-blend-overlay grayscale group-hover:grayscale-0 transition-all duration-700 bg-center bg-no-repeat bg-cover" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDV11uVUaaAe8I3ssQzS96YLBvgfBm_0v4QBUV-2qUIriDq-0c5j9wYUqx5S2Jvsi3OyFjnLPHacCkumwYFUuu9JaGTVWfWJzN5m_5L-rFGW4YZIyoVxdBalhJ_ikyH7Kw9M1jn9OeMEEwg2wxRDoeJJ4J9wOeYu3pLE2Tmy-rLatBZE4YT-a-Qor0VKpD0YpmgmDHisuxTLv02-MYkxAAwL4ONJffw_L0k3OxOoibBrGzCdRCmYExl48P_izxI73lHRlWIciArxDNV");'></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+                <div class="bg-white/90 dark:bg-background-dark/90 backdrop-blur-sm p-6 rounded-xl shadow-2xl border border-primary/20">
+                    <h4 class="text-lg font-bold mb-2">Ready to go global?</h4>
+                    <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">Join 15M+ users banking globally.</p>
+                    <button class="bg-primary text-white px-8 py-3 rounded-lg font-bold">Open Your Account</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

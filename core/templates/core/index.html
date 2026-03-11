@@ -1,0 +1,372 @@
+{% extends "base.html" %}
+{% block title %}ProBank | Smart Banking & Refund Solutions{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* ===== Reduced Motion Preference ===== */
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+
+    /* ===== Hero Entrance Animations ===== */
+    @keyframes fadeSlideUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeSlideDown {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeScaleIn {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    .hero-badge { opacity: 0; animation: fadeSlideDown 0.5s ease-out 0.1s forwards; }
+    .hero-heading { opacity: 0; animation: fadeSlideUp 0.6s ease-out 0.2s forwards; }
+    .hero-subtitle { opacity: 0; animation: fadeSlideUp 0.6s ease-out 0.35s forwards; }
+    .hero-buttons { opacity: 0; animation: fadeSlideUp 0.6s ease-out 0.5s forwards; }
+    .hero-card { opacity: 0; animation: fadeScaleIn 0.8s ease-out 0.4s forwards; }
+
+    /* ===== Floating Dashboard Card ===== */
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-12px); }
+    }
+    .card-float { animation: float 4s ease-in-out infinite; }
+
+    /* ===== Glow Pulse ===== */
+    @keyframes glowPulse {
+        0%, 100% { opacity: 0.25; }
+        50% { opacity: 0.45; }
+    }
+    .glow-pulse { animation: glowPulse 3s ease-in-out infinite; }
+
+    /* ===== Scroll-Triggered Animations ===== */
+    .scroll-animate {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .scroll-animate.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .scroll-animate.delay-1 { transition-delay: 0.1s; }
+    .scroll-animate.delay-2 { transition-delay: 0.25s; }
+    .scroll-animate.delay-3 { transition-delay: 0.4s; }
+
+    /* ===== Icon Hover Bounce ===== */
+    @keyframes iconBounce {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.15); }
+    }
+    .icon-bounce:hover .icon-target {
+        animation: iconBounce 0.4s ease-in-out;
+    }
+
+    /* ===== Marquee ===== */
+    @keyframes marquee {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+    .marquee-track {
+        display: flex;
+        width: max-content;
+        animation: marquee 20s linear infinite;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+
+    /* ===== Number Counter Glow ===== */
+    @keyframes counterGlow {
+        0% { text-shadow: 0 0 0 transparent; }
+        50% { text-shadow: 0 0 12px rgba(229, 55, 52, 0.3); }
+        100% { text-shadow: 0 0 0 transparent; }
+    }
+    .counter-glow { animation: counterGlow 1.5s ease-out; }
+
+    /* ===== CTA Parallax Dots ===== */
+    @keyframes driftDots {
+        0% { background-position: 0 0; }
+        100% { background-position: 48px 48px; }
+    }
+    .cta-dots-animated {
+        animation: driftDots 4s linear infinite;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="px-6 md:px-20 lg:px-40 py-16 md:py-24">
+    <div class="flex flex-col lg:flex-row items-center gap-12 @container">
+        <div class="flex flex-col gap-8 flex-1 max-w-2xl">
+            <div class="flex flex-col gap-4">
+                <span class="hero-badge bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider w-fit">Next Gen Finance</span>
+                <h1 class="hero-heading text-slate-900 dark:text-white text-5xl md:text-6xl font-black leading-[1.1] tracking-tight">
+                    Smart Banking &amp; <span class="text-primary">Refund</span> Solutions
+                </h1>
+                <p class="hero-subtitle text-slate-600 dark:text-slate-400 text-lg md:text-xl font-normal leading-relaxed max-w-xl">
+                    Experience the next generation of financial management with automated refunds and secure global
+                    banking designed for modern businesses.
+                </p>
+            </div>
+            <div class="hero-buttons flex flex-col sm:flex-row gap-4">
+                <a href="{% url 'accounts:signup' %}"
+                    class="flex min-w-[180px] cursor-pointer items-center justify-center rounded-lg h-14 px-8 bg-primary text-white text-lg font-bold shadow-xl shadow-primary/30 hover:scale-[1.02] transition-transform">
+                    Get Started
+                </a>
+                <button
+                    class="flex min-w-[180px] cursor-pointer items-center justify-center rounded-lg h-14 px-8 border-2 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-lg font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-all">
+                    Watch Demo
+                </button>
+            </div>
+        </div>
+        <!-- Dashboard Preview Card -->
+        <div class="flex-1 w-full lg:w-auto relative group hero-card">
+            <div class="absolute -inset-1 bg-gradient-to-r from-primary to-rose-400 rounded-xl blur glow-pulse"></div>
+            <div class="relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl overflow-hidden card-float">
+                <div class="bg-slate-50 dark:bg-slate-800/50 p-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+                    <div class="flex gap-1.5">
+                        <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                    </div>
+                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Secure Dashboard</div>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="p-4 bg-primary/5 rounded-lg border border-primary/10">
+                            <p class="text-slate-500 text-[10px] font-bold uppercase mb-1">Total Balance</p>
+                            <p class="text-2xl font-black text-slate-900 dark:text-white" data-counter="128430.00" data-prefix="$" data-decimals="2">$0.00</p>
+                            <p class="text-[10px] text-green-500 font-bold mt-1">&uarr; 12.5% from last month</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg border border-slate-100 dark:border-slate-700">
+                            <p class="text-slate-500 text-[10px] font-bold uppercase mb-1">Pending Refunds</p>
+                            <p class="text-2xl font-black text-slate-900 dark:text-white" data-counter="4250.50" data-prefix="$" data-decimals="2">$0.00</p>
+                            <p class="text-[10px] text-primary font-bold mt-1">14 items requiring action</p>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <p class="text-xs font-bold text-slate-400 uppercase">Recent Transactions</p>
+                        <div class="flex items-center justify-between p-3 bg-white dark:bg-slate-900 rounded-lg border border-slate-50 dark:border-slate-800 shadow-sm">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded bg-green-100 flex items-center justify-center text-green-600">
+                                    <span class="material-symbols-outlined text-sm">download</span>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold">Stripe Payout</p>
+                                    <p class="text-[10px] text-slate-500">Today, 2:45 PM</p>
+                                </div>
+                            </div>
+                            <p class="text-xs font-bold text-green-600">+$12,400.00</p>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-white dark:bg-slate-900 rounded-lg border border-slate-50 dark:border-slate-800 shadow-sm opacity-60">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary">
+                                    <span class="material-symbols-outlined text-sm">history_edu</span>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold">Amazon Refund #042</p>
+                                    <p class="text-[10px] text-slate-500">Yesterday, 11:20 AM</p>
+                                </div>
+                            </div>
+                            <p class="text-xs font-bold text-slate-900 dark:text-white">-$149.99</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div id="features" class="bg-white dark:bg-slate-900 py-24 px-6 md:px-20 lg:px-40">
+    <div class="flex flex-col gap-12">
+        <div class="flex flex-col gap-4 max-w-3xl scroll-animate">
+            <h2 class="text-slate-900 dark:text-white text-3xl md:text-4xl font-black leading-tight">
+                Powerful Features for Banking &amp; Refunds
+            </h2>
+            <p class="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">
+                Everything you need to manage your business finances and customer reimbursements in one place, backed by
+                bank-grade security and automated workflows.
+            </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="scroll-animate delay-1 icon-bounce flex flex-col gap-6 p-8 rounded-2xl bg-background-light dark:bg-background-dark border border-slate-100 dark:border-slate-800 hover:border-primary/30 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+                <div class="icon-target w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+                    <span class="material-symbols-outlined text-3xl">shield_person</span>
+                </div>
+                <div class="flex flex-col gap-3">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">Secure Banking</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Enterprise-grade security with multi-factor authentication, biometric logins, and real-time
+                        monitoring to keep your assets safe.
+                    </p>
+                </div>
+                <a class="text-primary font-bold text-sm flex items-center gap-2 mt-auto group-hover:gap-3 transition-all" href="{% url 'core:security' %}">
+                    Learn more <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </a>
+            </div>
+            <div class="scroll-animate delay-2 icon-bounce flex flex-col gap-6 p-8 rounded-2xl bg-background-light dark:bg-background-dark border border-slate-100 dark:border-slate-800 hover:border-primary/30 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+                <div class="icon-target w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+                    <span class="material-symbols-outlined text-3xl">autorenew</span>
+                </div>
+                <div class="flex flex-col gap-3">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">Automated Refunds</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Streamline your return process with automated workflows that settle refunds instantly across
+                        multiple payment processors.
+                    </p>
+                </div>
+                <a class="text-primary font-bold text-sm flex items-center gap-2 mt-auto group-hover:gap-3 transition-all" href="{% url 'core:refund_engine' %}">
+                    Learn more <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </a>
+            </div>
+            <div class="scroll-animate delay-3 icon-bounce flex flex-col gap-6 p-8 rounded-2xl bg-background-light dark:bg-background-dark border border-slate-100 dark:border-slate-800 hover:border-primary/30 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+                <div class="icon-target w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+                    <span class="material-symbols-outlined text-3xl">language</span>
+                </div>
+                <div class="flex flex-col gap-3">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">Multi-Currency</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Hold, receive, and send money in over 40 currencies with competitive exchange rates and no
+                        hidden cross-border fees.
+                    </p>
+                </div>
+                <a class="text-primary font-bold text-sm flex items-center gap-2 mt-auto group-hover:gap-3 transition-all" href="{% url 'core:global_banking' %}">
+                    Learn more <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Social Proof — Marquee -->
+<div id="solutions" class="py-16 px-6 md:px-20 lg:px-40 flex flex-col items-center gap-10 scroll-animate overflow-hidden">
+    <p class="text-slate-500 dark:text-slate-400 text-sm font-bold uppercase tracking-widest text-center">Trusted by
+        over 10,000 businesses worldwide</p>
+    <div class="w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+        <div class="marquee-track">
+            <div class="flex items-center gap-20 px-10 opacity-50 grayscale contrast-125">
+                <div class="text-2xl font-black italic whitespace-nowrap">TECHNO</div>
+                <div class="text-2xl font-black italic whitespace-nowrap">ORBIT</div>
+                <div class="text-2xl font-black italic whitespace-nowrap">GLOBAL</div>
+                <div class="text-2xl font-black italic whitespace-nowrap">VELOCITY</div>
+                <div class="text-2xl font-black italic whitespace-nowrap">PRISM</div>
+                <div class="text-2xl font-black italic whitespace-nowrap">NEXUS</div>
+                <div class="text-2xl font-black italic whitespace-nowrap">APEX</div>
+                <div class="text-2xl font-black italic whitespace-nowrap">STELLAR</div>
+            </div>
+            <div class="flex items-center gap-20 px-10 opacity-50 grayscale contrast-125">
+                <div class="text-2xl font-black italic whitespace-nowrap">TECHNO</div>
+                <div class="text-2xl font-black italic whitespace-nowrap">ORBIT</div>
+                <div class="text-2xl font-black italic whitespace-nowrap">GLOBAL</div>
+                <div class="text-2xl font-black italic whitespace-nowrap">VELOCITY</div>
+                <div class="text-2xl font-black italic whitespace-nowrap">PRISM</div>
+                <div class="text-2xl font-black italic whitespace-nowrap">NEXUS</div>
+                <div class="text-2xl font-black italic whitespace-nowrap">APEX</div>
+                <div class="text-2xl font-black italic whitespace-nowrap">STELLAR</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Final CTA -->
+<div class="px-6 md:px-20 lg:px-40 py-20">
+    <div class="bg-primary rounded-3xl p-10 md:p-20 relative overflow-hidden flex flex-col items-center text-center gap-8">
+        <div class="absolute inset-0 opacity-10 cta-dots-animated"
+            style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;">
+        </div>
+        <h2 class="scroll-animate text-white text-4xl md:text-5xl font-black max-w-2xl relative z-10 leading-tight">Ready to take
+            control of your business finances?</h2>
+        <p class="scroll-animate delay-1 text-white/80 text-lg md:text-xl max-w-xl relative z-10 font-medium">Join ProBank today and experience
+            the speed of automated refunds and modern banking.</p>
+        <div class="scroll-animate delay-2 flex flex-col sm:flex-row gap-4 relative z-10">
+            <a href="{% url 'accounts:signup' %}"
+                class="bg-white text-primary px-10 py-4 rounded-lg font-black text-lg hover:bg-slate-50 hover:scale-[1.02] transition-all shadow-2xl">Create
+                Free Account</a>
+            <a href="{% url 'core:contact' %}"
+                class="bg-primary/20 backdrop-blur-md text-white border border-white/30 px-10 py-4 rounded-lg font-black text-lg hover:bg-white/10 hover:scale-[1.02] transition-all">Contact
+                Sales</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function() {
+    'use strict';
+
+    // ===== Intersection Observer for Scroll Animations =====
+    const scrollObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                scrollObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.scroll-animate').forEach(el => {
+        scrollObserver.observe(el);
+    });
+
+    // ===== Number Counter Animation =====
+    function animateCounter(el) {
+        const target = parseFloat(el.dataset.counter);
+        const prefix = el.dataset.prefix || '';
+        const decimals = parseInt(el.dataset.decimals) || 0;
+        const duration = 2000;
+        const startTime = performance.now();
+
+        function easeOutExpo(t) {
+            return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+        }
+
+        function formatNumber(num) {
+            return num.toLocaleString('en-US', {
+                minimumFractionDigits: decimals,
+                maximumFractionDigits: decimals
+            });
+        }
+
+        function update(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = easeOutExpo(progress);
+            const current = target * eased;
+            el.textContent = prefix + formatNumber(current);
+
+            if (progress < 1) {
+                requestAnimationFrame(update);
+            } else {
+                el.textContent = prefix + formatNumber(target);
+                el.classList.add('counter-glow');
+            }
+        }
+
+        requestAnimationFrame(update);
+    }
+
+    const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateCounter(entry.target);
+                counterObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('[data-counter]').forEach(el => {
+        counterObserver.observe(el);
+    });
+
+})();
+</script>
+{% endblock %}

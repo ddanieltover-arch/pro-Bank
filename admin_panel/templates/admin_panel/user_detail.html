@@ -1,0 +1,162 @@
+{% extends "admin_panel/base_admin.html" %}
+{% block title %}User Details | ProBank Admin{% endblock %}
+
+{% block admin_content %}
+<div class="flex items-center gap-2 mb-6">
+    <a class="flex items-center text-primary font-medium hover:underline text-sm" href="{% url 'admin_panel:users' %}">
+        <span class="material-symbols-outlined text-base mr-1">arrow_back</span>
+        Back to User Management
+    </a>
+</div>
+
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-primary/10 p-6 mb-6">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div class="flex items-center gap-6">
+            <div class="size-24 rounded-full border-4 border-primary/10 flex items-center justify-center bg-primary/5 text-primary text-3xl font-black">
+                {{ target_user.username|slice:":1"|upper }}
+            </div>
+            <div>
+                <h1 class="text-2xl font-bold text-slate-900 dark:text-white">{{ target_user.get_full_name|default:target_user.username }}</h1>
+                <p class="text-slate-500 text-sm">Customer ID: <span class="font-mono">#PB-{{ target_user.id|add:10000 }}</span></p>
+                <div class="flex gap-2 mt-2">
+                    <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold {% if target_user.is_active %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
+                        {% if target_user.is_active %}Active{% else %}Inactive{% endif %}
+                    </span>
+                    {% if target_user.is_staff %}
+                    <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-primary/10 text-primary">Admin Access</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-wrap gap-3">
+            <button onclick="document.getElementById('adjust_modal').showModal(); document.getElementById('action_input').value='add'; document.getElementById('modal_title').innerText='Add Funds'" class="flex items-center gap-2 px-6 py-2.5 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700 transition-all shadow-lg shadow-green-600/20">
+                <span class="material-symbols-outlined text-lg">add_circle</span>
+                Add Funds
+            </button>
+            <button onclick="document.getElementById('adjust_modal').showModal(); document.getElementById('action_input').value='withdraw'; document.getElementById('modal_title').innerText='Withdraw Funds'" class="flex items-center gap-2 px-6 py-2.5 bg-red-600 text-white rounded-lg font-bold hover:bg-red-700 transition-all shadow-lg shadow-red-600/20">
+                <span class="material-symbols-outlined text-lg">remove_circle</span>
+                Withdraw Funds
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="lg:col-span-2 space-y-6">
+        <div class="bg-white dark:bg-slate-900 rounded-xl border border-primary/10 p-6">
+            <h3 class="font-bold mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">account_balance_wallet</span>
+                Bank Accounts
+            </h3>
+            <div class="space-y-4">
+                {% for acc in accounts %}
+                <div class="p-4 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 flex justify-between items-center">
+                    <div>
+                        <p class="font-bold text-slate-900 dark:text-white capitalize">{{ acc.name }} ({{ acc.get_account_type_display }})</p>
+                        <p class="text-xs text-slate-500 font-mono mt-1">****{{ acc.account_number|slice:"-4:" }}</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-lg font-black text-primary">${{ acc.balance }}</p>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-6 text-slate-500 italic text-sm">No accounts found for this user.</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-xl border border-primary/10 p-6">
+            <h3 class="font-bold mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">history</span>
+                Recent Activity
+            </h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead>
+                        <tr class="text-slate-400 border-b border-slate-100 dark:border-slate-800">
+                            <th class="py-3 font-semibold">Description</th>
+                            <th class="py-3 font-semibold text-right">Amount</th>
+                            <th class="py-3 font-semibold text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-50 dark:divide-slate-800/50">
+                        {% for txn in recent_transactions %}
+                        <tr>
+                            <td class="py-3">
+                                <p class="font-medium text-slate-900 dark:text-white">{{ txn.description }}</p>
+                                <p class="text-[10px] text-slate-500">{{ txn.date|date:"M d, Y H:i" }}</p>
+                            </td>
+                            <td class="py-3 text-right font-bold {% if txn.amount > 0 %}text-emerald-600{% else %}text-rose-600{% endif %}">
+                                {% if txn.amount > 0 %}+{% endif %}${{ txn.amount }}
+                            </td>
+                            <td class="py-3 text-center">
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-green-100 text-green-700">{{ txn.status|title }}</span>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="py-8 text-center text-slate-500 italic">No transaction history.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="space-y-6">
+        <div class="bg-white dark:bg-slate-900 rounded-xl border border-primary/10 p-6">
+            <h3 class="font-bold mb-4">Personal Information</h3>
+            <div class="space-y-4">
+                <div>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Email Address</p>
+                    <p class="text-sm font-medium mt-1">{{ target_user.email }}</p>
+                </div>
+                <div>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Date Joined</p>
+                    <p class="text-sm font-medium mt-1">{{ target_user.date_joining|date:"F d, Y" }}</p>
+                </div>
+                <div>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Last Login</p>
+                    <p class="text-sm font-medium mt-1">{{ target_user.last_login|date:"M d, H:i"|default:"Never" }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Balance Adjustment Modal -->
+<dialog id="adjust_modal" class="p-0 rounded-2xl border-none shadow-2xl bg-white dark:bg-slate-900 backdrop:bg-slate-900/50 w-full max-w-md">
+    <div class="p-6">
+        <div class="flex justify-between items-center mb-6">
+            <h2 id="modal_title" class="text-xl font-bold text-slate-900 dark:text-white">Adjust Balance</h2>
+            <button onclick="document.getElementById('adjust_modal').close()" class="text-slate-400 hover:text-slate-600">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        
+        <form action="{% url 'admin_panel:adjust_balance' user_id=target_user.id %}" method="POST" class="space-y-4">
+            {% csrf_token %}
+            <input type="hidden" name="action" id="action_input" value="add">
+            
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Select Account</label>
+                <select name="account_id" required class="w-full h-12 px-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none">
+                    {% for acc in accounts %}
+                    <option value="{{ acc.id }}">{{ acc.name }} - ${{ acc.balance }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Amount ($)</label>
+                <input type="number" name="amount" step="0.01" required placeholder="0.00" class="w-full h-12 px-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none">
+            </div>
+            
+            <button type="submit" class="w-full h-12 bg-primary text-white rounded-xl font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 mt-4">
+                Confirm Action
+            </button>
+        </form>
+    </div>
+</dialog>
+{% endblock %}

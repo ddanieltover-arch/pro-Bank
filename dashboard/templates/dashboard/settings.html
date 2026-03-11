@@ -1,0 +1,126 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}Account Settings | ProBank{% endblock %}
+
+{% block dashboard_content %}
+<div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-2">
+        <h1 class="text-slate-900 dark:text-slate-100 text-3xl font-black leading-tight tracking-tight">Account Settings
+        </h1>
+        <p class="text-slate-500 dark:text-slate-400 text-base font-normal">Manage your profile, security, and
+            notification preferences.</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="flex gap-8 border-b border-primary/10 mb-8 overflow-x-auto whitespace-nowrap scrollbar-hide">
+        <button class="pb-4 text-sm font-bold border-b-2 border-primary text-primary">Profile</button>
+        <button
+            class="pb-4 text-sm font-medium text-slate-500 hover:text-primary border-b-2 border-transparent transition-all">Security</button>
+        <button
+            class="pb-4 text-sm font-medium text-slate-500 hover:text-primary border-b-2 border-transparent transition-all">Notifications</button>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" class="space-y-10 pb-20">
+        {% csrf_token %}
+        <!-- Profile Section -->
+        <section>
+            <div class="mb-6">
+                <h2 class="text-lg font-bold">Profile Information</h2>
+                <p class="text-sm text-slate-500">Update your photo and personal details.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div
+                    class="flex flex-col items-center p-8 bg-white dark:bg-slate-900 rounded-2xl border border-primary/10 shadow-sm">
+                    <div
+                        class="size-28 rounded-full bg-primary/10 flex items-center justify-center mb-4 relative group border-4 border-white dark:border-slate-800 shadow-xl">
+                        {% if user.profile.avatar %}
+                        <img src="{{ user.profile.avatar.url }}" class="size-full rounded-full object-cover">
+                        {% else %}
+                        <span class="material-symbols-outlined text-4xl text-primary">person</span>
+                        {% endif %}
+                        <label for="avatar-upload"
+                            class="absolute bottom-0 right-0 size-9 bg-primary text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform cursor-pointer">
+                            <span class="material-symbols-outlined text-sm">photo_camera</span>
+                        </label>
+                        <input id="avatar-upload" type="file" name="avatar" class="hidden" accept="image/*">
+                    </div>
+                    <p class="text-sm font-bold text-slate-900 dark:text-white">Change Avatar</p>
+                    <p class="text-xs text-slate-400 mt-1">JPG or PNG. 2MB max.</p>
+                </div>
+                <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-black uppercase tracking-wider text-slate-500">First Name</label>
+                        <input name="first_name"
+                            class="w-full bg-white dark:bg-slate-900 border border-primary/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/50 outline-none transition-all"
+                            type="text" value="{{ user.first_name }}" />
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-black uppercase tracking-wider text-slate-500">Last Name</label>
+                        <input name="last_name"
+                            class="w-full bg-white dark:bg-slate-900 border border-primary/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/50 outline-none transition-all"
+                            type="text" value="{{ user.last_name }}" />
+                    </div>
+                    <div class="space-y-1.5 md:col-span-2">
+                        <label class="text-xs font-black uppercase tracking-wider text-slate-500">Email Address</label>
+                        <input name="email"
+                            class="w-full bg-slate-50 dark:bg-slate-800 border border-primary/5 rounded-xl px-4 py-3 text-slate-500 cursor-not-allowed"
+                            type="email" value="{{ user.email }}" readonly />
+                    </div>
+                    <div class="space-y-1.5 md:col-span-2">
+                        <label class="text-xs font-black uppercase tracking-wider text-slate-500">Bio</label>
+                        <textarea name="bio"
+                            class="w-full bg-white dark:bg-slate-900 border border-primary/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/50 outline-none transition-all"
+                            rows="3">{{ user.profile.bio }}</textarea>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Preferences Section -->
+        <section class="pt-10 border-t border-primary/10">
+            <div class="mb-6">
+                <h2 class="text-lg font-bold">Preferences</h2>
+                <p class="text-sm text-slate-500">Choose how you want to be notified.</p>
+            </div>
+            <div
+                class="bg-white dark:bg-slate-900 rounded-2xl border border-primary/10 divide-y divide-primary/5 shadow-sm overflow-hidden">
+                <div
+                    class="p-6 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-primary/5 transition-colors">
+                    <div>
+                        <p class="text-sm font-bold text-slate-900 dark:text-white">Email Notifications</p>
+                        <p class="text-xs text-slate-500">Daily summary of activities and account updates</p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input name="email_notifications" type="checkbox" {% if user.profile.email_notifications %}checked{% endif %} class="sr-only peer">
+                        <div
+                            class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary">
+                        </div>
+                    </label>
+                </div>
+                <div
+                    class="p-6 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-primary/5 transition-colors">
+                    <div>
+                        <p class="text-sm font-bold text-slate-900 dark:text-white">Push Notifications</p>
+                        <p class="text-xs text-slate-500">Real-time alerts for incoming transactions</p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input name="push_notifications" type="checkbox" {% if user.profile.push_notifications %}checked{% endif %} class="sr-only peer">
+                        <div
+                            class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary">
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <div class="flex justify-end gap-3 pt-6">
+            <button type="reset"
+                class="px-6 py-2.5 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Discard
+                Changes</button>
+            <button type="submit"
+                class="px-8 py-2.5 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">Save
+                Changes</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

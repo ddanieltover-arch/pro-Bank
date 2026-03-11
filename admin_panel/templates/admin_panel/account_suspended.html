@@ -1,0 +1,18 @@
+{% extends "admin_panel/base_admin.html" %}
+{% block title %}Account Suspended | ProBank Admin{% endblock %}
+
+{% block admin_content %}
+<div class="max-w-4xl mx-auto flex flex-col gap-8">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-primary/20">
+        <div class="flex items-center gap-6">
+            <div class="size-16 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined text-4xl">lock_person</span>
+            </div>
+            <div class="flex flex-col gap-1">
+                <h1 class="text-3xl font-black text-slate-900 tracking-tight">Account Suspended</h1>
+                <p class="text-slate-500">This account has been restricted from all ProBank activities.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

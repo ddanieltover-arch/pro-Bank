@@ -1,0 +1,77 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}Withdraw Funds | ProBank{% endblock %}
+
+{% block dashboard_content %}
+<div class="flex flex-col gap-10">
+    <div class="flex flex-col gap-2">
+        <h1 class="text-4xl font-black text-slate-900 dark:text-slate-100 tracking-tighter">Withdraw Funds</h1>
+        <p class="text-slate-500 dark:text-slate-400 font-medium max-w-2xl">Move money from your secure ProBank account to your preferred external account or wallet.</p>
+    </div>
+
+    <form method="POST" action="{% url 'dashboard:withdraw' %}" class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        {% csrf_token %}
+        <!-- Main Form -->
+        <div class="lg:col-span-2 space-y-8">
+            <!-- Amount Card -->
+            <div class="bg-white dark:bg-background-dark p-8 rounded-2xl border border-primary/10 shadow-sm">
+                <label class="block text-xs font-black text-slate-500 uppercase tracking-widest mb-6">Amount to Withdraw</label>
+                <div class="relative">
+                    <span class="absolute left-6 top-1/2 -translate-y-1/2 text-4xl font-black text-primary">$</span>
+                    <input name="amount" type="number" step="0.01" class="w-full h-24 pl-12 pr-6 rounded-2xl border border-primary/20 bg-slate-50/50 dark:bg-primary/5 text-5xl font-black text-slate-900 dark:text-white focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all outline-none" placeholder="0.00" required>
+                </div>
+            </div>
+
+            <!-- Withdrawal Method -->
+            <div class="bg-white dark:bg-background-dark p-8 rounded-2xl border border-primary/10 shadow-sm">
+                <h3 class="text-lg font-black text-slate-900 dark:text-white mb-8 border-b border-primary/5 pb-4">Select Withdrawal Method</h3>
+                
+                <!-- Saved Bank Accounts -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                    {% for account in accounts %}
+                    <label class="p-4 rounded-xl border-2 border-primary bg-primary/5 hover:bg-primary/10 flex items-center justify-between cursor-pointer group transition-all relative">
+                        <input type="radio" name="account" value="{{ account.id }}" class="absolute inset-0 opacity-0 cursor-pointer" required {% if forloop.first %}checked{% endif %}>
+                        <div class="flex items-center gap-3">
+                            <div class="size-10 bg-white dark:bg-background-dark rounded-lg flex items-center justify-center shadow-sm border border-primary/10">
+                                <span class="material-symbols-outlined text-primary">account_balance</span>
+                            </div>
+                            <div>
+                                <p class="text-sm font-black text-slate-900 dark:text-white">{{ account.account_type|title }}</p>
+                                <p class="text-[10px] text-slate-500 font-bold">•••• {{ account.account_number|slice:"-4:" }}</p>
+                            </div>
+                        </div>
+                    </label>
+                    {% endfor %}
+                </div>
+
+                <p class="text-[10px] text-slate-500 font-bold mt-4 italic">* For security, withdrawals are only permitted to verified accounts.</p>
+            </div>
+        </div>
+
+        <!-- Summary Sidebar -->
+        <div class="lg:col-span-1 space-y-6">
+            <div class="bg-white dark:bg-background-dark p-8 rounded-2xl border border-primary/10 shadow-xl sticky top-24">
+                <h3 class="text-lg font-black text-slate-900 dark:text-white mb-8">Withdrawal Summary</h3>
+                <div class="space-y-6 mb-10 text-sm font-bold">
+                    <div class="flex justify-between items-center text-sm font-medium">
+                        <span class="text-slate-500">Transfer Fee</span>
+                        <span class="text-green-600 dark:text-green-400 font-bold">FREE</span>
+                    </div>
+                </div>
+                <button type="submit" class="w-full h-16 bg-primary text-white font-black rounded-xl shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all flex items-center justify-center gap-3">
+                    <span class="material-symbols-outlined">verified_user</span>
+                    Confirm Withdrawal
+                </button>
+            </div>
+
+            <div class="bg-primary/5 p-6 rounded-2xl border border-primary/10 flex items-start gap-4">
+                <span class="material-symbols-outlined text-primary">security</span>
+                <div>
+                    <p class="text-[10px] font-black text-slate-900 dark:text-white uppercase mb-1 tracking-widest">Secure Transaction</p>
+                    <p class="text-[10px] text-slate-500 font-medium">All transfers are encrypted and monitored for your safety.</p>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

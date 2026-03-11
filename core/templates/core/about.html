@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% block title %}About Us | ProBank{% endblock %}
+
+{% block content %}
+<main class="flex-1">
+    <!-- Hero Section -->
+    <div class="px-6 md:px-20 lg:px-40 py-12">
+        <div class="@container">
+            <div class="@[480px]:rounded-xl overflow-hidden min-h-[400px] relative flex flex-col justify-center px-10 bg-primary/5 border border-primary/10">
+                <div class="absolute inset-0 opacity-20 pointer-events-none bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAYIs3waR_2ScJl99Cq1BASVk5jX0DPUDuXG8P1jeSXssv6rynOM4B_FyKzI_S-wF2E6xLkicdw8cMlN4DZD_hcrneg-YMV8LUhwV78lY-vTBPPFWVbOPfz_sYsCu7VLbcRmSwej-kISv337hg9pVHXUyVOo1Y0ZBSEO0OEuP7v-zD2Wln8ZLaMAilEFsUD-ZlJVeZsjbUsdpJGVmfzhhV9QfzjXPC2YhX7ajLy7KvUH1oaWpZDbmMfmxLNEucPWu9IFQYTJZ7Q-zcU');"></div>
+                <div class="relative z-10 max-w-2xl">
+                    <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Our Story</span>
+                    <h1 class="text-5xl md:text-6xl font-black leading-tight tracking-[-0.033em] mt-4 mb-6">Redefining banking for the modern era.</h1>
+                    <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+                        At ProBank, we're building a financial ecosystem that puts transparency, speed, and fairness at the center of every transaction.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Mission & Values -->
+    <div class="px-6 md:px-20 lg:px-40 py-16 grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+        <div>
+            <h2 class="text-3xl font-bold mb-6">Our Mission</h2>
+            <p class="text-slate-600 dark:text-slate-400 text-lg leading-relaxed mb-6">
+                ProBank was founded with a single goal: to solve the complexities of modern digital payments and refund processing. We believe that financial freedom starts with understanding where your money is and having the tools to reclaim it when necessary.
+            </p>
+            <p class="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">
+                Our platform integrates seamless banking services with automated refund recovery, ensuring that businesses and consumers alike are protected from administrative errors and payment friction.
+            </p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="p-6 rounded-xl bg-white dark:bg-slate-800 shadow-sm border border-primary/5">
+                <span class="material-symbols-outlined text-primary mb-4 text-3xl">verified_user</span>
+                <h3 class="font-bold text-lg mb-2">Security First</h3>
+                <p class="text-sm text-slate-500">Bank-grade encryption for every single transaction.</p>
+            </div>
+            <div class="p-6 rounded-xl bg-white dark:bg-slate-800 shadow-sm border border-primary/5">
+                <span class="material-symbols-outlined text-primary mb-4 text-3xl">speed</span>
+                <h3 class="font-bold text-lg mb-2">Instant Refunds</h3>
+                <p class="text-sm text-slate-500">Automated systems to get your money back faster.</p>
+            </div>
+            <div class="p-6 rounded-xl bg-white dark:bg-slate-800 shadow-sm border border-primary/5">
+                <span class="material-symbols-outlined text-primary mb-4 text-3xl">visibility</span>
+                <h3 class="font-bold text-lg mb-2">Transparency</h3>
+                <p class="text-sm text-slate-500">No hidden fees. Full visibility into every process.</p>
+            </div>
+            <div class="p-6 rounded-xl bg-white dark:bg-slate-800 shadow-sm border border-primary/5">
+                <span class="material-symbols-outlined text-primary mb-4 text-3xl">group</span>
+                <h3 class="font-bold text-lg mb-2">Customer Centric</h3>
+                <p class="text-sm text-slate-500">24/7 support dedicated to your financial health.</p>
+            </div>
+        </div>
+    </div>
+    <!-- Company History -->
+    <div class="bg-primary/5 py-20">
+        <div class="px-6 md:px-20 lg:px-40">
+            <h2 class="text-3xl font-bold mb-12 text-center">Our Journey</h2>
+            <div class="relative space-y-12 before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-primary/30 before:to-transparent">
+                <!-- Item 1 -->
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-primary text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
+                        <span class="text-xs font-bold">2018</span>
+                    </div>
+                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-6 rounded-xl border border-primary/10 bg-white dark:bg-slate-800 shadow">
+                        <h4 class="font-bold text-primary mb-1">Founded</h4>
+                        <p class="text-slate-600 dark:text-slate-400">ProBank launches as a fintech startup focusing on automated refund tracking for online shoppers.</p>
+                    </div>
+                </div>
+                <!-- Item 2 -->
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-primary text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
+                        <span class="text-xs font-bold">2020</span>
+                    </div>
+                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-6 rounded-xl border border-primary/10 bg-white dark:bg-slate-800 shadow">
+                        <h4 class="font-bold text-primary mb-1">Banking License</h4>
+                        <p class="text-slate-600 dark:text-slate-400">Successfully obtained full banking regulations, allowing us to offer secure checking and savings accounts.</p>
+                    </div>
+                </div>
+                <!-- Item 3 -->
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-primary text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
+                        <span class="text-xs font-bold">2023</span>
+                    </div>
+                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-6 rounded-xl border border-primary/10 bg-white dark:bg-slate-800 shadow">
+                        <h4 class="font-bold text-primary mb-1">Global Expansion</h4>
+                        <p class="text-slate-600 dark:text-slate-400">Expanded operations to 15 countries, processing over $2B in refunds and daily banking transactions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Team Section -->
+    <div class="px-6 md:px-20 lg:px-40 py-24">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-black mb-4">Meet the Leadership</h2>
+            <p class="text-slate-500 max-w-xl mx-auto">Expert minds from the intersection of traditional finance and disruptive technology.</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+            <!-- Leader 1 -->
+            <div class="flex flex-col items-center">
+                <div class="w-48 h-48 rounded-full overflow-hidden mb-6 border-4 border-primary/10">
+                    <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQ6fDXS9_uTuHUvjPHoBnArpt4G7DywBDfb4MRJg62AFGaHjzBTUPkTeL5AJK132YqP-IqF6rtdXQlBEiWjzZxPpiR6qz-t9cx5AsPcamlhRo-_osnJmJZXaLeFz5910I66rKO5xZ921Ut6RGWJLdvGY12NRRGj7Z5oA7RcP5ylVt-b6lGAws5NRJ0kyBB5TOfaQDLrPwkIW2fgo5p1liB1ejVtlhO6odBFl7ZWVTJVlr_34-O-eYhVFCzx7dSYLtrpF_0C0Y521EA"/>
+                </div>
+                <h4 class="text-xl font-bold">Marcus Thorne</h4>
+                <p class="text-primary font-medium mb-4">CEO & Founder</p>
+                <p class="text-center text-slate-500 text-sm">Former VP of Finance at Global Trust with 20 years of retail banking expertise.</p>
+            </div>
+            <!-- Leader 2 -->
+            <div class="flex flex-col items-center">
+                <div class="w-48 h-48 rounded-full overflow-hidden mb-6 border-4 border-primary/10">
+                    <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgtxCIBg8uUexAkNPclkn-UxCe4w17FdVYuiV2ykCD5mgrh-IZBP8d8ZimIfm4uphVXLcPHww6B9Ggx3REsMUH5mKndJ-OfU_6bxSF-IB7U40MQVFdlQUgRSUK7-PbKILHKDbp_-u4OXoLCJX493vjFoQCPQnNx1H0nqrJ9us6CzvmW63ewGCwrFRZ61--dg1pU5-q3fqEJVOYzCyTsYXoBrAlGLKcgJZ8q3amhc7x3grkDmTB9b2QABqIo5Ckb6f9RMmLbWANjrpP"/>
+                </div>
+                <h4 class="text-xl font-bold">Sarah Jenkins</h4>
+                <p class="text-primary font-medium mb-4">Chief Technology Officer</p>
+                <p class="text-center text-slate-500 text-sm">Lead architect behind our proprietary refund-matching algorithm and secure core banking system.</p>
+            </div>
+            <!-- Leader 3 -->
+            <div class="flex flex-col items-center">
+                <div class="w-48 h-48 rounded-full overflow-hidden mb-6 border-4 border-primary/10">
+                    <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3RpgdQNLk7qsadXS6ZUmDShwwvhoeflyfWqxfb_V4DLbbe0ciXG0ufQhD5Dd861xJmO92skBCYu87GbVw2ShUvIXp97t8yylXpePRxE50XLgx1znB3iYfWTLbwaGuhae7BhD6t5-9lhVRIyyuWABx4cx-wy6R7yE8z1O9bnux9CFAyrBRlGiHQrNIQT51UjtTAIhLlEtFYvgQoYbBT7xsj5Jgs_Zxax1TQhQIEFbIGNprnem05G2y0m-GnFFgnC_BPLCImAp0LJOc"/>
+                </div>
+                <h4 class="text-xl font-bold">David Chen</h4>
+                <p class="text-primary font-medium mb-4">Chief Compliance Officer</p>
+                <p class="text-center text-slate-500 text-sm">Ensuring our global operations meet the highest standards of regulatory compliance and data privacy.</p>
+            </div>
+        </div>
+    </div>
+    <!-- Call to Action -->
+    <div class="px-6 md:px-20 lg:px-40 pb-20">
+        <div class="bg-primary rounded-2xl p-12 text-center text-white relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-8 opacity-10">
+                <span class="material-symbols-outlined text-9xl">payments</span>
+            </div>
+            <h2 class="text-3xl font-bold mb-4 relative z-10">Ready to take control of your finances?</h2>
+            <p class="text-white/80 mb-8 max-w-lg mx-auto relative z-10">Join over 1 million users who trust ProBank for their daily banking and refund needs.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
+                <button class="bg-white text-primary px-8 py-3 rounded-lg font-bold hover:bg-slate-100 transition-colors">Open Account</button>
+                <button class="border border-white text-white px-8 py-3 rounded-lg font-bold hover:bg-white/10 transition-colors">Contact Support</button>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

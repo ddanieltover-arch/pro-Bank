@@ -1,0 +1,216 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}Cards Management | ProBank{% endblock %}
+
+{% block dashboard_content %}
+<!-- Top Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+    <div>
+        <h1 class="text-3xl font-black text-slate-900 dark:text-slate-100 mb-2 tracking-tight">Your Cards</h1>
+        <p class="text-slate-500 dark:text-slate-400 font-medium">Manage your active physical and virtual payment cards</p>
+    </div>
+    <button class="bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-xl flex items-center gap-2 transition-all shadow-lg shadow-primary/20">
+        <span class="material-symbols-outlined">add_card</span>
+        Generate New Card
+    </button>
+</div>
+
+<!-- Tabs & Filter -->
+<div class="flex flex-col sm:flex-row items-center gap-4 mb-8">
+    <div class="bg-slate-200 dark:bg-slate-800 p-1 rounded-xl flex w-full sm:w-auto">
+        <button class="flex-1 sm:px-8 py-2 rounded-lg text-sm font-bold bg-white dark:bg-slate-700 shadow-sm text-primary">All Cards</button>
+        <button class="flex-1 sm:px-8 py-2 rounded-lg text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">Virtual</button>
+        <button class="flex-1 sm:px-8 py-2 rounded-lg text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">Physical</button>
+    </div>
+</div>
+
+<!-- Cards Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- Card 1: Visa Platinum -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+        <div class="relative aspect-[1.586/1] w-full bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-8 text-white mb-6 overflow-hidden flex flex-col justify-between shadow-2xl">
+            <div class="absolute top-0 right-0 p-8 opacity-20">
+                <span class="material-symbols-outlined text-8xl">contactless</span>
+            </div>
+            <div class="flex justify-between items-start z-10">
+                <div class="flex flex-col">
+                    <span class="text-xs uppercase tracking-widest opacity-70 mb-1">Platinum Credit</span>
+                    <span class="font-bold text-xl tracking-tight">ProBank</span>
+                </div>
+                <div class="h-8 w-12 bg-white/20 rounded-md backdrop-blur-sm"></div>
+            </div>
+            <div class="z-10">
+                <p class="text-2xl font-mono tracking-[0.2em] mb-4">•••• •••• •••• 4582</p>
+                <div class="flex gap-8">
+                    <div class="flex flex-col">
+                        <span class="text-[10px] uppercase opacity-60">Expiry</span>
+                        <span class="text-sm font-medium">12 / 26</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] uppercase opacity-60">CVV</span>
+                        <span class="text-sm font-medium">•••</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-between items-end z-10">
+                <span class="text-sm font-medium opacity-80 uppercase tracking-widest">{{ user.get_full_name|default:user.username }}</span>
+                <div class="text-2xl italic font-black">VISA</div>
+            </div>
+        </div>
+        <div class="space-y-4">
+            <div class="flex items-center justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-slate-400">ac_unit</span>
+                    <div>
+                        <p class="text-sm font-bold">Freeze Card</p>
+                        <p class="text-xs text-slate-500">Temporarily block all activity</p>
+                    </div>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input class="sr-only peer" type="checkbox"/>
+                    <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                </label>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-slate-400">language</span>
+                    <div>
+                        <p class="text-sm font-bold">International Transactions</p>
+                        <p class="text-xs text-slate-500">Enable usage outside home country</p>
+                    </div>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input checked="" class="sr-only peer" type="checkbox"/>
+                    <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                </label>
+            </div>
+            <div class="flex gap-2 pt-2">
+                <button class="flex-1 py-2 px-4 rounded-lg border border-slate-200 dark:border-slate-800 text-sm font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">View Details</button>
+                <button class="flex-1 py-2 px-4 rounded-lg border border-slate-200 dark:border-slate-800 text-sm font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Replace Card</button>
+            </div>
+        </div>
+    </div>
+    <!-- Card 2: Mastercard Gold (Virtual) -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+        <div class="relative aspect-[1.586/1] w-full bg-gradient-to-br from-primary via-primary/80 to-[#9e1c1a] rounded-2xl p-8 text-white mb-6 overflow-hidden flex flex-col justify-between shadow-2xl">
+            <div class="absolute -bottom-10 -left-10 p-8 opacity-10">
+                <span class="material-symbols-outlined text-[12rem]">token</span>
+            </div>
+            <div class="flex justify-between items-start z-10">
+                <div class="flex flex-col">
+                    <span class="text-xs uppercase tracking-widest opacity-70 mb-1">Virtual Card</span>
+                    <span class="font-bold text-xl tracking-tight">ProBank</span>
+                </div>
+                <div class="h-8 w-12 bg-white/20 rounded-md backdrop-blur-sm"></div>
+            </div>
+            <div class="z-10">
+                <p class="text-2xl font-mono tracking-[0.2em] mb-4">•••• •••• •••• 8821</p>
+                <div class="flex gap-8">
+                    <div class="flex flex-col">
+                        <span class="text-[10px] uppercase opacity-60">Expiry</span>
+                        <span class="text-sm font-medium">09 / 25</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] uppercase opacity-60">CVV</span>
+                        <div class="flex items-center gap-1">
+                            <span class="text-sm font-medium">342</span>
+                            <span class="material-symbols-outlined text-xs cursor-pointer opacity-70">visibility</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-between items-end z-10">
+                <span class="text-sm font-medium opacity-80 uppercase tracking-widest">{{ user.get_full_name|default:user.username }}</span>
+                <div class="flex items-center -space-x-2">
+                    <div class="size-6 rounded-full bg-white/40"></div>
+                    <div class="size-6 rounded-full bg-white/40"></div>
+                </div>
+            </div>
+        </div>
+        <div class="space-y-4">
+            <div class="flex items-center justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-slate-400">ac_unit</span>
+                    <div>
+                        <p class="text-sm font-bold">Freeze Card</p>
+                        <p class="text-xs text-slate-500">Temporarily block all activity</p>
+                    </div>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input checked="" class="sr-only peer" type="checkbox"/>
+                    <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                </label>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-slate-400">language</span>
+                    <div>
+                        <p class="text-sm font-bold">International Transactions</p>
+                        <p class="text-xs text-slate-500">Enable usage outside home country</p>
+                    </div>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input class="sr-only peer" type="checkbox"/>
+                    <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                </label>
+            </div>
+            <div class="flex gap-2 pt-2">
+                <button class="flex-1 py-2 px-4 rounded-lg border border-slate-200 dark:border-slate-800 text-sm font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">View Details</button>
+                <button class="flex-1 py-2 px-4 rounded-lg border border-slate-200 dark:border-slate-800 text-sm font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-primary border-primary/20 bg-primary/5">Unfreeze Card</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activity Section -->
+<div class="mt-12">
+    <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-6">Recent Card Activity</h3>
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
+        <table class="w-full text-left">
+            <thead class="bg-slate-50 dark:bg-slate-800/50">
+                <tr>
+                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Transaction</th>
+                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Card</th>
+                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-center">Date</th>
+                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Amount</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                {% for tx in card_transactions %}
+                <tr>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="size-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-slate-600 dark:text-slate-300">shopping_bag</span>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-slate-900 dark:text-white">{{ tx.description }}</p>
+                                <p class="text-xs text-slate-500">Technology</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-2">
+                            <div class="size-4 rounded bg-slate-800"></div>
+                            <span class="text-xs font-medium">Visa •••• 4582</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <p class="text-sm text-slate-600 dark:text-slate-400">{{ tx.date|date:"M d, Y" }}</p>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <p class="text-sm font-bold text-slate-900 dark:text-white">-${{ tx.amount|floatformat:2|slice:"1:" }}</p>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="px-6 py-12 text-center">
+                        <p class="text-slate-400 font-medium">No recent card activity found.</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

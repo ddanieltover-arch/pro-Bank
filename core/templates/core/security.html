@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block title %}Security & Protection | ProBank{% endblock %}
+
+{% block content %}
+<main class="flex flex-col flex-1">
+    <!-- Hero Section -->
+    <div class="px-6 lg:px-40 py-10 @container">
+        <div class="flex flex-col gap-6 @[480px]:gap-8 lg:flex-row-reverse items-center">
+            <div class="w-full aspect-video lg:aspect-square bg-slate-200 dark:bg-slate-800 rounded-xl overflow-hidden relative" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBUpKdJAg8Guc29ZI0yEZ_4K0Y6LvvTF1eap-3YIpg27U2SX6IM7AekkBguJ6v0xFokJNO4ZL6175U1_cpyxWpRA5UC_FlU0TaBNfuJM9JrFJcdV_LRalGGpZCDEoWDo8dFDfRhtxDaitfBPePhTkqtccVHEVRE5cYdkluwbqhLfLGc4s9huM9Q7PvEZ7i5babarTH3HY1qRE74kYSHdjtr5PFPabMsmYc0SdG7ud5gGSZHiqXVlrS95E5z_GUxuJolcJ3pXvoUwvpE'); background-size: cover; background-position: center;">
+                <div class="absolute inset-0 bg-primary/10 mix-blend-multiply"></div>
+            </div>
+            <div class="flex flex-col gap-6 lg:pr-12">
+                <div class="flex flex-col gap-2">
+                    <span class="text-primary font-bold text-sm tracking-widest uppercase">Fortified Banking</span>
+                    <h1 class="text-slate-900 dark:text-slate-100 text-4xl lg:text-6xl font-black leading-tight tracking-tight">
+                        Your Security is Our Top Priority
+                    </h1>
+                    <p class="text-slate-600 dark:text-slate-400 text-lg leading-relaxed max-w-xl mt-4">
+                        Bank with confidence knowing ProBank uses military-grade encryption and real-time monitoring to protect every single transaction you make.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-4">
+                    <button class="flex h-12 px-8 items-center justify-center rounded-lg bg-primary text-white font-bold hover:scale-105 transition-transform">
+                        Report Fraud
+                    </button>
+                    <button class="flex h-12 px-8 items-center justify-center rounded-lg border-2 border-slate-200 dark:border-slate-800 font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                        Security Center
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Core Protections -->
+    <div class="px-6 lg:px-40 py-16 bg-slate-100/50 dark:bg-slate-900/50">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold mb-4">Advanced Protection Layers</h2>
+            <p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">We employ multiple layers of defense to ensure your financial life remains private and secure.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- 2FA -->
+            <div class="flex flex-col gap-4 p-8 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:border-primary transition-colors">
+                <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined text-3xl">vibration</span>
+                </div>
+                <h3 class="text-xl font-bold">Two-Factor Authentication</h3>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
+                    An extra layer of security that ensures only you can access your account, requiring both your password and a unique code from your device.
+                </p>
+            </div>
+            <!-- Encryption -->
+            <div class="flex flex-col gap-4 p-8 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:border-primary transition-colors">
+                <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined text-3xl">enhanced_encryption</span>
+                </div>
+                <h3 class="text-xl font-bold">End-to-End Encryption</h3>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
+                    Your data is scrambled with AES-256 encryption from the moment it leaves your device until it reaches our secure private servers.
+                </p>
+            </div>
+            <!-- Fraud Monitoring -->
+            <div class="flex flex-col gap-4 p-8 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:border-primary transition-colors">
+                <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined text-3xl">visibility</span>
+                </div>
+                <h3 class="text-xl font-bold">24/7 Fraud Monitoring</h3>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
+                    Our sophisticated AI systems monitor accounts around the clock to detect and automatically block suspicious activities before they happen.
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- Trust Badges Section -->
+    <div class="px-6 lg:px-40 py-16">
+        <div class="flex flex-col lg:flex-row items-center justify-between gap-12 bg-white dark:bg-slate-800 p-10 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xl">
+            <div class="lg:max-w-md">
+                <h3 class="text-2xl font-bold mb-4">Regulated & Trusted Worldwide</h3>
+                <p class="text-slate-600 dark:text-slate-400">ProBank is a member of the FDIC and is regulated by international financial authorities to ensure your deposits are safe.</p>
+            </div>
+            <div class="flex flex-wrap justify-center gap-10 opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
+                <div class="flex flex-col items-center gap-2">
+                    <span class="material-symbols-outlined text-5xl">verified_user</span>
+                    <span class="text-xs font-bold tracking-widest uppercase">FDIC Member</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <span class="material-symbols-outlined text-5xl">lock</span>
+                    <span class="text-xs font-bold tracking-widest uppercase">ISO 27001</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <span class="material-symbols-outlined text-5xl">workspace_premium</span>
+                    <span class="text-xs font-bold tracking-widest uppercase">PCI DSS Level 1</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <span class="material-symbols-outlined text-5xl">gpp_maybe</span>
+                    <span class="text-xs font-bold tracking-widest uppercase">GDPR Compliant</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Biometrics Section -->
+    <div class="px-6 lg:px-40 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="order-2 lg:order-1">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="aspect-square bg-primary/5 rounded-2xl flex items-center justify-center border-2 border-primary/20">
+                    <span class="material-symbols-outlined text-primary text-6xl">fingerprint</span>
+                </div>
+                <div class="aspect-square bg-slate-100 dark:bg-slate-900 rounded-2xl flex items-center justify-center">
+                    <span class="material-symbols-outlined text-slate-400 text-6xl">face_6</span>
+                </div>
+                <div class="aspect-square bg-slate-100 dark:bg-slate-900 rounded-2xl flex items-center justify-center">
+                    <span class="material-symbols-outlined text-slate-400 text-6xl">key_visualizer</span>
+                </div>
+                <div class="aspect-square bg-slate-100 dark:bg-slate-900 rounded-2xl flex items-center justify-center">
+                    <span class="material-symbols-outlined text-slate-400 text-6xl">qr_code_scanner</span>
+                </div>
+            </div>
+        </div>
+        <div class="order-1 lg:order-2 flex flex-col gap-6">
+            <h2 class="text-3xl font-bold leading-tight">Biometric Security Solutions</h2>
+            <p class="text-slate-600 dark:text-slate-400 text-lg">
+                Access your finances with just a touch or a glance. Our mobile banking app integrates seamlessly with your device's biometric sensors for fast and secure login.
+            </p>
+            <ul class="flex flex-col gap-4">
+                <li class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">check_circle</span>
+                    <span class="font-medium">Touch ID & Face ID Integration</span>
+                </li>
+                <li class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">check_circle</span>
+                    <span class="font-medium">Voice Recognition Support</span>
+                </li>
+                <li class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">check_circle</span>
+                    <span class="font-medium">Zero-Trust Architecture</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- FAQ Callout -->
+    <div class="px-6 lg:px-40 py-20 bg-primary/5 dark:bg-primary/10 text-center">
+        <h2 class="text-2xl font-bold mb-6">Have more questions about your security?</h2>
+        <p class="mb-10 text-slate-600 dark:text-slate-400 max-w-xl mx-auto">Visit our dedicated security portal for tips on how to keep your personal information safe online.</p>
+        <button class="bg-primary text-white font-bold py-3 px-10 rounded-full hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
+            Visit Security Portal
+        </button>
+    </div>
+</main>
+{% endblock %}

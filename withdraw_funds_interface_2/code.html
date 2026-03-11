@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e53734",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#211111",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Withdraw Funds - ProBank</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between border-b border-primary/10 bg-white/80 backdrop-blur-md px-6 md:px-40 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-8 flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl">account_balance</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em]">ProBank</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-slate-700 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="text-slate-700 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Accounts</a>
+<a class="text-slate-700 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Settings</a>
+</nav>
+<div class="bg-primary/10 rounded-full size-10 flex items-center justify-center overflow-hidden border border-primary/20">
+<img alt="User profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNL7z782hxK3IYkXERP726I4C9cu2nvFpph_Y8JtIz_uAUbIDy2O6b9KMWi4hS5RwqMsgDvsUv0Fgd6npChaBh8aS1KCENKPmz2YZ7jv01cVhmZaRpGDNdaV-WHINqvyxvSEXPsqxshxLTHOT8oC8H9sfSsA2Nnwytic8UmJl4Ssdjmwric7fG5h1d2XBpDAI_l3QCFiBUq5nqc5CE2SjRpLZSxd9A2g7p4FwDrMsCD71EhMAJ3kLwBlyiGhNEYu7wkqq9Tgff99_2"/>
+</div>
+</div>
+</header>
+<main class="px-6 md:px-40 flex flex-1 justify-center py-10">
+<div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+<div class="flex flex-col gap-3 mb-8">
+<h1 class="text-slate-900 dark:text-slate-100 tracking-tight text-3xl md:text-4xl font-bold leading-tight">Withdraw Funds</h1>
+<p class="text-slate-600 dark:text-slate-400 text-base">Move money from your secure ProBank account to your preferred external account or wallet.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="lg:col-span-2 space-y-8">
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/10 shadow-sm">
+<label class="flex flex-col w-full">
+<p class="text-slate-900 dark:text-slate-100 text-lg font-semibold mb-4">Amount to Withdraw</p>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-bold text-primary">$</span>
+<input class="form-input flex w-full rounded-lg text-slate-900 dark:text-slate-100 focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-primary/20 bg-background-light dark:bg-slate-800 h-16 pl-10 pr-4 text-2xl font-bold placeholder:text-slate-400" placeholder="0.00" type="number" value="1250.00"/>
+</div>
+<p class="mt-3 text-sm text-slate-500">Available Balance: <span class="font-medium text-slate-700 dark:text-slate-300">$24,560.80</span></p>
+</label>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/10 shadow-sm">
+<h3 class="text-slate-900 dark:text-slate-100 text-lg font-semibold mb-6">Select Withdrawal Method</h3>
+<div class="flex border-b border-primary/10 gap-8 mb-6 overflow-x-auto scrollbar-hide">
+<button class="flex items-center gap-2 border-b-2 border-primary text-primary pb-3 whitespace-nowrap">
+<span class="material-symbols-outlined text-xl">account_balance</span>
+<span class="text-sm font-bold">Bank Transfer</span>
+</button>
+<button class="flex items-center gap-2 border-b-2 border-transparent text-slate-500 hover:text-primary pb-3 transition-all whitespace-nowrap">
+<span class="material-symbols-outlined text-xl">account_balance_wallet</span>
+<span class="text-sm font-bold">Digital Wallets</span>
+</button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+<div class="group cursor-pointer p-4 border border-primary/10 rounded-xl hover:border-primary/40 transition-all flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-10 bg-white rounded-lg flex items-center justify-center p-1 shadow-sm border border-slate-100">
+<img alt="Bank Logo" class="w-full h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZpAoq4FT8krHYEzjGNRTX4hJ58HPk-EJAxqRuKQ96C-wfJ72rq5WgQPS3sOnHQdth_LilFgiHrsIwOurx1zw1e6Y7jcZZ8DTJY-K6iokwRvLndn-fbGqp_hLxNWfCOGs55oXfhE_7Gv_G-6zDJESBA05GPEAxN-rKMCDvV1tgwJrSJLVD0uyy2-YKt5ZnG1JT9_A8fSs8_mO-aioghKHHgLXI_jSr7mDjJtug7B2oYe4k9jepBsN9Uowbe28LmHDVbt8uWSYFfhtw"/>
+</div>
+<div>
+<p class="font-bold text-slate-900 dark:text-slate-100 text-sm">Main Savings</p>
+<p class="text-xs text-slate-500">•••• 8821</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-300">circle</span>
+</div>
+<div class="group cursor-pointer p-4 border border-primary/10 rounded-xl hover:border-primary/40 transition-all flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-10 bg-white rounded-lg flex items-center justify-center p-1 shadow-sm border border-slate-100">
+<img alt="Bank Logo" class="w-full h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdQvwCtJFKoFS8yB3Cgpk6y92FaXhLxZ2vda2tLgJXK0sV0VYVMRV8oGGfgv-MyYL-fL2tBEnjVefmQwmgr5TB8ItDu3dT9EtHu0YNRq_pKuUCcuo3YHWR9gfhnEVEkSRgyA6Pn9imD5cp1rgyippaavTYPx1iHNDC2nakv0SzP-d3JAem33tEwJtz3gGfu_iKg7nYKkTpsrkZ-621nO-nmeBaSMhn9RarxsF-Uj5ijEAAYwGb3BktSdjUZgrVn_O-rNCG_gDuS46N"/>
+</div>
+<div>
+<p class="font-bold text-slate-900 dark:text-slate-100 text-sm">Primary Checking</p>
+<p class="text-xs text-slate-500">•••• 4402</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-300">circle</span>
+</div>
+<div class="group cursor-pointer p-4 border-2 border-primary bg-primary/5 rounded-xl transition-all flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-10 bg-white dark:bg-slate-800 rounded-lg flex items-center justify-center shadow-sm border border-primary/20">
+<span class="material-symbols-outlined text-primary">add_card</span>
+</div>
+<div>
+<p class="font-bold text-slate-900 dark:text-slate-100 text-sm">Link New Bank</p>
+<p class="text-xs text-primary">Add account details</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary">check_circle</span>
+</div>
+</div>
+<div class="border-t border-primary/10 pt-6 mt-6">
+<div class="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-xl border border-primary/10">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary">account_balance_wallet</span>
+<h4 class="font-bold text-slate-900 dark:text-slate-100">New Account Details</h4>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Bank Name</label>
+<input class="w-full h-11 px-4 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm transition-all" placeholder="e.g. Chase, Wells Fargo" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Account Type</label>
+<select class="w-full h-11 px-4 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm transition-all">
+<option>Checking</option>
+<option>Savings</option>
+<option>Business</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Account Number</label>
+<input class="w-full h-11 px-4 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm transition-all" placeholder="••••••••••••" type="password"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Routing Number</label>
+<input class="w-full h-11 px-4 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm transition-all" placeholder="9 digits" type="text"/>
+</div>
+</div>
+<div class="mt-6 flex items-center gap-3 p-4 bg-white dark:bg-slate-900 rounded-lg border border-primary/5">
+<input class="rounded border-slate-300 text-primary focus:ring-primary cursor-pointer" id="save-bank" type="checkbox"/>
+<label class="text-xs text-slate-600 dark:text-slate-400 cursor-pointer" for="save-bank">Save this bank account for future withdrawals</label>
+</div>
+</div>
+</div>
+<div class="mt-8">
+<p class="text-slate-700 dark:text-slate-300 text-sm font-semibold mb-4 uppercase tracking-wider">Other Popular Methods</p>
+<div class="flex flex-wrap gap-4">
+<button class="flex-1 min-w-[140px] px-4 py-3 rounded-lg border border-primary/10 hover:border-primary/40 flex items-center justify-center gap-2 bg-slate-50 dark:bg-slate-800 transition-all">
+<span class="material-symbols-outlined text-blue-600">payments</span>
+<span class="font-medium">PayPal</span>
+</button>
+<button class="flex-1 min-w-[140px] px-4 py-3 rounded-lg border border-primary/10 hover:border-primary/40 flex items-center justify-center gap-2 bg-slate-50 dark:bg-slate-800 transition-all">
+<span class="material-symbols-outlined text-purple-600">bolt</span>
+<span class="font-medium">Zelle</span>
+</button>
+<button class="flex-1 min-w-[140px] px-4 py-3 rounded-lg border border-primary/10 hover:border-primary/40 flex items-center justify-center gap-2 bg-slate-50 dark:bg-slate-800 transition-all">
+<span class="material-symbols-outlined text-green-600">currency_exchange</span>
+<span class="font-medium">CashApp</span>
+</button>
+<button class="flex-1 min-w-[140px] px-4 py-3 rounded-lg border border-primary/10 hover:border-primary/40 flex items-center justify-center gap-2 bg-slate-50 dark:bg-slate-800 transition-all">
+<span class="material-symbols-outlined text-blue-400">group</span>
+<span class="font-medium">Venmo</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-1">
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/10 shadow-lg sticky top-24">
+<h3 class="text-slate-900 dark:text-slate-100 text-lg font-bold mb-6">Withdrawal Summary</h3>
+<div class="space-y-4 mb-8">
+<div class="flex justify-between text-sm">
+<span class="text-slate-500">Withdrawal Amount</span>
+<span class="font-semibold text-slate-900 dark:text-slate-100">$1,250.00</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-slate-500">Processing Fee</span>
+<span class="font-semibold text-green-600">FREE</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-slate-500">Estimated Delivery</span>
+<span class="font-semibold text-slate-900 dark:text-slate-100">1-3 Business Days</span>
+</div>
+<div class="pt-4 border-t border-primary/10 flex justify-between">
+<span class="text-slate-900 dark:text-slate-100 font-bold">Total to Receive</span>
+<span class="text-primary font-bold text-xl">$1,250.00</span>
+</div>
+</div>
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-lg shadow-md shadow-primary/20 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">verified_user</span>
+                                Confirm Withdrawal
+                            </button>
+<p class="mt-4 text-xs text-center text-slate-500 leading-relaxed">
+                                By confirming, you agree to ProBank's <a class="text-primary hover:underline" href="#">Terms of Service</a> and withdrawal policies.
+                            </p>
+</div>
+<div class="mt-6 p-4 rounded-xl bg-primary/5 border border-primary/10 flex items-start gap-3">
+<span class="material-symbols-outlined text-primary">security</span>
+<div>
+<p class="text-xs font-bold text-slate-900 dark:text-slate-100 uppercase mb-1">Secure Transaction</p>
+<p class="text-xs text-slate-600 dark:text-slate-400">All transfers are encrypted and monitored for your safety.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer class="px-6 md:px-40 py-8 border-t border-primary/10 mt-12 bg-white/50 dark:bg-slate-950/50">
+<div class="flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-slate-500 text-sm">© 2024 ProBank Financial Services. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="text-slate-400 hover:text-primary transition-colors text-sm" href="#">Privacy Policy</a>
+<a class="text-slate-400 hover:text-primary transition-colors text-sm" href="#">Security</a>
+<a class="text-slate-400 hover:text-primary transition-colors text-sm" href="#">Help Center</a>
+</div>
+</div>
+</footer>
+</div>
+</div>
+
+</body></html>

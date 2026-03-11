@@ -1,0 +1,78 @@
+{% extends "admin_panel/base_admin.html" %}
+{% block title %}User Management | ProBank Admin{% endblock %}
+
+{% block admin_content %}
+<!-- Title & Actions -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+    <div>
+        <h2 class="text-2xl font-black text-slate-900 dark:text-white tracking-tight">User Management</h2>
+        <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Configure user roles, permissions and monitor administrative access.</p>
+    </div>
+    <div class="flex items-center gap-3">
+        <button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors shadow-sm">
+            <span class="material-symbols-outlined text-lg text-slate-500">filter_list</span>
+            Filter
+        </button>
+        <button class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-bold hover:bg-primary/90 transition-all shadow-sm shadow-primary/20">
+            <span class="material-symbols-outlined text-lg">add</span>
+            Add New User
+        </button>
+    </div>
+</div>
+
+<!-- Filters/Tabs -->
+<div class="flex items-center gap-2 mb-6 border-b border-slate-200 dark:border-slate-800">
+    <button class="px-4 py-2 text-sm font-semibold border-b-2 border-primary text-primary">All Users</button>
+    <button class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">Active</button>
+    <button class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">Moderator</button>
+    <button class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">Suspended</button>
+</div>
+
+<!-- Table Container -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-slate-50/50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
+                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Name & Email</th>
+                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Role</th>
+                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
+                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Last Login</th>
+                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                {% for target_user in users_list %}
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
+                                {{ target_user.username|slice:":1"|upper }}
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-slate-900 dark:text-white leading-none">{{ target_user.get_full_name|default:target_user.username }}</p>
+                                <p class="text-xs text-slate-500 mt-1">{{ target_user.email }}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">{% if target_user.is_staff %}Admin{% else %}User{% endif %}</td>
+                    <td class="px-6 py-4">
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold {% if target_user.is_active %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
+                            {% if target_user.is_active %}Active{% else %}Inactive{% endif %}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-slate-500 text-sm">{{ target_user.last_login|date:"M d, H:i"|default:"Never" }}</td>
+                    <td class="px-6 py-4 text-right">
+                        <a href="{% url 'admin_panel:user_detail' user_id=target_user.id %}" class="text-primary font-bold text-sm">View</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="px-6 py-8 text-center text-slate-500 italic">No users found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

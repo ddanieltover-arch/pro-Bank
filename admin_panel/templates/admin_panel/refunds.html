@@ -1,0 +1,23 @@
+{% extends "admin_panel/base_admin.html" %}
+{% block title %}Refund Requests | ProBank Admin{% endblock %}
+
+{% block admin_content %}
+<div class="flex justify-between items-center mb-8">
+    <h2 class="text-3xl font-black text-slate-900 dark:text-white">#REF-8821</h2>
+    <div class="flex gap-3">
+        <button class="px-6 py-2 rounded-lg border border-slate-200">Reject</button>
+        <button class="px-6 py-2 rounded-lg bg-primary text-white">Approve</button>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="lg:col-span-2 space-y-8">
+        <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/5 shadow-sm">
+            <h3 class="font-bold mb-4">Refund Reason</h3>
+            <div class="bg-slate-50 dark:bg-slate-800 p-4 rounded-lg text-sm">
+                "The item arrived with significant water damage to the packaging..."
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

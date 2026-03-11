@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BankSecure Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e53734",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#211111",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="flex min-h-screen">
+<!-- Side Navigation -->
+<aside class="w-64 border-r border-primary/10 bg-white dark:bg-background-dark flex flex-col fixed h-full z-50">
+<div class="p-6 flex items-center gap-3">
+<div class="bg-primary rounded-lg p-1.5 text-white">
+<span class="material-symbols-outlined block text-2xl">shield_person</span>
+</div>
+<h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">BankSecure</h2>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary font-semibold" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                    Dashboard
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-primary/5 transition-colors" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+                    Accounts
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-primary/5 transition-colors" href="#">
+<span class="material-symbols-outlined">assignment_return</span>
+                    Refunds
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-primary/5 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+                    Settings
+                </a>
+</nav>
+<div class="p-4 mt-auto">
+<div class="bg-primary/5 rounded-xl p-4 border border-primary/10">
+<div class="flex items-center gap-3 mb-3">
+<div class="size-10 rounded-full bg-primary/20 flex items-center justify-center text-primary overflow-hidden border border-primary/20">
+<img class="w-full h-full object-cover" data-alt="Professional user profile headshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAG0S_0NTFE6rinu-oC0fgO_iUR0pN5ApuxXWgl4u1KGvSrTTZlUNGymiRBWQZdNYJ2c05tX3wvCljXLsfpZOsviVGStTnwpoe4NUr4y6eiFtBycwzAF350Tkar0HT41SFDnBCrFvBs9sGtzV-fhDnwh0TYYradCWanZrEri4UbyJKIT_QvZrRZCUc5aSjROwSBXKL6DYtoo8hc6UprY2ehrLpYNttmuZPkFmVjXO4vsFQD7tSPCLAPnlYnG7it3omxUgT6u0XCS0I7"/>
+</div>
+<div>
+<p class="text-sm font-bold truncate">Alex Johnson</p>
+<p class="text-xs text-primary/70 font-medium">Premium Member</p>
+</div>
+</div>
+<button class="w-full bg-primary text-white text-sm font-bold py-2 px-4 rounded-lg hover:bg-primary/90 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span>
+                        New Refund
+                    </button>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 ml-64 min-h-screen">
+<!-- Header -->
+<header class="h-16 border-b border-primary/10 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md flex items-center justify-between px-8 sticky top-0 z-40">
+<div class="flex items-center gap-4 flex-1 max-w-xl">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+<input class="w-full bg-slate-100 dark:bg-primary/5 border-none rounded-lg py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20 focus:bg-white dark:focus:bg-background-dark transition-all" placeholder="Search transactions, refunds..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-3 ml-4">
+<button class="size-10 rounded-lg hover:bg-slate-100 dark:hover:bg-primary/10 flex items-center justify-center text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="size-10 rounded-lg hover:bg-slate-100 dark:hover:bg-primary/10 flex items-center justify-center text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined">help</span>
+</button>
+<div class="h-6 w-px bg-slate-200 dark:bg-primary/20 mx-2"></div>
+<div class="size-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs">AJ</div>
+</div>
+</header>
+<!-- Dashboard Body -->
+<div class="p-8">
+<div class="flex flex-wrap justify-between items-end gap-4 mb-8">
+<div>
+<h1 class="text-3xl font-black tracking-tight text-slate-900 dark:text-slate-100">Financial Overview</h1>
+<p class="text-slate-500 dark:text-slate-400 mt-1 font-medium">Updated 2 minutes ago</p>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 border border-slate-200 dark:border-primary/20 rounded-lg text-sm font-bold bg-white dark:bg-background-dark hover:bg-slate-50 dark:hover:bg-primary/5 transition-colors">Export CSV</button>
+<button class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">payments</span>
+                            Request Refund
+                        </button>
+</div>
+</div>
+<!-- Metrics Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+<div class="bg-white dark:bg-background-dark p-6 rounded-xl border border-primary/10 shadow-sm relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-6xl text-primary">account_balance</span>
+</div>
+<p class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Total Balance</p>
+<h3 class="text-3xl font-black text-slate-900 dark:text-slate-100">$48,290.50</h3>
+<div class="mt-4 flex items-center gap-2">
+<span class="text-green-500 font-bold text-sm flex items-center">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+                                +4.2%
+                            </span>
+<span class="text-xs text-slate-400 font-medium tracking-tight">vs last month</span>
+</div>
+</div>
+<div class="bg-white dark:bg-background-dark p-6 rounded-xl border border-primary/10 shadow-sm relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-6xl text-primary">assignment_return</span>
+</div>
+<p class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Active Refunds</p>
+<h3 class="text-3xl font-black text-slate-900 dark:text-slate-100">12</h3>
+<div class="mt-4 flex items-center gap-2">
+<span class="text-primary font-bold text-sm flex items-center">
+<span class="material-symbols-outlined text-sm">pending</span>
+                                5 Pending
+                            </span>
+<span class="text-xs text-slate-400 font-medium tracking-tight">Action required</span>
+</div>
+</div>
+<div class="bg-white dark:bg-background-dark p-6 rounded-xl border border-primary/10 shadow-sm relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-6xl text-primary">history</span>
+</div>
+<p class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Saved This Year</p>
+<h3 class="text-3xl font-black text-slate-900 dark:text-slate-100">$2,410.00</h3>
+<div class="mt-4 flex items-center gap-2 text-primary font-bold text-sm">
+<span class="material-symbols-outlined text-sm">verified</span>
+                            98% Recovery rate
+                        </div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Transactions Table -->
+<div class="lg:col-span-2 bg-white dark:bg-background-dark rounded-xl border border-primary/10 shadow-sm overflow-hidden">
+<div class="px-6 py-5 border-b border-primary/10 flex justify-between items-center">
+<h4 class="font-bold text-lg">Recent Transactions</h4>
+<button class="text-primary text-sm font-bold hover:underline">View All</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full">
+<thead class="bg-slate-50 dark:bg-primary/5">
+<tr>
+<th class="px-6 py-3 text-left text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Entity</th>
+<th class="px-6 py-3 text-left text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Date</th>
+<th class="px-6 py-3 text-left text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Amount</th>
+<th class="px-6 py-3 text-left text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-primary/5">
+<tr class="hover:bg-slate-50 dark:hover:bg-primary/5 transition-colors cursor-pointer">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-lg">shopping_bag</span>
+</div>
+<span class="font-bold text-sm">Apple Store</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Oct 24, 2023</td>
+<td class="px-6 py-4 whitespace-nowrap font-bold text-sm">-$1,299.00</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 py-1 rounded-full text-[10px] font-black uppercase bg-green-100 text-green-700">Completed</span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-primary/5 transition-colors cursor-pointer">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-lg">flight</span>
+</div>
+<span class="font-bold text-sm">Delta Airlines</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Oct 22, 2023</td>
+<td class="px-6 py-4 whitespace-nowrap font-bold text-sm">-$450.20</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 py-1 rounded-full text-[10px] font-black uppercase bg-amber-100 text-amber-700">Pending Refund</span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-primary/5 transition-colors cursor-pointer">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-lg">restaurant</span>
+</div>
+<span class="font-bold text-sm">Starbucks Coffee</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Oct 20, 2023</td>
+<td class="px-6 py-4 whitespace-nowrap font-bold text-sm">-$12.45</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 py-1 rounded-full text-[10px] font-black uppercase bg-green-100 text-green-700">Completed</span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-primary/5 transition-colors cursor-pointer">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-lg">subscriptions</span>
+</div>
+<span class="font-bold text-sm">Netflix Premium</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Oct 19, 2023</td>
+<td class="px-6 py-4 whitespace-nowrap font-bold text-sm">-$19.99</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 py-1 rounded-full text-[10px] font-black uppercase bg-red-100 text-red-700">Disputed</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Visual Chart / Breakdown -->
+<div class="bg-white dark:bg-background-dark rounded-xl border border-primary/10 shadow-sm p-6">
+<h4 class="font-bold text-lg mb-6">Refund Status Breakdown</h4>
+<div class="flex flex-col items-center">
+<!-- SVG Chart Visualization -->
+<div class="relative size-48">
+<svg class="size-full -rotate-90" viewbox="0 0 36 36">
+<circle class="stroke-slate-100 dark:stroke-primary/5" cx="18" cy="18" fill="none" r="16" stroke-width="3.5"></circle>
+<circle class="stroke-primary" cx="18" cy="18" fill="none" r="16" stroke-dasharray="75, 100" stroke-width="3.5"></circle>
+<circle class="stroke-amber-400" cx="18" cy="18" fill="none" r="16" stroke-dasharray="25, 100" stroke-dashoffset="-75" stroke-width="3.5"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-3xl font-black">12</span>
+<span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Total</span>
+</div>
+</div>
+<div class="w-full mt-8 space-y-3">
+<div class="flex justify-between items-center text-sm">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-primary"></div>
+<span class="font-medium">Recovered</span>
+</div>
+<span class="font-bold">9 (75%)</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-amber-400"></div>
+<span class="font-medium">In Process</span>
+</div>
+<span class="font-bold">3 (25%)</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-slate-300"></div>
+<span class="font-medium">Rejected</span>
+</div>
+<span class="font-bold">0 (0%)</span>
+</div>
+</div>
+<div class="w-full mt-6 pt-6 border-t border-primary/10">
+<div class="bg-primary/5 rounded-lg p-3 text-xs text-primary font-bold leading-relaxed">
+                                    Tip: Provide receipt images to speed up the recovery process by 30%.
+                                </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

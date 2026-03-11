@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Account Suspended - ProBank Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e53734",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#211111",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary/10 px-6 py-3 bg-white dark:bg-slate-900">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-8 flex items-center justify-center bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined">account_balance</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em]">ProBank Admin</h2>
+</div>
+<label class="flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-slate-400 flex border-none bg-slate-100 dark:bg-slate-800 items-center justify-center pl-4 rounded-l-lg" data-icon="search">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 border-none bg-slate-100 dark:bg-slate-800 focus:outline-0 focus:ring-0 h-full placeholder:text-slate-400 px-4 rounded-r-lg text-base font-normal leading-normal" placeholder="Search accounts, logs..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex flex-1 justify-end gap-4">
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20" data-alt="Administrator profile picture avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCwKXKSw76LXTr4fH5wYdI1UK6mB3ZJAArcihAteZ63bDmrn_Zrd9Hckb-oZqWlTZV2n9KYOh6RqLdYoTeq2EhGHD0MPjCGDNb0KteamvFf5iB1am8VW5yiyRLDE8PmExznFZWykkobVV6ArqzNlPLkDYhR4GdtQdUdp1iSSangOMNt-vJlwW_wlP4RMHbzXnIn2Dvk_ynrma67AR_-Gd-NS5GnUivqsFKfN8PdN9eb3Ewh6nfBTi7RMZj8-pIVGZtL34RO_VT5KvmT");'></div>
+</div>
+</header>
+<div class="flex grow flex-row">
+<!-- Sidebar -->
+<aside class="w-64 border-r border-primary/10 bg-white dark:bg-slate-900 p-4 flex flex-col gap-6">
+<div class="flex flex-col">
+<h1 class="text-slate-900 dark:text-slate-100 text-base font-semibold leading-normal">Management</h1>
+<p class="text-slate-500 text-sm font-normal">Enterprise Control</p>
+</div>
+<nav class="flex flex-col gap-1">
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
+<span class="material-symbols-outlined text-slate-600">dashboard</span>
+<p class="text-slate-700 dark:text-slate-200 text-sm font-medium">Dashboard</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary cursor-pointer">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">group</span>
+<p class="text-sm font-semibold">Accounts</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
+<span class="material-symbols-outlined text-slate-600">receipt_long</span>
+<p class="text-slate-700 dark:text-slate-200 text-sm font-medium">Transactions</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
+<span class="material-symbols-outlined text-slate-600">security</span>
+<p class="text-slate-700 dark:text-slate-200 text-sm font-medium">Security</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
+<span class="material-symbols-outlined text-slate-600">settings</span>
+<p class="text-slate-700 dark:text-slate-200 text-sm font-medium">Settings</p>
+</div>
+</nav>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 p-8 overflow-y-auto">
+<div class="max-w-4xl mx-auto flex flex-col gap-8">
+<!-- Alert Header -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-primary/20">
+<div class="flex items-center gap-6">
+<div class="size-16 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-4xl">lock_person</span>
+</div>
+<div class="flex flex-col gap-1">
+<h1 class="text-3xl font-black text-slate-900 dark:text-slate-100 tracking-tight">Account Suspended</h1>
+<p class="text-slate-500 text-lg">This account has been restricted from all ProBank activities.</p>
+</div>
+</div>
+<button class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 px-6 py-2 rounded-lg font-bold text-slate-900 dark:text-slate-100 transition-colors">
+                                View Audit Log
+                            </button>
+</div>
+<!-- Suspension Details Card -->
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="p-6 border-b border-slate-100 dark:border-slate-800">
+<h2 class="text-xl font-bold text-slate-900 dark:text-slate-100">Suspension Details</h2>
+</div>
+<div class="p-0">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+<div class="p-6 border-b md:border-b-0 md:border-r border-slate-100 dark:border-slate-800">
+<p class="text-slate-500 text-sm font-medium uppercase tracking-wider mb-2">Date of Suspension</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400">calendar_today</span>
+<p class="text-lg font-semibold text-slate-900 dark:text-slate-100">October 24, 2023</p>
+</div>
+<p class="text-slate-400 text-sm mt-1">14:32:05 UTC</p>
+</div>
+<div class="p-6 border-b md:border-b-0 md:border-r border-slate-100 dark:border-slate-800">
+<p class="text-slate-500 text-sm font-medium uppercase tracking-wider mb-2">Primary Reason</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">report</span>
+<p class="text-lg font-semibold text-primary">Security Policy Violation</p>
+</div>
+<p class="text-slate-400 text-sm mt-1">Multiple failed MFA attempts from unauthorized location.</p>
+</div>
+<div class="p-6">
+<p class="text-slate-500 text-sm font-medium uppercase tracking-wider mb-2">Authorized By</p>
+<div class="flex items-center gap-2">
+<div class="size-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-500 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Admin user avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQUCFBxRING9UNGBw2ARnBcuBRVUrHXKEId96CsbzU4QD_glGB4iIZd9MFlsoY6xpqGUMgUxYO5IwaObbX24OjNxg0AUyxJl2JZs6DsWu-eP11-i929O7UIrrVMqAVYHIdxQc0wHt8UeuCc-eXGeIV_1W52YL0k22Z_jmUawxoYdYKCfrX_q-pSUU9pLD2WZrwL7itWRF4N9fAlbynLzri0WOKwTaenSyZUSHdb2nusJu2ncB9dleMQK0uWj8vG8LVr-JN68zmw0x7"/>
+</div>
+<p class="text-lg font-semibold text-slate-900 dark:text-slate-100">Sarah Jenkins</p>
+</div>
+<p class="text-slate-400 text-sm mt-1">Senior Security Officer</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Account Context Card -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="flex flex-col gap-4 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
+<h3 class="font-bold text-slate-900 dark:text-slate-100">Associated Entities</h3>
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
+<span class="text-sm font-medium">Business Account: Apex Corp</span>
+<span class="text-xs px-2 py-1 bg-primary/10 text-primary rounded font-bold">LOCKED</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
+<span class="text-sm font-medium">Corporate Cards (12)</span>
+<span class="text-xs px-2 py-1 bg-primary/10 text-primary rounded font-bold">LOCKED</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
+<span class="text-sm font-medium">API Keys</span>
+<span class="text-xs px-2 py-1 bg-primary/10 text-primary rounded font-bold">DISABLED</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-6 justify-center">
+<div class="flex flex-col gap-3">
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">restart_alt</span>
+                                        Reactivate Account
+                                    </button>
+<button class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-primary/50 text-slate-900 dark:text-slate-100 font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">support_agent</span>
+                                        Contact Security Team
+                                    </button>
+</div>
+<p class="text-center text-slate-400 text-xs">
+                                    Reactivation requires secondary approval from a System Administrator.
+                                </p>
+</div>
+</div>
+<!-- Map / Location Alert -->
+<div class="relative w-full h-48 rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800">
+<div class="absolute inset-0 bg-slate-300 dark:bg-slate-700 flex items-center justify-center" data-alt="Map showing unauthorized login location attempt" data-location="San Francisco" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDEXgrF-45E_eAlK6_5RRzswFu6di9OzEORItoKZv2RlBbYG1pyQ76elfYsFgriVimu_OYGQZJ0JN0oDgQVV1sMDnOok_tN4XjIVL0aSkUP14OdlxV3pNvd4HergJYdBJ50SgH0UTA2m9KerpRfYou296S-8uIsIv5GCrQp7YgcOlX687w4mtrTznNQ0t11NbaHDEjwvO2sEmjoPwrZlg6-PScqxQfHdhsgfNng1tBFveN6IdDDt1GZgBwHBtEH-4mj6H9IpG5crPVd'); background-size: cover; background-position: center;">
+<div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm p-4 rounded-lg flex items-center gap-3 border border-primary/20">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<div>
+<p class="text-xs font-bold text-slate-500 uppercase">Suspicious Activity Origin</p>
+<p class="text-sm font-semibold text-slate-900 dark:text-slate-100">192.168.1.45 • San Francisco, CA</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</div>
+</body></html>

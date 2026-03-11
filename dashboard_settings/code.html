@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>User Settings - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e53734",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#211111",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-64 flex-shrink-0 border-r border-primary/10 bg-white dark:bg-background-dark/50 flex flex-col">
+<div class="p-6 flex items-center gap-3">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">dashboard</span>
+</div>
+<h2 class="text-lg font-bold tracking-tight">User Dash</h2>
+</div>
+<div class="px-4 py-2">
+<div class="flex items-center gap-3 p-3 rounded-xl bg-primary/5 mb-6">
+<div class="size-10 rounded-full bg-primary/20 bg-cover bg-center" data-alt="User profile avatar of Alex Johnson" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBHCFnSmrA2b4DGPlNZuBR3NkH-K5Ghw7bYBOL7EaE_sOBRdCDsX2iO-Wb6jPLgv2n2jj1MhxZXVSQgGNgooYM3QO_bTU9V8oP0f7Xh7Qg50PF1Y5W9QKDkzlByIK6Ta2333vFqNY84DWsPqnoaBiyJznT-MWh-CN-heq5mCcG7-ouBkZ4vyzUxrnP-Kj9IIimTJ_TipErcwNPWkJGjFO6hMRubjvavBvX70AwvCbKvQbfhbEetduqf-5EUiAawdzxCa8Q0Fcs0xJXr')"></div>
+<div class="flex flex-col">
+<p class="text-sm font-semibold">Alex Johnson</p>
+<p class="text-xs text-primary font-medium">Premium Plan</p>
+</div>
+</div>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/5 hover:text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/5 hover:text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="text-sm font-medium">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/5 hover:text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="text-sm font-medium">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary text-white rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/5 hover:text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="text-sm font-medium">Help</span>
+</a>
+</nav>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col overflow-y-auto">
+<!-- Header -->
+<header class="h-16 border-b border-primary/10 bg-white dark:bg-background-dark/80 px-8 flex items-center justify-between sticky top-0 z-10 backdrop-blur-sm">
+<h1 class="text-xl font-bold">Account Settings</h1>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+<input class="pl-9 pr-4 py-1.5 bg-slate-100 dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary/50 w-64" placeholder="Search settings..." type="text"/>
+</div>
+<button class="size-9 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="size-9 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<div class="p-8 max-w-5xl">
+<!-- Tabs -->
+<div class="flex gap-8 border-b border-primary/10 mb-8 overflow-x-auto whitespace-nowrap scrollbar-hide">
+<button class="pb-4 text-sm font-bold border-b-2 border-primary text-primary">Profile</button>
+<button class="pb-4 text-sm font-medium text-slate-500 hover:text-primary border-b-2 border-transparent transition-all">Security</button>
+<button class="pb-4 text-sm font-medium text-slate-500 hover:text-primary border-b-2 border-transparent transition-all">Notifications</button>
+<button class="pb-4 text-sm font-medium text-slate-500 hover:text-primary border-b-2 border-transparent transition-all">Verification</button>
+</div>
+<!-- Settings Sections -->
+<div class="space-y-10">
+<!-- Profile Section -->
+<section>
+<div class="mb-6">
+<h2 class="text-lg font-bold">Profile Information</h2>
+<p class="text-sm text-slate-500">Update your photo and personal details.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="flex flex-col items-center p-6 bg-white dark:bg-slate-900 rounded-xl border border-primary/10">
+<div class="size-24 rounded-full bg-primary/10 flex items-center justify-center mb-4 relative group">
+<div class="size-20 rounded-full bg-cover bg-center" data-alt="Current profile photo" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAVFkaLq2LQcu3SSo43lUv2FX36UeB_aeLkHLmWRrSVLH_5DW-FV5tJYng-vYPVSPODANvqMSkqudy7r-MUA2g2SnQ-V5rVTMx2dJyIdACl6LyQx5agmuqqffJ7bmtvi2ooC1__18msTAChKeHHkFQWfgxQCWb03HniWOoci7veTlFU6gJpof_9UTAiClkuUouVxyqg7DnXAvRcnQB4kfMNb8oXeir8AR1XIA5T1egjHXTEQpnmqbi7kG0FjFRzfRj03IL9h7ARxVdL')"></div>
+<button class="absolute bottom-0 right-0 size-8 bg-primary text-white rounded-full flex items-center justify-center shadow-lg hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-sm">photo_camera</span>
+</button>
+</div>
+<p class="text-sm font-semibold">Change Avatar</p>
+<p class="text-xs text-slate-400 mt-1">JPG, GIF or PNG. 1MB max.</p>
+</div>
+<div class="md:col-span-2 space-y-4">
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-1">
+<label class="text-xs font-bold uppercase tracking-wider text-slate-500">First Name</label>
+<input class="w-full bg-white dark:bg-slate-900 border border-primary/10 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary/50 outline-none" type="text" value="Alex"/>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-bold uppercase tracking-wider text-slate-500">Last Name</label>
+<input class="w-full bg-white dark:bg-slate-900 border border-primary/10 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary/50 outline-none" type="text" value="Johnson"/>
+</div>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-bold uppercase tracking-wider text-slate-500">Email Address</label>
+<input class="w-full bg-white dark:bg-slate-900 border border-primary/10 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary/50 outline-none" type="email" value="alex.j@example.com"/>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-bold uppercase tracking-wider text-slate-500">Bio</label>
+<textarea class="w-full bg-white dark:bg-slate-900 border border-primary/10 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary/50 outline-none" rows="3">Product Designer based in San Francisco. Building future-proof interfaces.</textarea>
+</div>
+</div>
+</div>
+</section>
+<!-- Security Section -->
+<section class="pt-10 border-t border-primary/10">
+<div class="mb-6">
+<h2 class="text-lg font-bold">Security</h2>
+<p class="text-sm text-slate-500">Protect your account with modern security standards.</p>
+</div>
+<div class="space-y-4">
+<div class="p-6 bg-white dark:bg-slate-900 rounded-xl border border-primary/10 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="size-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined">lock</span>
+</div>
+<div>
+<p class="font-semibold text-sm">Password</p>
+<p class="text-xs text-slate-500">Last changed 3 months ago</p>
+</div>
+</div>
+<button class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg text-sm font-bold hover:bg-slate-200 transition-colors">Change Password</button>
+</div>
+<div class="p-6 bg-white dark:bg-slate-900 rounded-xl border border-primary/10 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="size-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined">security</span>
+</div>
+<div>
+<p class="font-semibold text-sm">Two-Factor Authentication (2FA)</p>
+<p class="text-xs text-slate-500">Add an extra layer of security to your account</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</section>
+<!-- Notifications Section -->
+<section class="pt-10 border-t border-primary/10">
+<div class="mb-6">
+<h2 class="text-lg font-bold">Notifications</h2>
+<p class="text-sm text-slate-500">Choose how and when you want to be notified.</p>
+</div>
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-primary/10 divide-y divide-primary/5">
+<div class="p-4 flex items-center justify-between">
+<div>
+<p class="text-sm font-semibold">Email Notifications</p>
+<p class="text-xs text-slate-500">Daily summary of activities and account updates</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="p-4 flex items-center justify-between">
+<div>
+<p class="text-sm font-semibold">Browser Push Notifications</p>
+<p class="text-xs text-slate-500">Real-time alerts for incoming reports</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</section>
+<!-- Account Verification -->
+<section class="pt-10 border-t border-primary/10 mb-10">
+<div class="mb-6">
+<h2 class="text-lg font-bold">Verification</h2>
+<p class="text-sm text-slate-500">Verify your identity to unlock higher limits.</p>
+</div>
+<div class="p-6 bg-primary/5 rounded-xl border-2 border-dashed border-primary/20 flex flex-col items-center text-center">
+<div class="size-12 bg-primary/10 text-primary rounded-full flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-3xl">verified_user</span>
+</div>
+<h3 class="font-bold mb-1">Identity Not Verified</h3>
+<p class="text-sm text-slate-500 mb-6 max-w-sm">Please upload a government-issued ID to gain access to premium features and unlimited exports.</p>
+<button class="px-6 py-2 bg-primary text-white rounded-lg font-bold text-sm hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">Start Verification</button>
+</div>
+</section>
+<div class="flex justify-end gap-3 pb-20">
+<button class="px-6 py-2 border border-slate-300 dark:border-slate-700 rounded-lg text-sm font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Discard Changes</button>
+<button class="px-6 py-2 bg-primary text-white rounded-lg font-bold text-sm hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">Save Preferences</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,124 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}Transfer History | ProBank{% endblock %}
+
+{% block dashboard_content %}
+<div class="flex flex-col gap-8">
+    <div class="flex flex-wrap justify-between items-end gap-6">
+        <div class="flex flex-col gap-2">
+            <h1 class="text-4xl font-black tracking-tighter text-slate-900 dark:text-slate-100">Transfer History</h1>
+            <p class="text-slate-500 dark:text-slate-400 font-medium">View and manage your recent and scheduled money transfers.</p>
+        </div>
+        <button class="flex items-center gap-2 px-6 py-3 bg-white dark:bg-background-dark border border-primary/10 rounded-xl text-sm font-black text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-primary/5 transition-all shadow-sm">
+            <span class="material-symbols-outlined text-xl">download</span>
+            Download History
+        </button>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white dark:bg-background-dark p-6 rounded-2xl border border-primary/10 shadow-sm">
+            <div class="flex items-center gap-2 text-slate-400 mb-2">
+                <span class="material-symbols-outlined text-xl">calendar_month</span>
+                <span class="text-xs font-bold uppercase tracking-wider">Total Transferred (Month)</span>
+            </div>
+            <p class="text-3xl font-black text-slate-900 dark:text-white">-$4,250.00</p>
+        </div>
+        <div class="bg-white dark:bg-background-dark p-6 rounded-2xl border border-primary/10 shadow-sm border-l-4 border-l-primary">
+            <div class="flex items-center gap-2 text-slate-400 mb-2">
+                <span class="material-symbols-outlined text-xl">pending_actions</span>
+                <span class="text-xs font-bold uppercase tracking-wider">Pending Transfers</span>
+            </div>
+            <p class="text-3xl font-black text-primary">2</p>
+        </div>
+        <div class="bg-white dark:bg-background-dark p-6 rounded-2xl border border-primary/10 shadow-sm">
+            <div class="flex items-center gap-2 text-slate-400 mb-2">
+                <span class="material-symbols-outlined text-xl">schedule</span>
+                <span class="text-xs font-bold uppercase tracking-wider">Scheduled Transfers</span>
+            </div>
+            <p class="text-3xl font-black text-slate-900 dark:text-white">5</p>
+        </div>
+    </div>
+
+    <!-- Table Section -->
+    <div class="bg-white dark:bg-background-dark rounded-2xl border border-primary/10 shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-primary/5 flex flex-wrap gap-4 items-center justify-between bg-slate-50/50 dark:bg-primary/5">
+            <div class="flex gap-2">
+                <button class="px-4 py-2 rounded-lg text-xs font-black uppercase tracking-widest bg-primary text-white">All</button>
+                <button class="px-4 py-2 rounded-lg text-xs font-black uppercase tracking-widest text-slate-500 hover:bg-slate-100 dark:hover:bg-primary/10 transition-colors">Completed</button>
+                <button class="px-4 py-2 rounded-lg text-xs font-black uppercase tracking-widest text-slate-500 hover:bg-slate-100 dark:hover:bg-primary/10 transition-colors">Pending</button>
+            </div>
+            <div class="relative w-full md:w-64">
+                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+                <input type="text" class="w-full bg-white dark:bg-background-dark border border-primary/10 rounded-lg py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all font-medium" placeholder="Search recipients...">
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead>
+                    <tr class="text-left border-b border-primary/5">
+                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-tighter">Date & Time</th>
+                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-tighter">Recipient</th>
+                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-tighter">Account</th>
+                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-tighter">Amount</th>
+                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-tighter">Status</th>
+                        <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-tighter text-right">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-primary/5">
+                    {% for tx in transfers %}
+                    <tr class="hover:bg-slate-50 dark:hover:bg-primary/5 transition-colors group">
+                        <td class="px-6 py-5 whitespace-nowrap">
+                            <p class="text-sm font-bold text-slate-900 dark:text-white">{{ tx.date|date:"M d, Y" }}</p>
+                            <p class="text-[10px] text-slate-400 font-medium">{{ tx.date|date:"H:i A" }}</p>
+                        </td>
+                        <td class="px-6 py-5">
+                            <div class="flex items-center gap-3">
+                                <div class="size-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-black text-[10px]">
+                                    {{ tx.description|slice:":2"|upper }}
+                                </div>
+                                <p class="text-sm font-bold text-slate-900 dark:text-white">{{ tx.description }}</p>
+                            </div>
+                        </td>
+                        <td class="px-6 py-5">
+                            <p class="text-xs text-slate-600 dark:text-slate-400 font-medium">{{ tx.account.account_type|title }} (...{{ tx.account.account_number|slice:"-4:" }})</p>
+                        </td>
+                        <td class="px-6 py-5 whitespace-nowrap">
+                            <span class="text-sm font-black text-slate-900 dark:text-white">-${{ tx.amount|floatformat:2|slice:"1:" }}</span>
+                        </td>
+                        <td class="px-6 py-5">
+                            <span class="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">Completed</span>
+                        </td>
+                        <td class="px-6 py-5 text-right">
+                            <button class="text-xs font-black text-primary hover:underline">View Receipt</button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="px-6 py-16 text-center">
+                            <p class="text-slate-400 font-medium">No transfer history found.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="p-6 border-t border-primary/5 flex items-center justify-between">
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Showing 1-10 of 42 transfers</p>
+            <div class="flex gap-1">
+                <button class="size-8 flex items-center justify-center rounded-lg border border-primary/10 text-slate-400 disabled:opacity-30">
+                    <span class="material-symbols-outlined text-lg">chevron_left</span>
+                </button>
+                <button class="size-8 flex items-center justify-center rounded-lg bg-primary text-white text-xs font-black">1</button>
+                <button class="size-8 flex items-center justify-center rounded-lg border border-primary/10 text-slate-600 dark:text-slate-400 text-xs font-bold hover:bg-slate-50 transition-all">2</button>
+                <button class="size-8 flex items-center justify-center rounded-lg border border-primary/10 text-slate-400 hover:bg-slate-50 transition-all">
+                    <span class="material-symbols-outlined text-lg">chevron_right</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

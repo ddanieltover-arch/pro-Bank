@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e53734",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#211111",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Accounts Dashboard</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary/10 px-6 py-3 bg-white dark:bg-background-dark/50 sticky top-0 z-50">
+<div class="flex items-center gap-4 text-slate-900 dark:text-slate-100">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">account_balance</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-tight">Accounts Dashboard</h2>
+</div>
+<div class="flex flex-1 justify-end gap-4 items-center">
+<label class="hidden md:flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-slate-500 flex border-none bg-slate-100 dark:bg-slate-800 items-center justify-center pl-4 rounded-l-lg" data-icon="search">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 dark:text-slate-100 focus:outline-0 focus:ring-0 border-none bg-slate-100 dark:bg-slate-800 placeholder:text-slate-500 px-4 rounded-l-none pl-2 text-sm font-normal" placeholder="Search transactions..." value=""/>
+</div>
+</label>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg size-10 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg size-10 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20" data-alt="User profile avatar portrait" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBAQBB4upnTlS3F1sVHpaehQGLQ8MvDwJXCZClkfK30RG2I5nhlnvgU2RUzQ1C5nh_NxHJvFt4NWmVfiKonqJXASd_tGO4BTzF9PprNXj2x8y9SAhYSCKx5y3mmK582ab7-9eT6hk_BNLjd-kIrqgCstfuJblY1lYp0LFtXanYNVcBpYYaQhOe5ypdmWY23AnKHQ0uZGt2-wP04XMxLyfwC9E5KmwhURJl1yMmm8Lr9DK-kQrIddCBLLiqfyo2hvGT018VKWcONdutG");'></div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- Sidebar -->
+<aside class="hidden lg:flex w-64 flex-col justify-between border-r border-primary/10 bg-white dark:bg-background-dark/30 p-4">
+<div class="flex flex-col gap-6">
+<div class="flex gap-3 items-center px-2">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 shadow-sm" data-alt="Alex Morgan professional headshot" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAW5rlPojgpwcnFG_QLSrjuXnWWzW6YMk6OZeRzDbeyklZKvj48on12KKv1-T3i97szKQKw-712ZgHf1P1so09EaIKjDFG0qC34vjwt5tZKXsFEsKcva8_0l-NlB0pAeTs1tjm041wLnwDKz4R1aLEGggogR5xWWe5ub03BVTdf6alUXbLyzkmS5UZ5JHyc57YEZ0MlPDhOr5DwwFSlWfYJDuy4kRgnG5G8RxoMBrkF30Fys3yZg2dzU8FAYoJ5AYSyTXX0HSDtrkZ6");'></div>
+<div class="flex flex-col">
+<h1 class="text-slate-900 dark:text-slate-100 text-sm font-bold">Alex Morgan</h1>
+<p class="text-slate-500 text-xs font-medium">Premium Member</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-sm font-semibold">Overview</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary border-r-4 border-primary" href="#">
+<span class="material-symbols-outlined">credit_card</span>
+<p class="text-sm font-bold">Accounts</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">payments</span>
+<p class="text-sm font-semibold">Transfers</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">pie_chart</span>
+<p class="text-sm font-semibold">Budgets</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<p class="text-sm font-semibold">Reports</p>
+</a>
+</nav>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto p-6 space-y-8">
+<!-- Tabs and Summary -->
+<div class="space-y-6">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex border-b border-primary/10 gap-8">
+<a class="flex flex-col items-center justify-center border-b-2 border-primary text-primary pb-3 pt-2" href="#">
+<p class="text-sm font-bold tracking-tight">All Accounts</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 hover:text-slate-700 pb-3 pt-2" href="#">
+<p class="text-sm font-bold tracking-tight">Checking</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 hover:text-slate-700 pb-3 pt-2" href="#">
+<p class="text-sm font-bold tracking-tight">Savings</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 hover:text-slate-700 pb-3 pt-2" href="#">
+<p class="text-sm font-bold tracking-tight">Investments</p>
+</a>
+</div>
+<button class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-primary/90 transition-colors shadow-sm self-start">
+<span class="material-symbols-outlined text-sm">add</span>
+                                Add Account
+                            </button>
+</div>
+<!-- Summary Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-white dark:bg-slate-800/50 p-6 rounded-xl border border-primary/10 shadow-sm flex flex-col justify-between">
+<div>
+<p class="text-slate-500 text-sm font-medium mb-1">Total Net Worth</p>
+<h3 class="text-3xl font-bold text-slate-900 dark:text-slate-100">$142,520.50</h3>
+</div>
+<div class="mt-4 flex items-center gap-2 text-emerald-600 font-bold text-sm">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span>+3.2% vs last month</span>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-800/50 p-6 rounded-xl border border-primary/10 shadow-sm flex flex-col justify-between">
+<div>
+<p class="text-slate-500 text-sm font-medium mb-1">Monthly Income</p>
+<h3 class="text-3xl font-bold text-slate-900 dark:text-slate-100">$8,450.00</h3>
+</div>
+<div class="mt-4 flex items-center gap-2 text-primary font-bold text-sm">
+<span class="material-symbols-outlined text-sm">trending_down</span>
+<span>-1.2% vs last month</span>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-800/50 p-6 rounded-xl border border-primary/10 shadow-sm flex flex-col justify-between">
+<div>
+<p class="text-slate-500 text-sm font-medium mb-1">Total Liquidity</p>
+<h3 class="text-3xl font-bold text-slate-900 dark:text-slate-100">$12,840.12</h3>
+</div>
+<div class="mt-4 flex items-center gap-2 text-slate-400 font-bold text-sm">
+<span class="material-symbols-outlined text-sm">horizontal_rule</span>
+<span>Stable</span>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Account List -->
+<div class="lg:col-span-1 space-y-4">
+<div class="flex items-center justify-between">
+<h2 class="text-lg font-bold">Your Accounts</h2>
+<span class="text-xs font-bold text-slate-400 uppercase tracking-widest">3 Active</span>
+</div>
+<div class="space-y-3">
+<!-- Account Card 1 -->
+<div class="p-4 bg-white dark:bg-slate-800 rounded-xl border-l-4 border-primary shadow-sm hover:border-l-8 transition-all cursor-pointer">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="text-xs font-bold text-slate-400 uppercase">Checking • 4482</p>
+<h4 class="font-bold text-slate-900 dark:text-slate-100">Chase Premier Plus</h4>
+</div>
+<span class="material-symbols-outlined text-slate-300">more_vert</span>
+</div>
+<p class="text-xl font-bold">$4,280.50</p>
+<div class="mt-2 text-[10px] text-slate-400 font-bold tracking-wider">AVAILABLE BALANCE</div>
+</div>
+<!-- Account Card 2 -->
+<div class="p-4 bg-white dark:bg-slate-800 rounded-xl border-l-4 border-slate-300 dark:border-slate-600 shadow-sm hover:border-l-8 transition-all cursor-pointer">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="text-xs font-bold text-slate-400 uppercase">Savings • 9012</p>
+<h4 class="font-bold text-slate-900 dark:text-slate-100">High-Yield Savings</h4>
+</div>
+<span class="material-symbols-outlined text-slate-300">more_vert</span>
+</div>
+<p class="text-xl font-bold">$24,900.00</p>
+<div class="mt-2 text-[10px] text-slate-400 font-bold tracking-wider">AVAILABLE BALANCE</div>
+</div>
+<!-- Account Card 3 -->
+<div class="p-4 bg-white dark:bg-slate-800 rounded-xl border-l-4 border-slate-300 dark:border-slate-600 shadow-sm hover:border-l-8 transition-all cursor-pointer">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="text-xs font-bold text-slate-400 uppercase">Investment • 7731</p>
+<h4 class="font-bold text-slate-900 dark:text-slate-100">Vanguard Brokerage</h4>
+</div>
+<span class="material-symbols-outlined text-slate-300">more_vert</span>
+</div>
+<p class="text-xl font-bold">$113,340.00</p>
+<div class="mt-2 text-[10px] text-slate-400 font-bold tracking-wider">PORTFOLIO VALUE</div>
+</div>
+</div>
+</div>
+<!-- Recent Transactions -->
+<div class="lg:col-span-2 space-y-4">
+<div class="flex items-center justify-between">
+<h2 class="text-lg font-bold">Recent Activity</h2>
+<button class="text-sm font-bold text-primary hover:underline">View All</button>
+</div>
+<div class="bg-white dark:bg-slate-800 rounded-xl border border-primary/10 overflow-hidden shadow-sm">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-900 text-slate-500 uppercase text-[10px] font-bold tracking-widest border-b border-primary/5">
+<th class="px-6 py-4">Transaction</th>
+<th class="px-6 py-4">Account</th>
+<th class="px-6 py-4">Status</th>
+<th class="px-6 py-4 text-right">Amount</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-primary/5">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-9 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">shopping_cart</span>
+</div>
+<div>
+<p class="text-sm font-bold">Apple Store Online</p>
+<p class="text-xs text-slate-400">Electronics • Oct 24, 2023</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="text-xs font-bold text-slate-600 dark:text-slate-400">Chase Checking</p>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded text-[10px] font-bold bg-amber-100 text-amber-700 uppercase">Pending</span>
+</td>
+<td class="px-6 py-4 text-right">
+<p class="text-sm font-bold text-slate-900 dark:text-slate-100">-$1,299.00</p>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-9 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">work</span>
+</div>
+<div>
+<p class="text-sm font-bold">TechCorp Payroll</p>
+<p class="text-xs text-slate-400">Salary • Oct 22, 2023</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="text-xs font-bold text-slate-600 dark:text-slate-400">Chase Checking</p>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded text-[10px] font-bold bg-emerald-100 text-emerald-700 uppercase">Completed</span>
+</td>
+<td class="px-6 py-4 text-right">
+<p class="text-sm font-bold text-emerald-600">+$3,400.00</p>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-9 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">coffee</span>
+</div>
+<div>
+<p class="text-sm font-bold">Starbucks Coffee</p>
+<p class="text-xs text-slate-400">Dining • Oct 21, 2023</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="text-xs font-bold text-slate-600 dark:text-slate-400">Chase Checking</p>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded text-[10px] font-bold bg-emerald-100 text-emerald-700 uppercase">Completed</span>
+</td>
+<td class="px-6 py-4 text-right">
+<p class="text-sm font-bold text-slate-900 dark:text-slate-100">-$12.45</p>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-9 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">electric_car</span>
+</div>
+<div>
+<p class="text-sm font-bold">Uber Trip</p>
+<p class="text-xs text-slate-400">Transport • Oct 20, 2023</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="text-xs font-bold text-slate-600 dark:text-slate-400">Chase Checking</p>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded text-[10px] font-bold bg-emerald-100 text-emerald-700 uppercase">Completed</span>
+</td>
+<td class="px-6 py-4 text-right">
+<p class="text-sm font-bold text-slate-900 dark:text-slate-100">-$24.90</p>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+<td class="px-6 py-4 border-b-0">
+<div class="flex items-center gap-3">
+<div class="size-9 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">home</span>
+</div>
+<div>
+<p class="text-sm font-bold">Landlord Services</p>
+<p class="text-xs text-slate-400">Rent • Oct 15, 2023</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 border-b-0">
+<p class="text-xs font-bold text-slate-600 dark:text-slate-400">Chase Checking</p>
+</td>
+<td class="px-6 py-4 border-b-0">
+<span class="px-2 py-1 rounded text-[10px] font-bold bg-emerald-100 text-emerald-700 uppercase">Completed</span>
+</td>
+<td class="px-6 py-4 text-right border-b-0">
+<p class="text-sm font-bold text-slate-900 dark:text-slate-100">-$2,100.00</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,159 @@
+{% extends "admin_panel/base_admin.html" %}
+{% block title %}Admin Dashboard | ProBank{% endblock %}
+
+{% block admin_content %}
+<!-- KPI Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/5 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+            <div class="p-2 bg-primary/10 rounded-lg text-primary">
+                <span class="material-symbols-outlined">group</span>
+            </div>
+        </div>
+        <p class="text-slate-500 text-sm font-medium">Total Users</p>
+        <h3 class="text-2xl font-bold mt-1">{{ total_users }}</h3>
+    </div>
+    <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/5 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+            <div class="p-2 bg-primary/10 rounded-lg text-primary">
+                <span class="material-symbols-outlined">pending_actions</span>
+            </div>
+        </div>
+        <p class="text-slate-500 text-sm font-medium">Pending Refunds</p>
+        <h3 class="text-2xl font-bold mt-1">{{ pending_refunds }}</h3>
+    </div>
+    <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/5 shadow-sm">
+        <p class="text-slate-500 text-sm font-medium">Total Processed</p>
+        <h3 class="text-2xl font-bold mt-1">${{ total_processed }}</h3>
+    </div>
+    <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/5 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+            <div class="p-2 bg-primary/10 rounded-lg text-primary">
+                <span class="material-symbols-outlined">payments</span>
+            </div>
+        </div>
+        <p class="text-slate-500 text-sm font-medium">Total Processed</p>
+        <h3 class="text-2xl font-bold mt-1">${{ total_processed }}</h3>
+    </div>
+    <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/5 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+            <div class="p-2 bg-primary/10 rounded-lg text-primary">
+                <span class="material-symbols-outlined">gavel</span>
+            </div>
+        </div>
+        <p class="text-slate-500 text-sm font-medium">Active Disputes</p>
+        <h3 class="text-2xl font-bold mt-1">{{ active_disputes }}</h3>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Refund Requests Table -->
+    <div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-xl border border-primary/5 shadow-sm overflow-hidden flex flex-col">
+        <div class="px-6 py-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+            <h2 class="text-lg font-bold">Recent Refund Requests</h2>
+            <a href="{% url 'admin_panel:refunds' %}" class="text-primary text-sm font-semibold hover:underline">View All</a>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-slate-50 dark:bg-slate-800/50 text-slate-500 text-xs uppercase tracking-wider">
+                    <tr>
+                        <th class="px-6 py-4 font-semibold">Customer Name</th>
+                        <th class="px-6 py-4 font-semibold">Order ID</th>
+                        <th class="px-6 py-4 font-semibold">Amount</th>
+                        <th class="px-6 py-4 font-semibold">Status</th>
+                        <th class="px-6 py-4 font-semibold">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                    {% for refund in recent_refunds %}
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center gap-3">
+                                <div class="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">
+                                    {{ refund.user.username|slice:":1"|upper }}
+                                </div>
+                                <span class="text-sm font-medium">{{ refund.user.get_full_name|default:refund.user.username }}</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">#{{ refund.order_id }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold">${{ refund.amount }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2.5 py-1 rounded-full text-xs font-semibold 
+                                {% if refund.status == 'pending' %}bg-amber-100 text-amber-700
+                                {% elif refund.status == 'approved' %}bg-green-100 text-green-700
+                                {% else %}bg-rose-100 text-rose-700{% endif %}">
+                                {{ refund.get_status_display }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <button class="text-primary text-sm font-bold hover:text-primary/80">Review</button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="px-6 py-12 text-center text-slate-500 italic text-sm">No recent refund requests.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Platform Activity -->
+    <div class="bg-white dark:bg-slate-900 rounded-xl border border-primary/5 shadow-sm overflow-hidden flex flex-col">
+        <div class="px-6 py-5 border-b border-slate-100 dark:border-slate-800">
+            <h2 class="text-lg font-bold">Platform Activity</h2>
+        </div>
+        <div class="p-6 space-y-6 flex-1 overflow-y-auto max-h-[400px]">
+            {% for log in recent_logs %}
+            <div class="flex gap-4">
+                <div class="relative flex flex-col items-center">
+                    <div class="size-2.5 bg-primary rounded-full ring-4 ring-primary/20"></div>
+                    {% if not forloop.last %}<div class="flex-1 w-0.5 bg-slate-200 dark:bg-slate-800 mt-2"></div>{% endif %}
+                </div>
+                <div class="pb-2">
+                    <p class="text-sm font-semibold">{{ log.get_action_display }}</p>
+                    <p class="text-xs text-slate-500 mt-1">{{ log.details }}</p>
+                    <p class="text-[10px] text-primary font-medium mt-1">{{ log.timestamp|timesince }} ago</p>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-center py-8 text-slate-500 italic text-sm">No recent activity.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Transaction Overview Chart -->
+<div class="bg-white dark:bg-slate-900 p-8 rounded-xl border border-primary/5 shadow-sm">
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h2 class="text-lg font-bold">Transaction Overview</h2>
+            <p class="text-sm text-slate-500">Weekly platform volume and success rates</p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="flex items-center gap-1.5 text-xs font-medium text-slate-500">
+                <span class="size-2 rounded-full bg-primary"></span> Volume
+            </span>
+            <span class="flex items-center gap-1.5 text-xs font-medium text-slate-500">
+                <span class="size-2 rounded-full bg-slate-300"></span> Refunds
+            </span>
+        </div>
+    </div>
+    <div class="h-48 w-full flex items-end gap-4 px-2">
+        {% for i in "1234567" %}
+        <div class="flex-1 bg-slate-100 dark:bg-slate-800 rounded-t h-{% cycle '1/2' '2/3' '1/3' '4/5' '3/4' '1/2' '3/5' %} relative group">
+            <div class="absolute bottom-0 w-full bg-primary/20 h-{% cycle '1/3' '1/4' '1/2' '1/5' '1/4' '1/3' '1/6' %} rounded-t transition-all group-hover:bg-primary/40"></div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="flex justify-between mt-4 px-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+        <span>Mon</span>
+        <span>Tue</span>
+        <span>Wed</span>
+        <span>Thu</span>
+        <span>Fri</span>
+        <span>Sat</span>
+        <span>Sun</span>
+    </div>
+</div>
+{% endblock %}

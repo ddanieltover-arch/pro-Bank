@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Verification Success | ProBank{% endblock %}
+
+{% block content %}
+<main class="flex-1 flex justify-center py-10 px-6">
+    <div class="max-w-[560px] w-full flex flex-col items-center">
+        <!-- Success Visual -->
+        <div class="mb-8 flex flex-col items-center">
+            <div class="relative">
+                <div class="absolute inset-0 bg-green-500/20 blur-2xl rounded-full"></div>
+                <div class="relative flex h-24 w-24 items-center justify-center rounded-full bg-green-500 text-white shadow-xl shadow-green-500/20">
+                    <span class="material-symbols-outlined !text-5xl">check_circle</span>
+                </div>
+            </div>
+        </div>
+        <!-- Main Text -->
+        <div class="text-center mb-10">
+            <h1 class="text-slate-900 dark:text-slate-100 text-4xl font-black leading-tight tracking-[-0.033em] mb-4">Identity Verified!</h1>
+            <p class="text-slate-600 dark:text-slate-400 text-lg font-normal leading-relaxed">
+                Congratulations! Your identity has been successfully verified. Your ProBank account is now fully unlocked and ready for use.
+            </p>
+        </div>
+        <!-- Features Card -->
+        <div class="w-full bg-white dark:bg-slate-900/50 rounded-xl border border-primary/10 p-6 mb-10 shadow-sm">
+            <h3 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em] mb-6">Newly Unlocked Features</h3>
+            <div class="space-y-4">
+                <div class="flex items-center gap-4 p-3 rounded-lg hover:bg-background-light dark:hover:bg-slate-800/50 transition-colors">
+                    <div class="text-primary flex items-center justify-center rounded-lg bg-primary/10 shrink-0 size-12">
+                        <span class="material-symbols-outlined">trending_up</span>
+                    </div>
+                    <div class="flex flex-col flex-1">
+                        <p class="text-slate-900 dark:text-slate-100 text-base font-semibold">Higher Transfer Limits</p>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm">Send up to $50,000 per day</p>
+                    </div>
+                    <span class="material-symbols-outlined text-slate-400">chevron_right</span>
+                </div>
+                <div class="flex items-center gap-4 p-3 rounded-lg hover:bg-background-light dark:hover:bg-slate-800/50 transition-colors">
+                    <div class="text-primary flex items-center justify-center rounded-lg bg-primary/10 shrink-0 size-12">
+                        <span class="material-symbols-outlined">public</span>
+                    </div>
+                    <div class="flex flex-col flex-1">
+                        <p class="text-slate-900 dark:text-slate-100 text-base font-semibold">International Payments</p>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm">Transfer funds globally in 20+ currencies</p>
+                    </div>
+                    <span class="material-symbols-outlined text-slate-400">chevron_right</span>
+                </div>
+                <div class="flex items-center gap-4 p-3 rounded-lg hover:bg-background-light dark:hover:bg-slate-800/50 transition-colors">
+                    <div class="text-primary flex items-center justify-center rounded-lg bg-primary/10 shrink-0 size-12">
+                        <span class="material-symbols-outlined">credit_card</span>
+                    </div>
+                    <div class="flex flex-col flex-1">
+                        <p class="text-slate-900 dark:text-slate-100 text-base font-semibold">Virtual Cards</p>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm">Create instant cards for secure online shopping</p>
+                    </div>
+                    <span class="material-symbols-outlined text-slate-400">chevron_right</span>
+                </div>
+            </div>
+        </div>
+        <!-- Action Buttons -->
+        <div class="flex flex-col w-full gap-4">
+            <a href="{% url 'dashboard:overview' %}" class="flex items-center justify-center w-full h-12 bg-primary text-white rounded-lg font-bold text-base hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
+                Return to Dashboard
+            </a>
+            <a href="{% url 'dashboard:overview' %}" class="flex items-center justify-center w-full h-12 bg-transparent text-slate-600 dark:text-slate-400 border border-slate-300 dark:border-slate-700 rounded-lg font-bold text-base hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+                View Account Details
+            </a>
+        </div>
+        <!-- Help link -->
+        <p class="mt-8 text-sm text-slate-400 dark:text-slate-500">
+            Need help? <a class="text-primary font-semibold hover:underline" href="{% url 'core:contact' %}">Contact Support</a>
+        </p>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ProBank Refund Details - Admin Portal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e53734",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#211111",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="flex min-h-screen">
+<!-- Sidebar -->
+<aside class="w-64 border-r border-primary/10 bg-white flex flex-col fixed h-full">
+<div class="p-6 flex items-center gap-3">
+<div class="bg-primary rounded-lg p-2 text-white flex items-center justify-center">
+<span class="material-symbols-outlined">account_balance</span>
+</div>
+<div>
+<h1 class="text-slate-900 font-bold text-lg leading-none">ProBank</h1>
+<p class="text-slate-500 text-xs mt-1">Admin Portal</p>
+</div>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-primary/5 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary/10 text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">assignment_return</span>
+<span class="text-sm font-medium">Refund Requests</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-primary/5 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">history</span>
+<span class="text-sm font-medium">Transactions</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-primary/5 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span class="text-sm font-medium">Customers</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-primary/5 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+<div class="p-4 border-t border-primary/10">
+<div class="flex items-center gap-3 px-2 py-2">
+<div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xs" data-alt="User avatar placeholder">AD</div>
+<div class="flex-1">
+<p class="text-xs font-bold text-slate-900">Admin User</p>
+<p class="text-[10px] text-slate-500">Super Admin</p>
+</div>
+<span class="material-symbols-outlined text-slate-400 text-sm">logout</span>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 ml-64 p-8">
+<!-- Breadcrumbs -->
+<nav class="flex text-sm text-slate-500 mb-6 gap-2 items-center">
+<a class="hover:text-primary" href="#">Admin Dashboard</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<a class="hover:text-primary" href="#">Refund Requests</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-slate-900 font-medium">Refund Details</span>
+</nav>
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+<div class="flex items-center gap-4">
+<h2 class="text-3xl font-black text-slate-900 tracking-tight">#REF-8821</h2>
+<span class="px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-bold uppercase tracking-wider">Pending Review</span>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-6 py-2.5 rounded-lg border border-slate-200 text-slate-700 font-bold text-sm hover:bg-slate-50 transition-colors">
+                        Reject Request
+                    </button>
+<button class="px-6 py-2.5 rounded-lg bg-primary text-white font-bold text-sm hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all">
+                        Approve Refund
+                    </button>
+</div>
+</div>
+<!-- Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Left Column (Main Info) -->
+<div class="lg:col-span-2 space-y-8">
+<!-- Customer & Order Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Customer Info -->
+<div class="bg-white p-6 rounded-xl border border-primary/5 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-bold text-slate-900">Customer Info</h3>
+<a class="text-primary text-xs font-bold flex items-center gap-1 hover:underline" href="#">
+                                    View Profile <span class="material-symbols-outlined text-xs">open_in_new</span>
+</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-400" data-alt="Customer profile headshot">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div>
+<p class="text-slate-900 font-semibold">Sarah Jenkins</p>
+<p class="text-slate-500 text-sm">s.jenkins@example.com</p>
+</div>
+</div>
+</div>
+<!-- Order Details -->
+<div class="bg-white p-6 rounded-xl border border-primary/5 shadow-sm">
+<h3 class="font-bold text-slate-900 mb-4">Order Details</h3>
+<div class="space-y-2">
+<div class="flex justify-between text-sm">
+<span class="text-slate-500">Order ID</span>
+<span class="text-slate-900 font-medium">#ORD-55421</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-slate-500">Date</span>
+<span class="text-slate-900 font-medium">Oct 24, 2023</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-slate-500">Method</span>
+<span class="text-slate-900 font-medium">Visa •••• 4242</span>
+</div>
+<div class="flex justify-between text-sm pt-2 border-t border-slate-50">
+<span class="text-slate-500">Amount</span>
+<span class="text-primary font-bold">$120.00</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Refund Reason Section -->
+<div class="bg-white p-6 rounded-xl border border-primary/5 shadow-sm">
+<h3 class="font-bold text-slate-900 mb-4">Refund Reason</h3>
+<div class="bg-slate-50 p-4 rounded-lg text-slate-700 text-sm leading-relaxed mb-6">
+                            "The item arrived with significant water damage to the packaging which affected the internal components. I've tried to power it on but the screen remains blank. I would like a full refund to my original payment method as I've already purchased a replacement locally."
+                        </div>
+<h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Evidence &amp; Attachments</h4>
+<div class="grid grid-cols-3 gap-4">
+<div class="aspect-square bg-slate-200 rounded-lg overflow-hidden group relative cursor-pointer">
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="material-symbols-outlined text-white">zoom_in</span>
+</div>
+<div class="w-full h-full bg-cover bg-center" data-alt="Photo of damaged shipping box" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC0e6Cef_byVQtpAz3oTbJ1nFsWhGkbCbADNzMYOcgMzmuTVRzTzsjGLV-zlU0XQi2MG0IX0Yr-tmEWs9A-GRjp4EJ_6kMf5OrlQp5BRQTXpuRPzUf4aJ0IvFY97qbnkiy5-itxhiyLtF-XrdNI8v6fNhLtrgZDsbtOG4wQ9GyqvmpqqHOMMS3qJIKaJHAvyJueUxXXUPZPzVMTXX5DDX5n3NWiWJTFJkY69Hb_o8z0J3o1h62MvHQgXYxuN3euT-48IhgPdUcE7ON_')"></div>
+</div>
+<div class="aspect-square bg-slate-200 rounded-lg overflow-hidden group relative cursor-pointer">
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="material-symbols-outlined text-white">zoom_in</span>
+</div>
+<div class="w-full h-full bg-cover bg-center" data-alt="Close up of electronic device damage" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA3PHnl_42UWTKaqQxoN2EMQp1bEdlMi_sSBPmW63ecmIH0Vd8naSxY1e-VSzi-fo8JEx7Rl3nwVFugl1NfSHb1ELy8eJFWjX4o-ZKcCFMYGIDi0g7rHcUjADZTd490Tz_Ay_gfdnTYFLbtM6nL7uzeu3w1f1DQREBcaHttl5tdRQaX6PuUoDfgjsOXnPltmyHlbz6J1YhLxzJoUsjDWy2AlQEoXeSdjK2J7LR6b4GZDsytNVr73jQP_K0DfDdhz2c5EjjPeoWskU8e')"></div>
+</div>
+<div class="aspect-square bg-slate-50 border-2 border-dashed border-slate-200 rounded-lg flex flex-col items-center justify-center text-slate-400 hover:border-primary/40 hover:text-primary transition-all">
+<span class="material-symbols-outlined">add</span>
+<span class="text-[10px] font-bold">Add Proof</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column (Timeline/History) -->
+<div class="space-y-8">
+<div class="bg-white p-6 rounded-xl border border-primary/5 shadow-sm">
+<h3 class="font-bold text-slate-900 mb-6">Request History</h3>
+<div class="relative pl-6 space-y-8 before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-100">
+<!-- Timeline Item -->
+<div class="relative">
+<div class="absolute -left-[21px] top-1 w-3 h-3 rounded-full border-2 border-white bg-primary ring-4 ring-primary/10"></div>
+<p class="text-sm font-bold text-slate-900">Refund Requested</p>
+<p class="text-xs text-slate-500 mt-1">Submitted by Sarah Jenkins</p>
+<p class="text-[10px] text-slate-400 mt-1">Oct 26, 2023 • 02:45 PM</p>
+</div>
+<!-- Timeline Item -->
+<div class="relative">
+<div class="absolute -left-[21px] top-1 w-3 h-3 rounded-full border-2 border-white bg-slate-300"></div>
+<p class="text-sm font-bold text-slate-600">Verification Pending</p>
+<p class="text-xs text-slate-500 mt-1">Assigned to Review Queue</p>
+<p class="text-[10px] text-slate-400 mt-1">Oct 26, 2023 • 03:00 PM</p>
+</div>
+<!-- Timeline Item -->
+<div class="relative">
+<div class="absolute -left-[21px] top-1 w-3 h-3 rounded-full border-2 border-white bg-slate-300"></div>
+<p class="text-sm font-bold text-slate-600">Automated Risk Check</p>
+<p class="text-xs text-green-600 mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">check_circle</span> Passed
+                                </p>
+<p class="text-[10px] text-slate-400 mt-1">Oct 26, 2023 • 03:05 PM</p>
+</div>
+</div>
+</div>
+<!-- Internal Notes -->
+<div class="bg-white p-6 rounded-xl border border-primary/5 shadow-sm">
+<h3 class="font-bold text-slate-900 mb-4">Internal Notes</h3>
+<textarea class="w-full p-3 text-sm border border-slate-200 rounded-lg bg-slate-50 focus:ring-primary focus:border-primary min-h-[100px]" placeholder="Add a note for other admins..."></textarea>
+<button class="w-full mt-3 py-2 bg-slate-900 text-white text-xs font-bold rounded-lg hover:bg-slate-800 transition-colors">
+                            Save Note
+                        </button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

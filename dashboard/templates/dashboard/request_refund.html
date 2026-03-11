@@ -1,0 +1,68 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}Request Refund | ProBank{% endblock %}
+
+{% block dashboard_content %}
+<div class="max-w-2xl mx-auto">
+    <div class="flex flex-col gap-2 mb-8">
+        <h1 class="text-3xl font-black tracking-tight text-slate-900 dark:text-slate-100">Request a Refund</h1>
+        <p class="text-slate-500 dark:text-slate-400 font-medium">Please provide the details of your transaction to initiate a refund request.</p>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" class="bg-white dark:bg-background-dark rounded-2xl shadow-sm border border-primary/10 overflow-hidden">
+        {% csrf_token %}
+        <div class="p-8 space-y-6">
+            <!-- Order ID -->
+            <div class="space-y-2">
+                <label class="text-xs font-black text-slate-500 uppercase tracking-wider">Order ID / Transaction Reference</label>
+                <input type="text" name="order_id" class="w-full h-12 px-4 rounded-xl border border-primary/20 bg-slate-50 dark:bg-primary/5 text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="e.g. TR-123456" required>
+            </div>
+
+            <!-- Amount -->
+            <div class="space-y-2">
+                <label class="text-xs font-black text-slate-500 uppercase tracking-wider">Refund Amount</label>
+                <div class="relative">
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-primary font-black">$</span>
+                    <input type="number" name="amount" step="0.01" class="w-full h-12 pl-10 pr-4 rounded-xl border border-primary/20 bg-slate-50 dark:bg-primary/5 text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="0.00" required>
+                </div>
+            </div>
+
+            <!-- Reason -->
+            <div class="space-y-2">
+                <label class="text-xs font-black text-slate-500 uppercase tracking-wider">Reason for Refund</label>
+                <select name="reason" class="w-full h-12 px-4 rounded-xl border border-primary/20 bg-slate-50 dark:bg-primary/5 text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-primary/20 focus:border-primary appearance-none transition-all">
+                    <option value="duplicate">Duplicate Charge</option>
+                    <option value="not_delivered">Order Not Delivered</option>
+                    <option value="unauthorized">Unauthorized Transaction</option>
+                    <option value="defective">Defective Product</option>
+                    <option value="wrong_item">Wrong Item Received</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <!-- Description -->
+            <div class="space-y-2">
+                <label class="text-xs font-black text-slate-500 uppercase tracking-wider">Additional Details</label>
+                <textarea name="description" class="w-full h-32 p-4 rounded-xl border border-primary/20 bg-slate-50 dark:bg-primary/5 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-none" placeholder="Describe the issue in detail..."></textarea>
+            </div>
+
+            <!-- Evidence / File Upload -->
+            <div class="space-y-2">
+                <label class="text-xs font-black text-slate-500 uppercase tracking-wider">Supporting Documentation (Optional)</label>
+                <input type="file" name="evidence" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-black file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all">
+                <p class="text-[10px] text-slate-400">Upload receipts or screenshots of the transaction.</p>
+            </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="p-8 flex flex-col gap-4 border-t border-primary/5">
+            <button type="submit" class="w-full h-14 bg-primary text-white font-black rounded-xl shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all">
+                Submit Refund Request
+            </button>
+            <a href="{% url 'dashboard:refunds' %}" class="w-full h-12 flex items-center justify-center text-slate-500 hover:text-primary font-bold transition-all">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

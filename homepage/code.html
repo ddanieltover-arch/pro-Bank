@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e53734",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#211111",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>ProBank | Smart Banking &amp; Refund Solutions</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Header/Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-slate-200 dark:border-slate-800 px-6 md:px-20 lg:px-40 py-4 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-3">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-2xl">account_balance</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-xl font-bold leading-tight tracking-tight">ProBank</h2>
+</div>
+<div class="flex flex-1 justify-end gap-4 md:gap-10">
+<nav class="hidden lg:flex items-center gap-8">
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary transition-colors text-sm font-semibold" href="#">Features</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary transition-colors text-sm font-semibold" href="#">Solutions</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary transition-colors text-sm font-semibold" href="#">Pricing</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary transition-colors text-sm font-semibold" href="#">About</a>
+</nav>
+<div class="flex gap-3">
+<button class="flex min-w-[100px] cursor-pointer items-center justify-center rounded-lg h-10 px-5 bg-primary text-white text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all">
+                            Sign Up
+                        </button>
+<button class="hidden sm:flex min-w-[100px] cursor-pointer items-center justify-center rounded-lg h-10 px-5 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm font-bold hover:bg-slate-200 transition-all">
+                            Login
+                        </button>
+</div>
+</div>
+</header>
+<main class="flex-1">
+<!-- Hero Section -->
+<div class="px-6 md:px-20 lg:px-40 py-16 md:py-24">
+<div class="flex flex-col lg:flex-row items-center gap-12 @container">
+<div class="flex flex-col gap-8 flex-1 max-w-2xl">
+<div class="flex flex-col gap-4">
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider w-fit">Next Gen Finance</span>
+<h1 class="text-slate-900 dark:text-white text-5xl md:text-6xl font-black leading-[1.1] tracking-tight">
+                                    Smart Banking &amp; <span class="text-primary">Refund</span> Solutions
+                                </h1>
+<p class="text-slate-600 dark:text-slate-400 text-lg md:text-xl font-normal leading-relaxed max-w-xl">
+                                    Experience the next generation of financial management with automated refunds and secure global banking designed for modern businesses.
+                                </p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<button class="flex min-w-[180px] cursor-pointer items-center justify-center rounded-lg h-14 px-8 bg-primary text-white text-lg font-bold shadow-xl shadow-primary/30 hover:scale-[1.02] transition-transform">
+                                    Get Started
+                                </button>
+<button class="flex min-w-[180px] cursor-pointer items-center justify-center rounded-lg h-14 px-8 border-2 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-lg font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-all">
+                                    Watch Demo
+                                </button>
+</div>
+</div>
+<!-- Dashboard Preview Card -->
+<div class="flex-1 w-full lg:w-auto relative group">
+<div class="absolute -inset-1 bg-gradient-to-r from-primary to-rose-400 rounded-xl blur opacity-25 group-hover:opacity-40 transition duration-1000"></div>
+<div class="relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl overflow-hidden">
+<div class="bg-slate-50 dark:bg-slate-800/50 p-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+<div class="flex gap-1.5">
+<div class="w-3 h-3 rounded-full bg-slate-300"></div>
+<div class="w-3 h-3 rounded-full bg-slate-300"></div>
+<div class="w-3 h-3 rounded-full bg-slate-300"></div>
+</div>
+<div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Secure Dashboard</div>
+</div>
+<div class="p-6">
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="p-4 bg-primary/5 rounded-lg border border-primary/10">
+<p class="text-slate-500 text-[10px] font-bold uppercase mb-1">Total Balance</p>
+<p class="text-2xl font-black text-slate-900 dark:text-white">$128,430.00</p>
+<p class="text-[10px] text-green-500 font-bold mt-1">↑ 12.5% from last month</p>
+</div>
+<div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg border border-slate-100 dark:border-slate-700">
+<p class="text-slate-500 text-[10px] font-bold uppercase mb-1">Pending Refunds</p>
+<p class="text-2xl font-black text-slate-900 dark:text-white">$4,250.50</p>
+<p class="text-[10px] text-primary font-bold mt-1">14 items requiring action</p>
+</div>
+</div>
+<div class="space-y-3">
+<p class="text-xs font-bold text-slate-400 uppercase">Recent Transactions</p>
+<div class="flex items-center justify-between p-3 bg-white dark:bg-slate-900 rounded-lg border border-slate-50 dark:border-slate-800 shadow-sm">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-green-100 flex items-center justify-center text-green-600">
+<span class="material-symbols-outlined text-sm">download</span>
+</div>
+<div>
+<p class="text-xs font-bold">Stripe Payout</p>
+<p class="text-[10px] text-slate-500">Today, 2:45 PM</p>
+</div>
+</div>
+<p class="text-xs font-bold text-green-600">+$12,400.00</p>
+</div>
+<div class="flex items-center justify-between p-3 bg-white dark:bg-slate-900 rounded-lg border border-slate-50 dark:border-slate-800 shadow-sm opacity-60">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-sm">history_edu</span>
+</div>
+<div>
+<p class="text-xs font-bold">Amazon Refund #042</p>
+<p class="text-[10px] text-slate-500">Yesterday, 11:20 AM</p>
+</div>
+</div>
+<p class="text-xs font-bold text-slate-900 dark:text-white">-$149.99</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Features Section -->
+<div class="bg-white dark:bg-slate-900 py-24 px-6 md:px-20 lg:px-40">
+<div class="flex flex-col gap-12">
+<div class="flex flex-col gap-4 max-w-3xl">
+<h2 class="text-slate-900 dark:text-white text-3xl md:text-4xl font-black leading-tight">
+                                Powerful Features for Banking &amp; Refunds
+                            </h2>
+<p class="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">
+                                Everything you need to manage your business finances and customer reimbursements in one place, backed by bank-grade security and automated workflows.
+                            </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Feature 1 -->
+<div class="flex flex-col gap-6 p-8 rounded-2xl bg-background-light dark:bg-background-dark border border-slate-100 dark:border-slate-800 hover:border-primary/30 transition-all group">
+<div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined text-3xl">shield_person</span>
+</div>
+<div class="flex flex-col gap-3">
+<h3 class="text-xl font-bold text-slate-900 dark:text-white">Secure Banking</h3>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                                        Enterprise-grade security with multi-factor authentication, biometric logins, and real-time monitoring to keep your assets safe.
+                                    </p>
+</div>
+<a class="text-primary font-bold text-sm flex items-center gap-2 mt-auto" href="#">
+                                    Learn more <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+<!-- Feature 2 -->
+<div class="flex flex-col gap-6 p-8 rounded-2xl bg-background-light dark:bg-background-dark border border-slate-100 dark:border-slate-800 hover:border-primary/30 transition-all group">
+<div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined text-3xl">autorenew</span>
+</div>
+<div class="flex flex-col gap-3">
+<h3 class="text-xl font-bold text-slate-900 dark:text-white">Automated Refunds</h3>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                                        Streamline your return process with automated workflows that settle refunds instantly across multiple payment processors.
+                                    </p>
+</div>
+<a class="text-primary font-bold text-sm flex items-center gap-2 mt-auto" href="#">
+                                    Learn more <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+<!-- Feature 3 -->
+<div class="flex flex-col gap-6 p-8 rounded-2xl bg-background-light dark:bg-background-dark border border-slate-100 dark:border-slate-800 hover:border-primary/30 transition-all group">
+<div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined text-3xl">language</span>
+</div>
+<div class="flex flex-col gap-3">
+<h3 class="text-xl font-bold text-slate-900 dark:text-white">Multi-Currency</h3>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                                        Hold, receive, and send money in over 40 currencies with competitive exchange rates and no hidden cross-border fees.
+                                    </p>
+</div>
+<a class="text-primary font-bold text-sm flex items-center gap-2 mt-auto" href="#">
+                                    Learn more <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Social Proof / Trusted Section -->
+<div class="py-16 px-6 md:px-20 lg:px-40 flex flex-col items-center gap-10">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-bold uppercase tracking-widest text-center">Trusted by over 10,000 businesses worldwide</p>
+<div class="flex flex-wrap justify-center items-center gap-10 md:gap-20 opacity-50 grayscale contrast-125">
+<div class="text-2xl font-black italic">TECHNO</div>
+<div class="text-2xl font-black italic">ORBIT</div>
+<div class="text-2xl font-black italic">GLOBAL</div>
+<div class="text-2xl font-black italic">VELOCITY</div>
+<div class="text-2xl font-black italic">PRISM</div>
+</div>
+</div>
+<!-- Final CTA -->
+<div class="px-6 md:px-20 lg:px-40 py-20">
+<div class="bg-primary rounded-3xl p-10 md:p-20 relative overflow-hidden flex flex-col items-center text-center gap-8">
+<div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
+<h2 class="text-white text-4xl md:text-5xl font-black max-w-2xl relative z-10 leading-tight">Ready to take control of your business finances?</h2>
+<p class="text-white/80 text-lg md:text-xl max-w-xl relative z-10 font-medium">Join ProBank today and experience the speed of automated refunds and modern banking.</p>
+<div class="flex flex-col sm:flex-row gap-4 relative z-10">
+<button class="bg-white text-primary px-10 py-4 rounded-lg font-black text-lg hover:bg-slate-50 transition-colors shadow-2xl">Create Free Account</button>
+<button class="bg-primary/20 backdrop-blur-md text-white border border-white/30 px-10 py-4 rounded-lg font-black text-lg hover:bg-white/10 transition-colors">Contact Sales</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-900 text-slate-400 py-16 px-6 md:px-20 lg:px-40">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-12 border-b border-slate-800 pb-16">
+<div class="col-span-2 md:col-span-1 flex flex-col gap-6">
+<div class="flex items-center gap-3">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-2xl">account_balance</span>
+</div>
+<h2 class="text-white text-xl font-bold tracking-tight">ProBank</h2>
+</div>
+<p class="text-sm leading-relaxed">Making business banking and customer refunds simple, fast, and secure for everyone, everywhere.</p>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="text-white font-bold">Product</h4>
+<a class="hover:text-primary transition-colors" href="#">Global Banking</a>
+<a class="hover:text-primary transition-colors" href="#">Refund Engine</a>
+<a class="hover:text-primary transition-colors" href="#">Business Cards</a>
+<a class="hover:text-primary transition-colors" href="#">Integrations</a>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="text-white font-bold">Company</h4>
+<a class="hover:text-primary transition-colors" href="#">About Us</a>
+<a class="hover:text-primary transition-colors" href="#">Careers</a>
+<a class="hover:text-primary transition-colors" href="#">Press Kit</a>
+<a class="hover:text-primary transition-colors" href="#">Contact</a>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="text-white font-bold">Legal</h4>
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-primary transition-colors" href="#">Security</a>
+<a class="hover:text-primary transition-colors" href="#">Cookies</a>
+</div>
+</div>
+<div class="pt-8 flex flex-col md:row justify-between items-center gap-4 text-xs font-medium uppercase tracking-widest">
+<p>© 2024 ProBank Inc. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="hover:text-white transition-colors" href="#">Twitter</a>
+<a class="hover:text-white transition-colors" href="#">LinkedIn</a>
+<a class="hover:text-white transition-colors" href="#">GitHub</a>
+</div>
+</div>
+</footer>
+</div>
+</div>
+</body></html>

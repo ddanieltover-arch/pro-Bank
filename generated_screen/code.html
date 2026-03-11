@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ProBank | Brand Style Guide</title>
+<!-- Tailwind CSS v3 CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#fef2f2',
+              100: '#fee2e2',
+              200: '#fecaca',
+              300: '#fca5a5',
+              400: '#f87171',
+              500: '#e53734', // Brand Primary
+              600: '#dc2626',
+              700: '#b91c1c',
+              800: '#991b1b',
+              900: '#7f1d1d',
+            },
+            success: '#10b981',
+            pending: '#f59e0b',
+            error: '#ef4444',
+            neutral: {
+              50: '#f9fafb',
+              100: '#f3f4f6',
+              200: '#e5e7eb',
+              300: '#d1d5db',
+              400: '#9ca3af',
+              500: '#6b7280',
+              600: '#4b5563',
+              700: '#374151',
+              800: '#1f2937',
+              900: '#111827',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          borderRadius: {
+            'custom': '8px',
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-utilities">
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f9fafb;
+      color: #111827;
+    }
+    .style-guide-section {
+      @apply mb-16 pb-16 border-b border-gray-200;
+    }
+    .color-swatch {
+      @apply h-20 w-full rounded-custom shadow-sm mb-2 flex items-end p-2 text-[10px] font-mono;
+    }
+    .component-label {
+      @apply block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-4;
+    }
+  </style>
+</head>
+<body class="antialiased">
+<!-- BEGIN: Navigation -->
+<nav class="sticky top-0 z-50 bg-white border-b border-gray-200 px-8 py-4 flex justify-between items-center">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 bg-primary-500 rounded-custom flex items-center justify-center text-white font-bold">P</div>
+<span class="text-xl font-bold tracking-tight text-neutral-900">ProBank <span class="text-primary-500">Design</span></span>
+</div>
+<div class="hidden md:flex space-x-6 text-sm font-medium text-neutral-600">
+<a class="hover:text-primary-500 transition-colors" href="#identity">Identity</a>
+<a class="hover:text-primary-500 transition-colors" href="#colors">Colors</a>
+<a class="hover:text-primary-500 transition-colors" href="#typography">Typography</a>
+<a class="hover:text-primary-500 transition-colors" href="#components">Components</a>
+</div>
+</nav>
+<!-- END: Navigation -->
+<main class="max-w-6xl mx-auto px-6 py-12">
+<!-- BEGIN: Brand Identity -->
+<section class="style-guide-section" id="identity">
+<h2 class="text-3xl font-bold mb-8">1. Brand Identity</h2>
+<div class="grid md:grid-cols-2 gap-12">
+<div data-purpose="logo-variations">
+<p class="component-label">Logo Variations</p>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white border border-gray-200 p-8 rounded-custom flex flex-col items-center justify-center gap-4">
+<div class="flex items-center gap-2">
+<div class="w-10 h-10 bg-primary-500 rounded-custom flex items-center justify-center text-white font-bold text-xl">P</div>
+<span class="text-2xl font-bold text-neutral-900">ProBank</span>
+</div>
+<span class="text-xs text-neutral-400">On Light Background</span>
+</div>
+<div class="bg-neutral-900 border border-neutral-800 p-8 rounded-custom flex flex-col items-center justify-center gap-4">
+<div class="flex items-center gap-2">
+<div class="w-10 h-10 bg-primary-500 rounded-custom flex items-center justify-center text-white font-bold text-xl">P</div>
+<span class="text-2xl font-bold text-white">ProBank</span>
+</div>
+<span class="text-xs text-neutral-500">On Dark Background</span>
+</div>
+</div>
+</div>
+<div data-purpose="mission-statement">
+<p class="component-label">Mission &amp; Values</p>
+<div class="bg-primary-50 p-8 rounded-custom border border-primary-100">
+<h3 class="text-lg font-bold text-primary-900 mb-2">Empowering Financial Trust</h3>
+<p class="text-neutral-700 leading-relaxed">
+              ProBank provides a seamless, transparent, and high-velocity banking experience. Our mission is to bridge the gap between traditional finance and modern digital refunds, ensuring every transaction is secure, tracked, and instant.
+            </p>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Brand Identity -->
+<!-- BEGIN: Color Palette -->
+<section class="style-guide-section" id="colors">
+<h2 class="text-3xl font-bold mb-8">2. Color Palette</h2>
+<!-- Primary Colors -->
+<div class="mb-10">
+<p class="component-label">Primary Brand Color (#e53734)</p>
+<div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+<div><div class="color-swatch bg-primary-100">#fee2e2</div><span class="text-xs font-medium">Primary 100</span></div>
+<div><div class="color-swatch bg-primary-300">#fca5a5</div><span class="text-xs font-medium">Primary 300</span></div>
+<div><div class="color-swatch bg-primary-500 text-white">#e53734</div><span class="text-xs font-bold text-primary-600">Primary 500 (Core)</span></div>
+<div><div class="color-swatch bg-primary-700 text-white">#b91c1c</div><span class="text-xs font-medium">Primary 700</span></div>
+<div><div class="color-swatch bg-primary-900 text-white">#7f1d1d</div><span class="text-xs font-medium">Primary 900</span></div>
+</div>
+</div>
+<!-- Functional Colors -->
+<div class="grid md:grid-cols-2 gap-12">
+<div>
+<p class="component-label">Functional &amp; Status</p>
+<div class="grid grid-cols-3 gap-4">
+<div><div class="color-swatch bg-success text-white">#10b981</div><span class="text-xs font-medium">Success</span></div>
+<div><div class="color-swatch bg-pending text-white">#f59e0b</div><span class="text-xs font-medium">Pending</span></div>
+<div><div class="color-swatch bg-error text-white">#ef4444</div><span class="text-xs font-medium">Error</span></div>
+</div>
+</div>
+<div>
+<p class="component-label">Neutral Palette</p>
+<div class="grid grid-cols-4 gap-2">
+<div class="h-10 bg-neutral-50 border border-gray-200 rounded-custom"></div>
+<div class="h-10 bg-neutral-200 rounded-custom"></div>
+<div class="h-10 bg-neutral-500 rounded-custom"></div>
+<div class="h-10 bg-neutral-900 rounded-custom"></div>
+</div>
+<p class="text-[10px] text-neutral-400 mt-2">Scale from White to Deep Navy (#111827)</p>
+</div>
+</div>
+</section>
+<!-- END: Color Palette -->
+<!-- BEGIN: Typography -->
+<section class="style-guide-section" id="typography">
+<h2 class="text-3xl font-bold mb-8">3. Typography</h2>
+<div class="bg-white border border-gray-200 rounded-custom p-8 overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="border-b border-gray-100">
+<th class="pb-4 text-xs font-semibold text-neutral-400 uppercase">Token</th>
+<th class="pb-4 text-xs font-semibold text-neutral-400 uppercase">Example</th>
+<th class="pb-4 text-xs font-semibold text-neutral-400 uppercase">Size / Weight</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100">
+<tr>
+<td class="py-6 align-top font-mono text-xs">Heading 1</td>
+<td class="py-6"><h1 class="text-4xl font-bold">The future of banking</h1></td>
+<td class="py-6 text-xs text-neutral-500">36px / Bold</td>
+</tr>
+<tr>
+<td class="py-6 align-top font-mono text-xs">Heading 2</td>
+<td class="py-6"><h2 class="text-2xl font-semibold">Account Overview</h2></td>
+<td class="py-6 text-xs text-neutral-500">24px / SemiBold</td>
+</tr>
+<tr>
+<td class="py-6 align-top font-mono text-xs">Body Text</td>
+<td class="py-6 text-neutral-600"><p>Manage your transactions and track refunds in real-time with our secure platform.</p></td>
+<td class="py-6 text-xs text-neutral-500">16px / Regular</td>
+</tr>
+<tr>
+<td class="py-6 align-top font-mono text-xs">UI Label</td>
+<td class="py-6"><span class="text-sm font-medium uppercase tracking-wider text-neutral-500">Transaction ID</span></td>
+<td class="py-6 text-xs text-neutral-500">14px / Medium</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- END: Typography -->
+<!-- BEGIN: UI Components -->
+<section class="style-guide-section" id="components">
+<h2 class="text-3xl font-bold mb-8">4. UI Components</h2>
+<!-- Buttons -->
+<div class="mb-12">
+<p class="component-label">Buttons (Roundness: 8px)</p>
+<div class="flex flex-wrap gap-4 items-center">
+<button class="bg-primary-500 hover:bg-primary-600 text-white font-semibold py-2.5 px-6 rounded-custom transition-all shadow-sm">Primary Action</button>
+<button class="bg-neutral-800 hover:bg-neutral-900 text-white font-semibold py-2.5 px-6 rounded-custom transition-all">Secondary</button>
+<button class="border border-neutral-300 hover:border-primary-500 hover:text-primary-500 font-semibold py-2.5 px-6 rounded-custom transition-all">Outline</button>
+<button class="text-primary-500 hover:bg-primary-50 font-semibold py-2.5 px-6 rounded-custom transition-all">Ghost Button</button>
+</div>
+</div>
+<!-- Inputs & Forms -->
+<div class="mb-12">
+<p class="component-label">Form Elements</p>
+<div class="grid md:grid-cols-3 gap-6">
+<div class="space-y-2">
+<label class="text-xs font-semibold text-neutral-700">TEXT INPUT</label>
+<input class="w-full border-neutral-300 rounded-custom focus:ring-primary-500 focus:border-primary-500" placeholder="Enter full name" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-semibold text-neutral-700">DROPDOWN</label>
+<select class="w-full border-neutral-300 rounded-custom focus:ring-primary-500 focus:border-primary-500">
+<option>Checking Account</option>
+<option>Savings Account</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-semibold text-neutral-700">SEARCH</label>
+<div class="relative">
+<span class="absolute inset-y-0 left-3 flex items-center text-neutral-400">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+<input class="w-full pl-10 border-neutral-300 rounded-custom focus:ring-primary-500 focus:border-primary-500 text-sm" placeholder="Search transactions..." type="text"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Status Badges -->
+<div class="mb-12">
+<p class="component-label">Status Indicators</p>
+<div class="flex gap-4">
+<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-success/10 text-success ring-1 ring-inset ring-success/20">Completed</span>
+<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-pending/10 text-pending ring-1 ring-inset ring-pending/20">Pending</span>
+<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-error/10 text-error ring-1 ring-inset ring-error/20">Disputed</span>
+</div>
+</div>
+<!-- Cards -->
+<div>
+<p class="component-label">Dashboard Cards</p>
+<div class="grid md:grid-cols-2 gap-6">
+<div class="bg-white p-6 rounded-custom shadow-sm border border-neutral-200">
+<div class="flex justify-between items-start mb-4">
+<div class="w-10 h-10 bg-primary-50 rounded-full flex items-center justify-center text-primary-500">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<span class="text-xs font-bold text-neutral-400">TOTAL BALANCE</span>
+</div>
+<h3 class="text-2xl font-bold">$12,450.00</h3>
+<p class="text-xs text-success font-medium mt-1">+2.4% from last month</p>
+</div>
+<div class="bg-neutral-900 p-6 rounded-custom shadow-lg text-white">
+<div class="flex justify-between items-center mb-6">
+<div class="text-lg font-bold">ProBank <span class="text-primary-500">Elite</span></div>
+<div class="w-8 h-5 bg-yellow-500/20 rounded-sm"></div>
+</div>
+<p class="text-lg font-mono tracking-widest mb-4">**** **** **** 4582</p>
+<div class="flex justify-between text-[10px] text-neutral-400">
+<span>CARD HOLDER: JOHN DOE</span>
+<span>EXPIRES: 12/26</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: UI Components -->
+<!-- BEGIN: Iconography -->
+<section class="style-guide-section border-none mb-0 pb-0" id="icons">
+<h2 class="text-3xl font-bold mb-8">5. Iconography</h2>
+<p class="text-neutral-500 mb-6">Clean, 2px stroke line icons for financial actions.</p>
+<div class="grid grid-cols-4 md:grid-cols-8 gap-8">
+<!-- Icons represented by SVG placeholders -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-12 h-12 flex items-center justify-center border border-gray-200 rounded-custom text-neutral-600">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<span class="text-[10px] font-medium uppercase text-neutral-400">Wallet</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-12 h-12 flex items-center justify-center border border-gray-200 rounded-custom text-neutral-600">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<span class="text-[10px] font-medium uppercase text-neutral-400">Bank</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-12 h-12 flex items-center justify-center border border-gray-200 rounded-custom text-neutral-600">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<span class="text-[10px] font-medium uppercase text-neutral-400">Clock</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-12 h-12 flex items-center justify-center border border-gray-200 rounded-custom text-neutral-600">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M13 7l5 5m0 0l-5 5m5-5H6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<span class="text-[10px] font-medium uppercase text-neutral-400">Arrow Right</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-12 h-12 flex items-center justify-center border border-gray-200 rounded-custom text-neutral-600">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<span class="text-[10px] font-medium uppercase text-neutral-400">Shield</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-12 h-12 flex items-center justify-center border border-gray-200 rounded-custom text-neutral-600">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<span class="text-[10px] font-medium uppercase text-neutral-400">Stats</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-12 h-12 flex items-center justify-center border border-gray-200 rounded-custom text-neutral-600">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<span class="text-[10px] font-medium uppercase text-neutral-400">Report</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-12 h-12 flex items-center justify-center border border-gray-200 rounded-custom text-neutral-600">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<span class="text-[10px] font-medium uppercase text-neutral-400">Settings</span>
+</div>
+</div>
+</section>
+<!-- END: Iconography -->
+</main>
+<!-- BEGIN: Footer -->
+<footer class="bg-white border-t border-gray-200 py-12 px-6 text-center">
+<div class="flex items-center justify-center gap-2 mb-4">
+<div class="w-6 h-6 bg-primary-500 rounded-custom flex items-center justify-center text-white font-bold text-xs">P</div>
+<span class="text-sm font-bold text-neutral-900">ProBank Style Guide v1.0</span>
+</div>
+<p class="text-xs text-neutral-400">© 2024 ProBank Financial Services. For internal use only.</p>
+</footer>
+<!-- END: Footer -->
+</body></html>

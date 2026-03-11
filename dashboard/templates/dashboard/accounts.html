@@ -1,0 +1,116 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}Your Accounts | ProBank{% endblock %}
+
+{% block dashboard_content %}
+<div class="space-y-6">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="flex border-b border-primary/10 gap-8">
+            <a class="flex flex-col items-center justify-center border-b-2 border-primary text-primary pb-3 pt-2" href="#">
+                <p class="text-sm font-bold tracking-tight">All Accounts</p>
+            </a>
+            <a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 hover:text-slate-700 pb-3 pt-2" href="#">
+                <p class="text-sm font-bold tracking-tight">Checking</p>
+            </a>
+            <a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 hover:text-slate-700 pb-3 pt-2" href="#">
+                <p class="text-sm font-bold tracking-tight">Savings</p>
+            </a>
+        </div>
+        <form method="POST" action="{% url 'dashboard:add_account' %}" class="flex gap-2">
+            {% csrf_token %}
+            <select name="account_type" class="bg-white dark:bg-slate-800 border-primary/10 rounded-lg text-sm font-bold text-slate-700 dark:text-slate-300 focus:ring-primary focus:border-primary">
+                <option value="checking">Checking</option>
+                <option value="savings">Savings</option>
+                <option value="investment">Investment</option>
+            </select>
+            <button type="submit" class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-primary/90 transition-colors shadow-sm self-start whitespace-nowrap">
+                <span class="material-symbols-outlined text-sm">add</span>
+                Create Account
+            </button>
+        </form>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-slate-900 dark:text-white">
+        <div class="bg-white dark:bg-slate-800/50 p-6 rounded-xl border border-primary/10 shadow-sm flex flex-col justify-between">
+            <div>
+                <p class="text-slate-500 text-sm font-medium mb-1">Total Assets</p>
+                <h3 class="text-3xl font-bold">${{ total_balance|floatformat:2 }}</h3>
+            </div>
+            <div class="mt-4 flex items-center gap-2 text-emerald-600 font-bold text-sm">
+                <span class="material-symbols-outlined text-sm">trending_up</span>
+                <span>+3.2% vs last month</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
+    <!-- Account List -->
+    <div class="lg:col-span-1 space-y-4">
+        <div class="flex items-center justify-between">
+            <h2 class="text-lg font-bold">Your Accounts</h2>
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">{{ accounts.count }} Active</span>
+        </div>
+        <div class="space-y-3">
+            {% for account in accounts %}
+            <div class="p-4 bg-white dark:bg-slate-800 rounded-xl border-l-4 {% if forloop.first %}border-primary{% else %}border-slate-300 dark:border-slate-600{% endif %} shadow-sm hover:border-l-8 transition-all cursor-pointer">
+                <div class="flex justify-between items-start mb-2">
+                    <div>
+                        <p class="text-xs font-bold text-slate-400 uppercase">{{ account.account_type|capfirst }} &bull; {{ account.account_number|slice:"-4:" }}</p>
+                        <h4 class="font-bold text-slate-900 dark:text-slate-100">{{ account.account_type|capfirst }} Account</h4>
+                    </div>
+                </div>
+                <p class="text-xl font-bold text-slate-900 dark:text-white">${{ account.balance|floatformat:2 }}</p>
+                <div class="mt-2 text-[10px] text-slate-400 font-bold tracking-wider uppercase">Available Balance</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="lg:col-span-2 space-y-4">
+        <div class="flex items-center justify-between">
+            <h2 class="text-lg font-bold">Transaction History</h2>
+        </div>
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-primary/10 overflow-hidden shadow-sm">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="bg-slate-50 dark:bg-slate-900 text-slate-500 uppercase text-[10px] font-bold tracking-widest border-b border-primary/5">
+                        <th class="px-6 py-4">Transaction</th>
+                        <th class="px-6 py-4">Status</th>
+                        <th class="px-6 py-4 text-right">Amount</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-primary/5">
+                    {% for tx in transactions %}
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <div class="size-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-[20px]">{% if tx.amount < 0 %}shopping_cart{% else %}payments{% endif %}</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-slate-900 dark:text-white">{{ tx.description }}</p>
+                                    <p class="text-xs text-slate-400">{{ tx.date|date:"M d, Y" }}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="px-2 py-1 rounded text-[10px] font-bold bg-emerald-100 text-emerald-700 uppercase">Completed</span>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <p class="text-sm font-bold {% if tx.amount < 0 %}text-slate-900 dark:text-white{% else %}text-emerald-600{% endif %}">{% if tx.amount < 0 %}-{% else %}+{% endif %}${% if tx.amount < 0 %}{{ tx.amount|stringformat:".2f"|slice:"1:" }}{% else %}{{ tx.amount|floatformat:2 }}{% endif %}</p>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3" class="px-6 py-8 text-center text-slate-500">No transactions recorded.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

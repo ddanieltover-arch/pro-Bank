@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+{% block title %}Refund Engine | ProBank{% endblock %}
+
+{% block content %}
+<main class="flex-1">
+    <!-- Hero Section -->
+    <div class="max-w-7xl mx-auto px-6 md:px-20 py-12 md:py-20">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="flex flex-col gap-8">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider w-fit">
+                    <span class="material-symbols-outlined text-sm">bolt</span>
+                    Powered by AI
+                </div>
+                <div class="flex flex-col gap-4">
+                    <h1 class="text-slate-900 dark:text-white text-4xl md:text-6xl font-black leading-tight tracking-tight">
+                        Automated Refund Recovery <span class="text-primary">at Scale</span>
+                    </h1>
+                    <p class="text-slate-600 dark:text-slate-400 text-lg md:text-xl leading-relaxed max-w-xl">
+                        ProBank's Refund Engine automatically identifies, disputes, and recovers failed transactions with 99.9% accuracy. Stop losing capital to technical glitches.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-4">
+                    <button class="flex min-w-[200px] cursor-pointer items-center justify-center rounded-lg h-14 px-8 bg-primary text-white text-base font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform">
+                        Start Recovering Now
+                    </button>
+                    <button class="flex min-w-[200px] cursor-pointer items-center justify-center rounded-lg h-14 px-8 border-2 border-primary/20 text-slate-900 dark:text-white text-base font-bold hover:bg-primary/5 transition-colors">
+                        View Demo
+                    </button>
+                </div>
+            </div>
+            <div class="relative">
+                <div class="w-full aspect-square bg-gradient-to-tr from-primary/20 to-primary/5 rounded-3xl overflow-hidden shadow-2xl border border-primary/10 group">
+                    <img alt="Refund Recovery Dashboard" class="w-full h-full object-cover mix-blend-overlay opacity-80 group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdaikV_L4gno_aLPxfQOYLMGoXCeN7iwXb3WFIGnKJQhnXksjwCLnQTUOTGM2_e2pr0Y1FmH9m1vKq9trJzp15l4doVdYOl-dfk3lLQ35RCCKSjqU_napxxqr1NwZpjNpIHbszN0yiwagovqoth5b40lgav3bANm529l3UvLW1650n0RheAUuDcmv7qya63VBTtFBn71AXO1v_iyOk8SC0uXKpARbhDbap4NTnHU70PAWyVx5IoeQEKKt-5cCc6MMMmpRT2aU0mCUQ"/>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="bg-white/90 dark:bg-background-dark/90 p-6 rounded-2xl shadow-xl backdrop-blur-sm border border-primary/20 max-w-xs">
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="p-2 bg-green-500/20 rounded-full">
+                                    <span class="material-symbols-outlined text-green-600">check_circle</span>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-500 uppercase font-bold">Latest Recovery</p>
+                                    <p class="text-lg font-bold text-slate-900 dark:text-white">$12,450.00</p>
+                                </div>
+                            </div>
+                            <div class="h-2 w-full bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                                <div class="h-full bg-primary w-3/4"></div>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-2">Processing batch #8821...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Stats Bar -->
+    <div class="bg-white dark:bg-background-dark/50 border-y border-primary/10 py-12">
+        <div class="max-w-7xl mx-auto px-6 md:px-20">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="flex flex-col items-center text-center gap-2 p-6 rounded-xl bg-background-light dark:bg-background-dark border border-primary/5">
+                    <p class="text-slate-500 dark:text-slate-400 text-sm font-semibold uppercase tracking-widest">Success Rate</p>
+                    <p class="text-primary text-5xl font-black tracking-tight">99.9%</p>
+                    <div class="flex items-center gap-1 text-green-600 font-bold text-sm">
+                        <span class="material-symbols-outlined text-sm">trending_up</span>
+                        +2.4% this month
+                    </div>
+                </div>
+                <div class="flex flex-col items-center text-center gap-2 p-6 rounded-xl bg-background-light dark:bg-background-dark border border-primary/5 shadow-sm">
+                    <p class="text-slate-500 dark:text-slate-400 text-sm font-semibold uppercase tracking-widest">Recovery Speed</p>
+                    <p class="text-slate-900 dark:text-white text-5xl font-black tracking-tight">&lt; 24h</p>
+                    <div class="flex items-center gap-1 text-primary font-bold text-sm">
+                        <span class="material-symbols-outlined text-sm">schedule</span>
+                        Industry leading
+                    </div>
+                </div>
+                <div class="flex flex-col items-center text-center gap-2 p-6 rounded-xl bg-background-light dark:bg-background-dark border border-primary/5">
+                    <p class="text-slate-500 dark:text-slate-400 text-sm font-semibold uppercase tracking-widest">Transactions Protected</p>
+                    <p class="text-slate-900 dark:text-white text-5xl font-black tracking-tight">10M+</p>
+                    <div class="flex items-center gap-1 text-green-600 font-bold text-sm">
+                        <span class="material-symbols-outlined text-sm">shield</span>
+                        Securely verified
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- How it Works Section -->
+    <div class="max-w-7xl mx-auto px-6 md:px-20 py-24">
+        <div class="flex flex-col gap-16">
+            <div class="text-center max-w-2xl mx-auto flex flex-col gap-4">
+                <h2 class="text-primary font-bold text-sm uppercase tracking-[0.2em]">The Process</h2>
+                <h3 class="text-slate-900 dark:text-white text-4xl font-black leading-tight">Seamless Automation</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-lg">Our three-step process ensures your capital stays where it belongs without manual intervention.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Step 1 -->
+                <div class="group flex flex-col gap-6 p-8 rounded-2xl bg-white dark:bg-background-dark border border-primary/10 hover:border-primary/40 transition-all shadow-sm hover:shadow-xl">
+                    <div class="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                        <span class="material-symbols-outlined text-3xl">search</span>
+                    </div>
+                    <div class="flex flex-col gap-3">
+                        <h4 class="text-xl font-bold text-slate-900 dark:text-white">1. Scan & Detect</h4>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed">Continuous 24/7 monitoring of all outgoing and incoming transaction logs to identify failed or suspicious movements instantly.</p>
+                    </div>
+                </div>
+                <!-- Step 2 -->
+                <div class="group flex flex-col gap-6 p-8 rounded-2xl bg-white dark:bg-background-dark border border-primary/10 hover:border-primary/40 transition-all shadow-sm hover:shadow-xl">
+                    <div class="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                        <span class="material-symbols-outlined text-3xl">psychology</span>
+                    </div>
+                    <div class="flex flex-col gap-3">
+                        <h4 class="text-xl font-bold text-slate-900 dark:text-white">2. AI Analysis</h4>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed">Advanced machine learning models validate eligibility and predict the highest probability paths for successful recovery.</p>
+                    </div>
+                </div>
+                <!-- Step 3 -->
+                <div class="group flex flex-col gap-6 p-8 rounded-2xl bg-white dark:bg-background-dark border border-primary/10 hover:border-primary/40 transition-all shadow-sm hover:shadow-xl">
+                    <div class="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                        <span class="material-symbols-outlined text-3xl">rebase_edit</span>
+                    </div>
+                    <div class="flex flex-col gap-3">
+                        <h4 class="text-xl font-bold text-slate-900 dark:text-white">3. Rapid Recovery</h4>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed">Automated filing and direct banking partner negotiation to ensure capital returns to your account within hours, not weeks.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Security Section -->
+    <div class="bg-primary/5 py-24">
+        <div class="max-w-7xl mx-auto px-6 md:px-20">
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                <div class="flex-1 space-y-8">
+                    <h3 class="text-3xl md:text-4xl font-black text-slate-900 dark:text-white leading-tight">
+                        Bank-Grade Security <br/>at Every Touchpoint
+                    </h3>
+                    <div class="space-y-6">
+                        <div class="flex gap-4">
+                            <div class="mt-1">
+                                <span class="material-symbols-outlined text-primary">encrypted</span>
+                            </div>
+                            <div>
+                                <h5 class="text-lg font-bold text-slate-900 dark:text-white">End-to-End Encryption</h5>
+                                <p class="text-slate-600 dark:text-slate-400">AES-256 bit encryption for all data in transit and at rest.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="mt-1">
+                                <span class="material-symbols-outlined text-primary">verified_user</span>
+                            </div>
+                            <div>
+                                <h5 class="text-lg font-bold text-slate-900 dark:text-white">Compliance First</h5>
+                                <p class="text-slate-600 dark:text-slate-400">Fully SOC2 Type II, GDPR, and PCI DSS Level 1 compliant infrastructure.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-1 w-full">
+                    <div class="bg-white dark:bg-background-dark p-8 rounded-3xl border border-primary/10 shadow-lg">
+                        <div class="flex items-center justify-between mb-8">
+                            <h4 class="text-lg font-bold">Network Status</h4>
+                            <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full flex items-center gap-1">
+                                <span class="w-2 h-2 bg-green-500 rounded-full"></span> All Systems Operational
+                            </span>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-slate-500">Global API Latency</span>
+                                <span class="font-bold">42ms</span>
+                            </div>
+                            <div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+                                <div class="bg-primary h-full w-[95%]"></div>
+                            </div>
+                            <div class="flex justify-between items-center text-sm pt-4">
+                                <span class="text-slate-500">Dispute Success Rate</span>
+                                <span class="font-bold">99.98%</span>
+                            </div>
+                            <div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+                                <div class="bg-primary h-full w-[99%]"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Final CTA -->
+    <div class="max-w-7xl mx-auto px-6 md:px-20 py-24 text-center">
+        <div class="bg-slate-900 dark:bg-slate-800 rounded-[2.5rem] p-12 md:p-20 relative overflow-hidden">
+            <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-primary/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
+            <div class="relative z-10 flex flex-col items-center gap-8">
+                <h2 class="text-white text-4xl md:text-5xl font-black max-w-2xl leading-tight">Ready to reclaim your lost revenue?</h2>
+                <p class="text-slate-400 text-lg max-w-xl">Join 500+ enterprises using ProBank's Refund Engine to automate their financial recovery operations.</p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button class="bg-primary text-white font-bold py-4 px-10 rounded-xl hover:scale-105 transition-transform">
+                        Create Free Account
+                    </button>
+                    <button class="bg-white/10 text-white font-bold py-4 px-10 rounded-xl hover:bg-white/20 transition-colors backdrop-blur-sm">
+                        Talk to Sales
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
