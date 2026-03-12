@@ -105,7 +105,22 @@ def kyc_action(request, user_id):
     if action == 'approve':
         target_user.profile.kyc_status = 'verified'
         target_user.profile.is_verified = True
-        messages.success(request, f"KYC for {target_user.username} approved.")
+        
+        # Auto-issue account if not exists
+        if not BankAccount.objects.filter(user=target_user).exists():
+            import random
+            from decimal import Decimal
+            acc_num = "".join([str(random.randint(0, 9)) for _ in range(12)])
+            BankAccount.objects.create(
+                user=target_user,
+                name="Checking Account",
+                account_type='checking',
+                account_number=acc_num,
+                balance=Decimal("0.00")
+            )
+            messages.success(request, f"KYC approved and Checking Account issued for {target_user.username}.")
+        else:
+            messages.success(request, f"KYC for {target_user.username} approved.")
     else:
         target_user.profile.kyc_status = 'unverified'
         messages.warning(request, f"KYC for {target_user.username} rejected.")

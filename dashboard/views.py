@@ -38,6 +38,13 @@ def kyc_upload(request):
 def generate_card(request):
     if request.method == 'POST':
         card_type = request.POST.get('card_type', 'virtual')
+        
+        # Enforce limits: Max 1 Physical, 1 Virtual
+        existing_card = BankCard.objects.filter(user=request.user, card_type=card_type).exclude(status='declined').first()
+        if existing_card:
+            messages.error(request, f"You already have an active or pending {card_type} card request.")
+            return redirect('dashboard:cards')
+
         # Generate card details
         num = "".join([str(random.randint(0, 9)) for _ in range(16)])
         expiry = (timezone.now() + timedelta(days=365*5)).strftime("%m/%y")
@@ -124,21 +131,6 @@ def accounts_view(request):
     })
 
 @login_required
-def add_account(request):
-    if request.method == 'POST':
-        account_type = request.POST.get('account_type', 'checking')
-        acc_num = "".join([str(random.randint(0, 9)) for _ in range(12)])
-        BankAccount.objects.create(
-            user=request.user,
-            name=f"{account_type.title()} Account",
-            account_type=account_type,
-            account_number=acc_num,
-            balance=Decimal("0.00")
-        )
-        messages.success(request, f"New {account_type} account created successfully.")
-    return redirect('dashboard:accounts')
-
-@login_required
 def refunds(request):
     refund_requests = RefundRequest.objects.filter(user=request.user).order_by('-created_at')
     pending_count = refund_requests.filter(status='pending').count()
@@ -207,57 +199,6 @@ def settings_view(request):
 
 @login_required
 @kyc_required
-def transfer_view(request):
-    accounts = BankAccount.objects.filter(user=request.user)
-    if request.method == 'POST':
-        from_acc_id = request.POST.get('from_account')
-        to_acc_num = request.POST.get('to_account')
-        amount = Decimal(request.POST.get('amount', 0))
-        
-        from_acc = get_object_or_404(BankAccount, id=from_acc_id, user=request.user)
-        
-        if from_acc.balance >= amount:
-            from_acc.balance -= amount
-            from_acc.save()
-            
-            Transaction.objects.create(
-                account=from_acc,
-                description=f"Transfer to {to_acc_num}",
-                amount=-amount,
-                category="Transfer",
-                status="success"
-            )
-            
-            # If internal transfer
-            to_acc = BankAccount.objects.filter(account_number=to_acc_num).first()
-            if to_acc:
-                to_acc.balance += amount
-                to_acc.save()
-                Transaction.objects.create(
-                    account=to_acc,
-                    description=f"Transfer from {from_acc.account_number}",
-                    amount=amount,
-                    category="Transfer",
-                    status="success"
-                )
-            
-            messages.success(request, "Transfer successful.")
-            return redirect('dashboard:transfer_history')
-        else:
-            messages.error(request, "Insufficient funds.")
-            
-    return render(request, 'dashboard/transfer.html', {'active_page': 'transfer', 'accounts': accounts})
-
-@login_required
-def transfer_history_view(request):
-    transfers = Transaction.objects.filter(
-        account__user=request.user,
-        category="Transfer"
-    ).order_by('-date')
-    return render(request, 'dashboard/transfer_history.html', {'active_page': 'transfers', 'transfers': transfers})
-
-@login_required
-@kyc_required
 def withdraw_view(request):
     accounts = BankAccount.objects.filter(user=request.user)
     primary_account = accounts.first()
@@ -316,6 +257,7 @@ def export_transactions(request):
     return response
 
 @login_required
+@kyc_required
 def cards_view(request):
     cards = BankCard.objects.filter(user=request.user).order_by('-created_at')
     # For now, we'll reuse recent transactions as placeholder for card activity

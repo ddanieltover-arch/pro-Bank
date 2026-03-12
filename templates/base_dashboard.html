@@ -80,6 +80,8 @@
                     href="{% url 'dashboard:overview' %}">
                     <span class="material-symbols-outlined">dashboard</span> Dashboard
                 </a>
+                
+                {% if user.profile.kyc_status == 'verified' %}
                 <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg {% if active_page == 'accounts' %}bg-primary/10 text-primary font-semibold{% else %}text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-primary/5 transition-colors{% endif %}"
                     href="{% url 'dashboard:accounts' %}">
                     <span class="material-symbols-outlined">account_balance_wallet</span> Accounts
@@ -87,10 +89,6 @@
                 <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg {% if active_page == 'cards' %}bg-primary/10 text-primary font-semibold{% else %}text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-primary/5 transition-colors{% endif %}"
                     href="{% url 'dashboard:cards' %}">
                     <span class="material-symbols-outlined">credit_card</span> Cards
-                </a>
-                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg {% if active_page == 'transfer' %}bg-primary/10 text-primary font-semibold{% else %}text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-primary/5 transition-colors{% endif %}"
-                    href="{% url 'dashboard:transfer' %}">
-                    <span class="material-symbols-outlined">move_up</span> Transfer
                 </a>
                 <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg {% if active_page == 'withdraw' %}bg-primary/10 text-primary font-semibold{% else %}text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-primary/5 transition-colors{% endif %}"
                     href="{% url 'dashboard:withdraw' %}">
@@ -100,15 +98,24 @@
                     href="{% url 'dashboard:refunds' %}">
                     <span class="material-symbols-outlined">assignment_return</span> Refunds
                 </a>
+
                 <div class="pt-4 pb-2 px-3 text-[10px] font-black text-slate-400 uppercase tracking-widest">History</div>
-                <a class="flex items-center gap-3 px-3 py-2 rounded-lg {% if active_page == 'transfers' %}bg-primary/10 text-primary font-semibold{% else %}text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-primary/5 transition-colors{% endif %}"
-                    href="{% url 'dashboard:transfer_history' %}">
-                    <span class="material-symbols-outlined text-sm">history</span> Transfers
-                </a>
                 <a class="flex items-center gap-3 px-3 py-2 rounded-lg {% if active_page == 'withdrawals' %}bg-primary/10 text-primary font-semibold{% else %}text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-primary/5 transition-colors{% endif %}"
                     href="{% url 'dashboard:withdrawal_history' %}">
                     <span class="material-symbols-outlined text-sm">history_edu</span> Withdrawals
                 </a>
+                {% else %}
+                <div class="px-3 py-4 space-y-4">
+                    <div class="p-3 bg-slate-50 dark:bg-white/5 rounded-lg border border-slate-200 dark:border-white/10">
+                        <div class="flex items-center gap-2 text-slate-400 mb-2">
+                            <span class="material-symbols-outlined text-sm">lock</span>
+                            <span class="text-[10px] font-black uppercase tracking-widest">Locked Features</span>
+                        </div>
+                        <p class="text-[10px] text-slate-500 font-medium leading-relaxed italic">Verify your identity to unlock Accounts, Cards, and Instant Withdrawals.</p>
+                    </div>
+                </div>
+                {% endif %}
+
                 <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg {% if active_page == 'settings' %}bg-primary/10 text-primary font-semibold{% else %}text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-primary/5 transition-colors{% endif %}"
                     href="{% url 'dashboard:settings' %}">
                     <span class="material-symbols-outlined">settings</span> Settings
@@ -132,10 +139,16 @@
                             </p>
                         </div>
                     </div>
-                <a href="/dashboard/cards/"
+                    {% if user.profile.kyc_status == 'verified' %}
+                    <a href="{% url 'dashboard:request_refund' %}"
                         class="w-full bg-primary text-white text-sm font-bold py-2 px-4 rounded-lg hover:bg-primary/90 transition-all flex items-center justify-center gap-2">
                         <span class="material-symbols-outlined text-sm">add</span> New Refund
                     </a>
+                    {% else %}
+                    <div class="w-full bg-slate-200 dark:bg-white/10 text-slate-400 text-sm font-bold py-2 px-4 rounded-lg flex items-center justify-center gap-2 cursor-not-allowed opacity-50">
+                        <span class="material-symbols-outlined text-sm">lock</span> Locked
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </aside>

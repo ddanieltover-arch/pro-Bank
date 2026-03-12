@@ -1,4 +1,5 @@
 {% extends "base_dashboard.html" %}
+{% load dashboard_tags %}
 
 {% block title %}Cards Management | ProBank{% endblock %}
 
@@ -10,9 +11,14 @@
         <p class="text-slate-500 dark:text-slate-400 font-medium">Manage your active physical and virtual payment cards</p>
     </div>
     <button @click="showGenModal = true" class="bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-xl flex items-center gap-2 transition-all shadow-lg shadow-primary/20">
-        <span class="material-symbols-outlined">add_card</span>
-        Generate New Card
+        <span class="material-symbols-outlined text-sm font-bold">add_card</span>
+        Request New Card
     </button>
+    <div class="hidden">
+        <!-- Serverside counts for JS logic -->
+        <span id="physical-count">{{ cards|filter_type:'physical'|length }}</span>
+        <span id="virtual-count">{{ cards|filter_type:'virtual'|length }}</span>
+    </div>
 
     <!-- Generation Modal -->
     <div x-show="showGenModal" 
@@ -23,30 +29,34 @@
          @click.away="showGenModal = false">
         <div class="bg-white dark:bg-slate-900 rounded-3xl p-8 max-w-md w-full shadow-2xl border border-primary/10">
             <h2 class="text-2xl font-black mb-4 uppercase tracking-tight">Request New Card</h2>
-            <form action="{% url 'dashboard:generate_card' %}" method="POST" class="space-y-6">
+            <form action="{% url 'dashboard:generate_card' %}" method="POST" class="space-y-6" x-data="{ physicalCount: parseInt(document.getElementById('physical-count').innerText), virtualCount: parseInt(document.getElementById('virtual-count').innerText) }">
                 {% csrf_token %}
                 <div class="space-y-3">
                     <label class="block text-xs font-bold uppercase tracking-widest text-slate-500">Card Type</label>
                     <div class="grid grid-cols-2 gap-4">
-                        <label class="relative cursor-pointer">
-                            <input type="radio" name="card_type" value="virtual" checked class="peer sr-only">
-                            <div class="p-4 border-2 rounded-xl text-center peer-checked:border-primary peer-checked:bg-primary/5 transition-all">
+                        <label class="relative cursor-pointer group">
+                            <input type="radio" name="card_type" value="virtual" :disabled="virtualCount >= 1" :checked="virtualCount == 0" class="peer sr-only">
+                            <div class="p-4 border-2 rounded-xl text-center peer-checked:border-primary peer-checked:bg-primary/5 transition-all peer-disabled:opacity-40 peer-disabled:cursor-not-allowed group-hover:border-slate-300 peer-checked:group-hover:border-primary">
                                 <span class="material-symbols-outlined mb-2">vignette</span>
-                                <p class="text-xs font-bold">VIRTUAL</p>
+                                <p class="text-[10px] font-black uppercase">VIRTUAL</p>
+                                <p class="text-[8px] font-bold text-slate-400 mt-1" x-text="virtualCount >= 1 ? 'LIMIT REACHED' : '1 AVAILABLE'"></p>
                             </div>
                         </label>
-                        <label class="relative cursor-pointer">
-                            <input type="radio" name="card_type" value="physical" class="peer sr-only">
-                            <div class="p-4 border-2 rounded-xl text-center peer-checked:border-primary peer-checked:bg-primary/5 transition-all">
+                        <label class="relative cursor-pointer group">
+                            <input type="radio" name="card_type" value="physical" :disabled="physicalCount >= 1" :checked="physicalCount == 0 && virtualCount >= 1" class="peer sr-only">
+                            <div class="p-4 border-2 rounded-xl text-center peer-checked:border-primary peer-checked:bg-primary/5 transition-all peer-disabled:opacity-40 peer-disabled:cursor-not-allowed group-hover:border-slate-300 peer-checked:group-hover:border-primary">
                                 <span class="material-symbols-outlined mb-2">credit_card</span>
-                                <p class="text-xs font-bold">PHYSICAL</p>
+                                <p class="text-[10px] font-black uppercase">PHYSICAL</p>
+                                <p class="text-[8px] font-bold text-slate-400 mt-1" x-text="physicalCount >= 1 ? 'LIMIT REACHED' : '1 AVAILABLE'"></p>
                             </div>
                         </label>
                     </div>
                 </div>
                 <div class="flex gap-4">
-                    <button type="button" @click="showGenModal = false" class="flex-1 py-3 font-bold text-slate-500">Cancel</button>
-                    <button type="submit" class="flex-1 bg-primary text-white py-3 rounded-xl font-bold shadow-lg shadow-primary/20">Confirm Request</button>
+                    <button type="button" @click="showGenModal = false" class="flex-1 py-3 font-bold text-slate-500 uppercase text-xs tracking-widest">Cancel</button>
+                    <button type="submit" 
+                            :disabled="physicalCount >= 1 && virtualCount >= 1"
+                            class="flex-1 bg-primary text-white py-3 rounded-xl font-bold shadow-lg shadow-primary/20 disabled:opacity-50 disabled:cursor-not-allowed uppercase text-xs tracking-widest">Confirm Request</button>
                 </div>
             </form>
         </div>
@@ -64,8 +74,9 @@
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
     {% for card in cards %}
     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
-        <div class="relative aspect-[1.586/1] w-full rounded-2xl p-8 text-white mb-6 overflow-hidden flex flex-col justify-between shadow-2xl
-             {% if card.card_type == 'virtual' %}bg-gradient-to-br from-primary via-primary/80 to-[#9e1c1a]{% else %}bg-gradient-to-br from-slate-900 to-slate-800{% endif %}">
+        <div class="relative aspect-[1.586/1] w-full rounded-2xl p-8 text-white mb-6 overflow-hidden flex flex-col justify-between shadow-2xl transition-all duration-500
+             {% if card.card_type == 'virtual' %}bg-gradient-to-br from-primary via-primary/80 to-[#9e1c1a]{% else %}bg-gradient-to-br from-slate-900 to-slate-800{% endif %}"
+             x-data="{ revealed: false }">
             
             <div class="absolute top-0 right-0 p-8 opacity-20">
                 <span class="material-symbols-outlined text-8xl">{% if card.card_type == 'virtual' %}token{% else %}contactless{% endif %}</span>
@@ -81,25 +92,27 @@
 
             <div class="z-10">
                 {% if card.status == 'active' %}
-                    <p class="text-2xl font-mono tracking-[0.2em] mb-4">{{ card.card_number|slice:":4" }} •••• •••• {{ card.card_number|slice:"-4:" }}</p>
+                    <p class="text-2xl font-mono tracking-[0.2em] mb-4" x-text="revealed ? '{{ card.card_number|slice:":4" }} {{ card.card_number|slice:"4:8" }} {{ card.card_number|slice:"8:12" }} {{ card.card_number|slice:"12:16" }}' : '{{ card.card_number|slice:":4" }} •••• •••• {{ card.card_number|slice:"-4:" }}'"></p>
                 {% else %}
                     <p class="text-2xl font-mono tracking-[0.2em] mb-4">•••• •••• •••• ••••</p>
                 {% endif %}
                 <div class="flex gap-8">
                     <div class="flex flex-col">
-                        <span class="text-[10px] uppercase opacity-60">Expiry</span>
+                        <span class="text-[10px] uppercase opacity-60 font-bold">Expiry</span>
                         <span class="text-sm font-medium">{{ card.expiry_date }}</span>
                     </div>
                     <div class="flex flex-col">
-                        <span class="text-[10px] uppercase opacity-60">CVV</span>
-                        <span class="text-sm font-medium">{% if card.status == 'active' %}{{ card.cvv }}{% else %}•••{% endif %}</span>
+                        <span class="text-[10px] uppercase opacity-60 font-bold">CVV</span>
+                        <span class="text-sm font-medium" x-text="revealed ? '{{ card.cvv }}' : '•••'"></span>
                     </div>
                 </div>
             </div>
 
             <div class="flex justify-between items-end z-10">
                 <span class="text-sm font-medium opacity-80 uppercase tracking-widest">{{ user.get_full_name|default:user.username }}</span>
-                <div class="text-2xl italic font-black">VISA</div>
+                <button @click="revealed = !revealed" class="px-2 py-1 bg-white/10 hover:bg-white/20 rounded text-[10px] font-black uppercase tracking-tighter backdrop-blur-md transition-all">
+                    <span x-text="revealed ? 'Hide Details' : 'Reveal Details'"></span>
+                </button>
             </div>
         </div>
 
