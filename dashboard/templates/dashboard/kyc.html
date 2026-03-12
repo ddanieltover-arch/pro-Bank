@@ -9,7 +9,25 @@
     </div>
 
     <form action="{% url 'dashboard:kyc_upload' %}" method="POST" enctype="multipart/form-data" 
-          x-data="{ idType: 'national_id' }" class="space-y-6">
+          x-data="{ 
+            idType: 'national_id', 
+            frontPreview: null, 
+            backPreview: null, 
+            loading: false,
+            handleFile(event, side) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        if (side === 'front') this.frontPreview = e.target.result;
+                        else this.backPreview = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+          }" 
+          @submit="loading = true"
+          class="space-y-6">
         {% csrf_token %}
         
         <div class="bg-white dark:bg-background-dark border border-primary/10 rounded-2xl p-6 shadow-sm">
@@ -40,13 +58,23 @@
                        x-text="idType === 'passport' ? 'Upload Passport Page' : 'Front of Document'">
                 </label>
                 <div class="relative group">
-                    <input type="file" name="id_front" required
+                    <input type="file" name="id_front" required @change="handleFile($event, 'front')"
                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-                    <div class="border-2 border-dashed border-slate-200 dark:border-primary/10 rounded-xl p-8 flex flex-col items-center justify-center gap-3 group-hover:border-primary/30 transition-all">
-                        <span class="material-symbols-outlined text-3xl text-slate-400 group-hover:text-primary transition-colors">upload_file</span>
-                        <p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Click or drag image</p>
+                    <div class="border-2 border-dashed border-slate-200 dark:border-primary/10 rounded-xl p-8 flex flex-col items-center justify-center gap-3 group-hover:border-primary/30 transition-all overflow-hidden">
+                        <template x-if="frontPreview">
+                            <img :src="frontPreview" class="w-full h-32 object-cover rounded-lg shadow-sm">
+                        </template>
+                        <template x-if="!frontPreview">
+                            <div class="flex flex-col items-center gap-2">
+                                <span class="material-symbols-outlined text-3xl text-slate-400 group-hover:text-primary transition-colors">upload_file</span>
+                                <p class="text-xs font-bold text-slate-500 uppercase tracking-widest text-center">Click or drag image</p>
+                            </div>
+                        </template>
                     </div>
                 </div>
+                <template x-if="frontPreview">
+                    <button type="button" @click="frontPreview = null; $refs.frontInput.value = ''" class="mt-2 text-[10px] text-rose-500 font-bold uppercase tracking-tighter hover:underline">Remove Image</button>
+                </template>
             </div>
 
             <!-- Back of ID (Hidden if Passport) -->
@@ -54,13 +82,23 @@
                  class="bg-white dark:bg-background-dark border border-primary/10 rounded-2xl p-6 shadow-sm">
                 <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-4">Back of Document</label>
                 <div class="relative group">
-                    <input type="file" name="id_back" :required="idType !== 'passport'"
+                    <input type="file" name="id_back" :required="idType !== 'passport'" @change="handleFile($event, 'back')"
                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-                    <div class="border-2 border-dashed border-slate-200 dark:border-primary/10 rounded-xl p-8 flex flex-col items-center justify-center gap-3 group-hover:border-primary/30 transition-all">
-                        <span class="material-symbols-outlined text-3xl text-slate-400 group-hover:text-primary transition-colors">upload_file</span>
-                        <p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Click or drag image</p>
+                    <div class="border-2 border-dashed border-slate-200 dark:border-primary/10 rounded-xl p-8 flex flex-col items-center justify-center gap-3 group-hover:border-primary/30 transition-all overflow-hidden">
+                        <template x-if="backPreview">
+                            <img :src="backPreview" class="w-full h-32 object-cover rounded-lg shadow-sm">
+                        </template>
+                        <template x-if="!backPreview">
+                            <div class="flex flex-col items-center gap-2">
+                                <span class="material-symbols-outlined text-3xl text-slate-400 group-hover:text-primary transition-colors">upload_file</span>
+                                <p class="text-xs font-bold text-slate-500 uppercase tracking-widest text-center">Click or drag image</p>
+                            </div>
+                        </template>
                     </div>
                 </div>
+                <template x-if="backPreview">
+                    <button type="button" @click="backPreview = null; $refs.backInput.value = ''" class="mt-2 text-[10px] text-rose-500 font-bold uppercase tracking-tighter hover:underline">Remove Image</button>
+                </template>
             </div>
         </div>
 
@@ -74,9 +112,20 @@
             </div>
         </div>
 
-        <button type="submit" 
-                class="w-full bg-primary text-white font-black py-4 rounded-2xl hover:bg-primary/90 transition-all uppercase tracking-widest shadow-lg shadow-primary/20">
-            Submit for Verification
+        <button type="submit" :disabled="loading"
+                class="w-full bg-primary text-white font-black py-4 rounded-2xl hover:bg-primary/90 transition-all uppercase tracking-widest shadow-lg shadow-primary/20 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed">
+            <template x-if="!loading">
+                <span>Submit for Verification</span>
+            </template>
+            <template x-if="loading">
+                <div class="flex items-center gap-2">
+                    <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Uploading Documents...</span>
+                </div>
+            </template>
         </button>
     </form>
 </div>

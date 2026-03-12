@@ -39,7 +39,15 @@ def users(request):
 @staff_member_required
 def user_detail(request, user_id):
     target_user = get_object_or_404(User, id=user_id)
-    return render(request, 'admin_panel/user_detail.html', {'target_user': target_user})
+    accounts = BankAccount.objects.filter(user=target_user)
+    recent_transactions = Transaction.objects.filter(account__in=accounts).order_by('-date')[:10]
+    
+    context = {
+        'target_user': target_user,
+        'accounts': accounts,
+        'recent_transactions': recent_transactions,
+    }
+    return render(request, 'admin_panel/user_detail.html', context)
 
 @staff_member_required
 def adjust_balance(request, user_id):
