@@ -81,17 +81,33 @@
         </div>
     </div>
 
-    <!-- Recovery Rate/Status Card -->
+    <!-- Account Status Card -->
     <div class="bg-white dark:bg-background-dark p-6 rounded-xl border border-primary/10 shadow-sm relative overflow-hidden group">
         <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
-            <span class="material-symbols-outlined text-6xl text-primary">history</span>
+            <span class="material-symbols-outlined text-6xl text-primary">{% if user.profile.kyc_status == 'verified' %}verified_user{% elif user.profile.kyc_status == 'pending' %}pending_actions{% else %}report{% endif %}</span>
         </div>
         <p class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Account Status</p>
-        <h3 class="text-3xl font-black text-slate-900 dark:text-slate-100">Verified</h3>
-        <div class="mt-4 flex items-center gap-2 text-primary font-bold text-sm">
-            <span class="material-symbols-outlined text-sm">verified</span>
-            98% Recovery rate
-        </div>
+        
+        {% if user.profile.kyc_status == 'verified' %}
+            <h3 class="text-3xl font-black text-slate-900 dark:text-slate-100 italic">Verified</h3>
+            <div class="mt-4 flex items-center gap-2 text-green-500 font-bold text-sm">
+                <span class="material-symbols-outlined text-sm">verified</span>
+                98% Recovery rate
+            </div>
+        {% elif user.profile.kyc_status == 'pending' %}
+            <h3 class="text-3xl font-black text-slate-900 dark:text-slate-100 italic">Pending</h3>
+            <div class="mt-4 flex items-center gap-2 text-amber-500 font-bold text-sm">
+                <span class="material-symbols-outlined text-sm">pending</span>
+                KYC Under Review
+            </div>
+        {% else %}
+            <div class="flex flex-col gap-1">
+                <h3 class="text-3xl font-black text-red-600 italic">Not Verified</h3>
+                <a href="{% url 'dashboard:kyc_upload' %}" class="mt-2 text-sm font-black text-primary hover:underline flex items-center gap-1 uppercase tracking-widest">
+                    Verify Now <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                </a>
+            </div>
+        {% endif %}
     </div>
 </div>
 
