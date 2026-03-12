@@ -54,28 +54,35 @@
 </div>
 
 <!-- Content Area: Active Requests Table -->
-<div class="flex flex-col gap-4">
-    <div class="flex items-center justify-between">
-        <h2 class="text-slate-900 dark:text-slate-100 text-xl font-bold leading-tight tracking-[-0.015em]">Recent Refund
-            Requests</h2>
+<div class="flex flex-col gap-4" x-data="{ activeTab: 'pending' }">
+    <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800">
+        <div class="flex gap-8">
+            <button @click="activeTab = 'pending'" 
+                    :class="activeTab === 'pending' ? 'border-primary text-primary' : 'border-transparent text-slate-500'"
+                    class="pb-4 text-sm font-bold border-b-2 transition-all">
+                Pending Refunds
+            </button>
+            <button @click="activeTab = 'completed'" 
+                    :class="activeTab === 'completed' ? 'border-primary text-primary' : 'border-transparent text-slate-500'"
+                    class="pb-4 text-sm font-bold border-b-2 transition-all">
+                Completed Refunds
+            </button>
+        </div>
     </div>
+
     <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr class="bg-slate-50 dark:bg-slate-800/50">
-                    <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                        Order ID</th>
-                    <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                        Amount</th>
-                    <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                        Status</th>
-                    <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                        Request Date</th>
+                    <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Order ID</th>
+                    <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Amount</th>
+                    <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Status</th>
+                    <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Request Date</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
                 {% for refund in refund_requests %}
-                <tr
+                <tr x-show="(activeTab === 'pending' && '{{ refund.status }}' === 'pending') || (activeTab === 'completed' && '{{ refund.status }}' !== 'pending')"
                     class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors text-slate-900 dark:text-white">
                     <td class="px-6 py-4 text-sm font-medium">#{{ refund.order_id }}</td>
                     <td class="px-6 py-4 text-sm font-bold">${{ refund.amount|floatformat:2 }}</td>
@@ -89,12 +96,14 @@
                     </td>
                     <td class="px-6 py-4 text-sm text-slate-500">{{ refund.created_at|date:"M d, Y" }}</td>
                 </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="4" class="px-6 py-12 text-center text-slate-500 font-medium">No refund requests found.
+                {% endfor %}
+                
+                <!-- Empty State for Pending -->
+                <tr x-show="activeTab === 'pending' && !document.querySelectorAll('tr[x-show*=\'pending\']').length" style="display:none;">
+                    <td colspan="4" class="px-6 py-12 text-center text-slate-500 font-medium tracking-tight">
+                        No pending refund requests found.
                     </td>
                 </tr>
-                {% endfor %}
             </tbody>
         </table>
     </div>

@@ -98,6 +98,10 @@
                     href="{% url 'dashboard:refunds' %}">
                     <span class="material-symbols-outlined">assignment_return</span> Refunds
                 </a>
+                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg {% if active_page == 'kyc' %}bg-primary/10 text-primary font-semibold{% else %}text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-primary/5 transition-colors{% endif %}"
+                    href="{% url 'dashboard:kyc_upload' %}">
+                    <span class="material-symbols-outlined">verified_user</span> KYC Verification
+                </a>
 
                 <div class="pt-4 pb-2 px-3 text-[10px] font-black text-slate-400 uppercase tracking-widest">History</div>
                 <a class="flex items-center gap-3 px-3 py-2 rounded-lg {% if active_page == 'withdrawals' %}bg-primary/10 text-primary font-semibold{% else %}text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-primary/5 transition-colors{% endif %}"

@@ -63,82 +63,92 @@
     </div>
 </div>
 
-<!-- Tabs & Filter (Simplified) -->
-<div class="flex flex-col sm:flex-row items-center gap-4 mb-8">
+<!-- Tabs & Filter -->
+<div class="flex flex-col sm:flex-row items-center gap-4 mb-8" x-data="{ activeTab: 'completed' }">
     <div class="bg-slate-200 dark:bg-slate-800 p-1 rounded-xl flex w-full sm:w-auto">
-        <button class="flex-1 sm:px-8 py-2 rounded-lg text-sm font-bold bg-white dark:bg-slate-700 shadow-sm text-primary">All Cards</button>
+        <button @click="activeTab = 'pending'"
+                :class="activeTab === 'pending' ? 'bg-white dark:bg-slate-700 shadow-sm text-primary' : 'text-slate-500'"
+                class="flex-1 sm:px-8 py-2 rounded-lg text-sm font-bold transition-all">Pending Requests</button>
+        <button @click="activeTab = 'completed'"
+                :class="activeTab === 'completed' ? 'bg-white dark:bg-slate-700 shadow-sm text-primary' : 'text-slate-500'"
+                class="flex-1 sm:px-8 py-2 rounded-lg text-sm font-bold transition-all">Active Cards</button>
     </div>
-</div>
 
-<!-- Cards Grid -->
-<div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-8">
-    {% for card in cards %}
-    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
-        <div class="relative aspect-[1.586/1] w-full rounded-2xl p-8 text-white mb-6 overflow-hidden flex flex-col justify-between shadow-2xl transition-all duration-500
-             {% if card.card_type == 'virtual' %}bg-gradient-to-br from-primary via-primary/80 to-[#9e1c1a]{% else %}bg-gradient-to-br from-slate-900 to-slate-800{% endif %}"
-             x-data="{ revealed: false }">
-            
-            <div class="absolute top-0 right-0 p-8 opacity-20">
-                <span class="material-symbols-outlined text-8xl">{% if card.card_type == 'virtual' %}token{% else %}contactless{% endif %}</span>
-            </div>
-
-            <div class="flex justify-between items-start z-10">
-                <div class="flex flex-col">
-                    <span class="text-xs uppercase tracking-widest opacity-70 mb-1">{{ card.card_type }} Card</span>
-                    <span class="font-bold text-xl tracking-tight">ProBank</span>
+    <!-- Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-8 w-full">
+        {% for card in cards %}
+        <div x-show="(activeTab === 'pending' && '{{ card.status }}' === 'pending') || (activeTab === 'completed' && '{{ card.status }}' !== 'pending')"
+             class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+            <div class="relative aspect-[1.586/1] w-full rounded-2xl p-8 text-white mb-6 overflow-hidden flex flex-col justify-between shadow-2xl transition-all duration-500
+                 {% if card.card_type == 'virtual' %}bg-gradient-to-br from-primary via-primary/80 to-[#9e1c1a]{% else %}bg-gradient-to-br from-slate-900 to-slate-800{% endif %}"
+                 x-data="{ revealed: false }">
+                
+                <div class="absolute top-0 right-0 p-8 opacity-20">
+                    <span class="material-symbols-outlined text-8xl">{% if card.card_type == 'virtual' %}token{% else %}contactless{% endif %}</span>
                 </div>
-                <div class="h-8 w-12 bg-white/20 rounded-md backdrop-blur-sm"></div>
-            </div>
 
-            <div class="z-10">
-                {% if card.status == 'active' %}
-                    <p class="text-2xl font-mono tracking-[0.2em] mb-4" x-text="revealed ? '{{ card.card_number|slice:":4" }} {{ card.card_number|slice:"4:8" }} {{ card.card_number|slice:"8:12" }} {{ card.card_number|slice:"12:16" }}' : '{{ card.card_number|slice:":4" }} •••• •••• {{ card.card_number|slice:"-4:" }}'"></p>
-                {% else %}
-                    <p class="text-2xl font-mono tracking-[0.2em] mb-4">•••• •••• •••• ••••</p>
-                {% endif %}
-                <div class="flex gap-8">
+                <div class="flex justify-between items-start z-10">
                     <div class="flex flex-col">
-                        <span class="text-[10px] uppercase opacity-60 font-bold">Expiry</span>
-                        <span class="text-sm font-medium">{{ card.expiry_date }}</span>
+                        <span class="text-xs uppercase tracking-widest opacity-70 mb-1">{{ card.card_type }} Card</span>
+                        <span class="font-bold text-xl tracking-tight">ProBank</span>
                     </div>
-                    <div class="flex flex-col">
-                        <span class="text-[10px] uppercase opacity-60 font-bold">CVV</span>
-                        <span class="text-sm font-medium" x-text="revealed ? '{{ card.cvv }}' : '•••'"></span>
-                    </div>
+                    <div class="h-8 w-12 bg-white/20 rounded-md backdrop-blur-sm"></div>
                 </div>
-            </div>
 
-            <div class="flex justify-between items-end z-10">
-                <span class="text-sm font-medium opacity-80 uppercase tracking-widest">{{ user.get_full_name|default:user.username }}</span>
-                <button @click="revealed = !revealed" class="px-2 py-1 bg-white/10 hover:bg-white/20 rounded text-[10px] font-black uppercase tracking-tighter backdrop-blur-md transition-all">
-                    <span x-text="revealed ? 'Hide Details' : 'Reveal Details'"></span>
-                </button>
-            </div>
-        </div>
-
-        <div class="space-y-4">
-            <div class="flex items-center justify-between py-2">
-                <div class="flex items-center gap-3">
-                    <div class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest
-                         {% if card.status == 'active' %}bg-emerald-100 text-emerald-600{% elif card.status == 'pending' %}bg-amber-100 text-amber-600{% else %}bg-rose-100 text-rose-600{% endif %}">
-                        {{ card.status }}
-                    </div>
-                </div>
-                <div class="flex gap-2">
+                <div class="z-10">
                     {% if card.status == 'active' %}
-                        <button class="text-xs font-bold text-slate-500 uppercase tracking-tighter">View PIN</button>
+                        <p class="text-2xl font-mono tracking-[0.2em] mb-4" x-text="revealed ? '{{ card.card_number|slice:":4" }} {{ card.card_number|slice:"4:8" }} {{ card.card_number|slice:"8:12" }} {{ card.card_number|slice:"12:16" }}' : '{{ card.card_number|slice:":4" }} •••• •••• {{ card.card_number|slice:"-4:" }}'"></p>
+                    {% else %}
+                        <p class="text-2xl font-mono tracking-[0.2em] mb-4">•••• •••• •••• ••••</p>
+                    {% endif %}
+                    <div class="flex gap-8">
+                        <div class="flex flex-col">
+                            <span class="text-[10px] uppercase opacity-60 font-bold">Expiry</span>
+                            <span class="text-sm font-medium">{{ card.expiry_date }}</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-[10px] uppercase opacity-60 font-bold">CVV</span>
+                            <span class="text-sm font-medium" x-text="revealed ? '{{ card.cvv }}' : '•••'"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-end z-10">
+                    <span class="text-sm font-medium opacity-80 uppercase tracking-widest">{{ user.get_full_name|default:user.username }}</span>
+                    {% if card.status == 'active' %}
+                    <button @click="revealed = !revealed" class="px-2 py-1 bg-white/10 hover:bg-white/20 rounded text-[10px] font-black uppercase tracking-tighter backdrop-blur-md transition-all">
+                        <span x-text="revealed ? 'Hide Details' : 'Reveal Details'"></span>
+                    </button>
                     {% endif %}
                 </div>
             </div>
+
+            <div class="space-y-4">
+                <div class="flex items-center justify-between py-2">
+                    <div class="flex items-center gap-3">
+                        <div class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest
+                             {% if card.status == 'active' %}bg-emerald-100 text-emerald-600{% elif card.status == 'pending' %}bg-amber-100 text-amber-600{% else %}bg-rose-100 text-rose-600{% endif %}">
+                            {{ card.status }}
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        {% if card.status == 'active' %}
+                            <button class="text-xs font-bold text-slate-500 uppercase tracking-tighter">View PIN</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        
+        <!-- Empty State for Pending inside grid -->
+        <div x-show="activeTab === 'pending' && !document.querySelectorAll('div[x-show*=\'pending\']').length" 
+             style="display:none;"
+             class="col-span-1 md:col-span-2 2xl:col-span-3 py-16 bg-slate-50 dark:bg-slate-800/20 rounded-3xl border-2 border-dashed border-slate-200 dark:border-primary/10 flex flex-col items-center justify-center text-center">
+             <span class="material-symbols-outlined text-6xl text-slate-300 mb-4">more_horiz</span>
+             <h3 class="text-lg font-bold">No Pending Requests</h3>
         </div>
     </div>
-    {% empty %}
-    <div class="col-span-1 lg:col-span-2 py-20 bg-slate-50 dark:bg-slate-800/20 rounded-3xl border-2 border-dashed border-slate-200 dark:border-primary/10 flex flex-col items-center justify-center text-center">
-        <span class="material-symbols-outlined text-6xl text-slate-300 mb-4">credit_card_off</span>
-        <h3 class="text-xl font-bold mb-2">No Active Cards</h3>
-        <p class="text-slate-500 max-w-xs">Generate your first virtual or physical card to start spending with ProBank.</p>
-    </div>
-    {% endfor %}
 </div>
 
 <!-- Recent Activity Section -->
