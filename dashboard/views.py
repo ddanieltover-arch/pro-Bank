@@ -12,6 +12,14 @@ from datetime import timedelta
 import random
 import csv
 
+TIER_LIMITS = {
+    'basic': Decimal('2500.00'),
+    'bronze': Decimal('5000.00'),
+    'silver': Decimal('10000.00'),
+    'gold': Decimal('25000.00'),
+    'premium': Decimal('50000.00'),
+}
+
 def kyc_required(view_func):
     def _wrapped_view_func(request, *args, **kwargs):
         if request.user.profile.kyc_status != 'verified':
@@ -150,22 +158,63 @@ def refunds(request):
 def request_refund(request):
     if request.method == 'POST':
         order_id = request.POST.get('order_id')
-        amount = request.POST.get('amount')
+        amount_str = request.POST.get('amount')
         reason = request.POST.get('reason')
         details = request.POST.get('description')
         proof = request.FILES.get('evidence')
         
-        RefundRequest.objects.create(
-            user=request.user,
-            order_id=order_id,
-            amount=Decimal(amount),
-            reason=reason,
-            details=details,
-            proof_file=proof
-        )
-        messages.success(request, "Refund request submitted successfully.")
-        return redirect('dashboard:refunds')
-    return render(request, 'dashboard/request_refund.html', {'active_page': 'refunds'})
+        try:
+            amount = Decimal(amount_str)
+            user_tier = request.user.profile.account_level
+            limit = TIER_LIMITS.get(user_tier, Decimal('2500.00'))
+            
+            if amount > limit:
+                messages.error(request, f"Your current account tier ({user_tier.title()}) has a refund limit of ${limit:,.2f}. Upgrade your account to request higher amounts.")
+                return redirect('dashboard:request_refund')
+
+            RefundRequest.objects.create(
+                user=request.user,
+                order_id=order_id,
+                amount=amount,
+                reason=reason,
+                details=details,
+                proof_file=proof
+            )
+            messages.success(request, "Refund request submitted successfully.")
+            return redirect('dashboard:refunds')
+        except Exception as e:
+            messages.error(request, f"Error processing request: {str(e)}")
+            return redirect('dashboard:request_refund')
+            
+    context = {
+        'active_page': 'refunds',
+        'tier_limit': TIER_LIMITS.get(request.user.profile.account_level, Decimal('2500.00'))
+    }
+    return render(request, 'dashboard/request_refund.html', context)
+
+@login_required
+def upgrade_account(request):
+    if request.method == 'POST':
+        new_tier = request.POST.get('tier')
+        if new_tier in dict(request.user.profile.ACCOUNT_TIERS):
+            profile = request.user.profile
+            profile.account_level = new_tier
+            profile.save()
+            messages.success(request, f"Successfully upgraded to {new_tier.title()} account!")
+            return redirect('dashboard:overview')
+    
+    context = {
+        'active_page': 'overview',
+        'tiers': [
+            {'id': 'basic', 'name': 'Basic', 'limit': TIER_LIMITS['basic'], 'price': 'Free'},
+            {'id': 'bronze', 'name': 'Bronze', 'limit': TIER_LIMITS['bronze'], 'price': '$9.99/mo'},
+            {'id': 'silver', 'name': 'Silver', 'limit': TIER_LIMITS['silver'], 'price': '$19.99/mo'},
+            {'id': 'gold', 'name': 'Gold', 'limit': TIER_LIMITS['gold'], 'price': '$49.99/mo'},
+            {'id': 'premium', 'name': 'Premium', 'limit': TIER_LIMITS['premium'], 'price': '$99.99/mo'},
+        ],
+        'current_tier': request.user.profile.account_level
+    }
+    return render(request, 'dashboard/upgrade.html', context)
 
 @login_required
 def settings_view(request):

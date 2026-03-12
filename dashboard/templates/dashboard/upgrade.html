@@ -1,0 +1,86 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}Upgrade Account | ProBank{% endblock %}
+
+{% block dashboard_content %}
+<div class="max-w-6xl mx-auto">
+    <!-- Header Section -->
+    <div class="text-center mb-16">
+        <h1 class="text-4xl font-black text-slate-900 dark:text-white mb-4 uppercase tracking-tight">Elevate Your Banking Experience</h1>
+        <p class="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto font-medium">Unlock higher refund limits, priority processing, and exclusive financial tools with ProBank Tiers.</p>
+    </div>
+
+    <!-- Pricing Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6">
+        {% for tier in tiers %}
+        <div class="relative bg-white dark:bg-slate-900 border {% if tier.id == current_tier %}border-primary shadow-xl ring-1 ring-primary/20{% else %}border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/30{% endif %} rounded-3xl p-6 transition-all duration-300 flex flex-col">
+            
+            {% if tier.id == current_tier %}
+            <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-lg">
+                Current Plan
+            </div>
+            {% endif %}
+
+            <div class="mb-8">
+                <h3 class="text-xl font-black text-slate-900 dark:text-white mb-1 uppercase tracking-tighter">{{ tier.name }}</h3>
+                <div class="flex items-baseline gap-1 mb-4">
+                    <span class="text-2xl font-black text-primary">{{ tier.price }}</span>
+                    {% if tier.id != 'basic' %}<span class="text-xs text-slate-400 font-bold uppercase tracking-tighter">/month</span>{% endif %}
+                </div>
+                <div class="h-px w-full bg-slate-100 dark:bg-white/5 mb-6"></div>
+                
+                <ul class="space-y-4 mb-8">
+                    <li class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-primary text-lg">verified</span>
+                        <div>
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Refund Limit</p>
+                            <p class="text-sm font-bold text-slate-700 dark:text-slate-300">${{ tier.limit|floatformat:0 }} Max</p>
+                        </div>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <span class="material-symbols-outlined {% if tier.id == 'basic' %}text-slate-300{% else %}text-primary{% endif %} text-lg">
+                            {% if tier.id == 'basic' %}lock{% else %}check_circle{% endif %}
+                        </span>
+                        <span class="text-xs {% if tier.id == 'basic' %}text-slate-400{% else %}text-slate-600 dark:text-slate-400{% endif %} font-medium">Priority Support</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <span class="material-symbols-outlined {% if tier.id == 'basic' or tier.id == 'bronze' %}text-slate-300{% else %}text-primary{% endif %} text-lg">
+                            {% if tier.id == 'basic' or tier.id == 'bronze' %}lock{% else %}check_circle{% endif %}
+                        </span>
+                        <span class="text-xs {% if tier.id == 'basic' or tier.id == 'bronze' %}text-slate-400{% else %}text-slate-600 dark:text-slate-400{% endif %} font-medium">Instant Approvals</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="mt-auto">
+                {% if tier.id == current_tier %}
+                <button disabled class="w-full py-3 bg-slate-100 dark:bg-white/5 text-slate-400 rounded-xl font-black text-xs uppercase tracking-widest cursor-not-allowed">
+                    Active
+                </button>
+                {% else %}
+                <form action="{% url 'dashboard:upgrade_account' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="tier" value="{{ tier.id }}">
+                    <button type="submit" class="w-full py-3 bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-primary/20 hover:bg-primary hover:text-white hover:border-primary rounded-xl font-black text-xs uppercase tracking-widest transition-all shadow-sm">
+                        Upgrade
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Info Section -->
+    <div class="mt-20 bg-primary/5 border border-primary/10 rounded-3xl p-10 flex flex-col md:flex-row items-center gap-10">
+        <div class="size-20 bg-white dark:bg-slate-800 rounded-2xl flex items-center justify-center text-primary shadow-xl border border-primary/10">
+            <span class="material-symbols-outlined text-4xl">security</span>
+        </div>
+        <div class="flex-1 text-center md:text-left">
+            <h4 class="text-xl font-black text-slate-900 dark:text-white mb-2 uppercase tracking-tight">Need a Custom Enterprise Plan?</h4>
+            <p class="text-slate-500 dark:text-slate-400 text-sm font-medium">If your recovery needs exceed $50,000, contact our institutional banking team for white-glove service and dedicated account management.</p>
+        </div>
+        <a href="mailto:support@probank.com" class="bg-primary text-white px-8 py-4 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">Contact Us</a>
+    </div>
+</div>
+{% endblock %}

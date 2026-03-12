@@ -135,8 +135,12 @@
                         </div>
                         <div class="flex flex-col overflow-hidden">
                             <p class="text-sm font-bold truncate">{{ user.first_name|default:user.username }}</p>
-                            <p class="text-[10px] text-primary/70 font-medium uppercase tracking-wider">Premium Member
-                            </p>
+                            <div class="flex items-center gap-1">
+                                <span class="text-[9px] text-primary font-black uppercase tracking-tighter px-1.5 py-0.5 bg-primary/10 rounded">{{ user.profile.account_level }}</span>
+                                <a href="{% url 'dashboard:upgrade_account' %}" class="text-[8px] text-slate-400 hover:text-primary font-bold uppercase tracking-widest transition-colors flex items-center gap-0.5">
+                                    UPGRADE <span class="material-symbols-outlined text-[10px]">arrow_forward</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                     {% if user.profile.kyc_status == 'verified' %}

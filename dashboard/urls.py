@@ -16,4 +16,5 @@ urlpatterns = [
     path('health/', views.health_check, name='health_check'),
     path('withdrawals/', views.withdrawal_history_view, name='withdrawal_history'),
     path('export/', views.export_transactions, name='export_transactions'),
+    path('upgrade/', views.upgrade_account, name='upgrade_account'),
 ]

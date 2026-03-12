@@ -9,6 +9,13 @@ class UserProfile(models.Model):
         ('pending', 'Pending Verification'),
         ('verified', 'Verified'),
     )
+    ACCOUNT_TIERS = (
+        ('basic', 'Basic'),
+        ('bronze', 'Bronze'),
+        ('silver', 'Silver'),
+        ('gold', 'Gold'),
+        ('premium', 'Premium'),
+    )
     ID_TYPES = (
         ('national_id', 'National ID Card'),
         ('passport', 'Passport'),
@@ -19,6 +26,7 @@ class UserProfile(models.Model):
     bio = models.TextField(max_length=500, blank=True)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
     kyc_status = models.CharField(max_length=20, choices=KYC_STATUS, default='unverified')
+    account_level = models.CharField(max_length=20, choices=ACCOUNT_TIERS, default='basic')
     id_type = models.CharField(max_length=20, choices=ID_TYPES, blank=True)
     id_front = models.ImageField(upload_to='kyc_docs/', null=True, blank=True)
     id_back = models.ImageField(upload_to='kyc_docs/', null=True, blank=True)
