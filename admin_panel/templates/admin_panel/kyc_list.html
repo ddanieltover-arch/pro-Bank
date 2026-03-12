@@ -1,0 +1,76 @@
+{% extends "admin_panel/base_admin.html" %}
+
+{% block admin_content %}
+<div class="flex flex-col gap-10">
+    <div class="flex flex-col gap-2">
+        <h1 class="text-3xl font-black text-slate-900 dark:text-white uppercase">User KYC Requests</h1>
+        <p class="text-slate-500 font-medium">Review and verify user identity documents.</p>
+    </div>
+
+    <div class="bg-white dark:bg-slate-900 rounded-3xl border border-primary/10 overflow-hidden shadow-sm">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-slate-50 dark:bg-primary/5">
+                    <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest">User</th>
+                    <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest">ID Type</th>
+                    <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest">Documents</th>
+                    <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-primary/5">
+                {% for user_obj in pending_kyc %}
+                <tr class="hover:bg-slate-50/50 dark:hover:bg-primary/5 transition-colors">
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center font-black text-primary">
+                                {{ user_obj.username|slice:":1"|upper }}
+                            </div>
+                            <div>
+                                <p class="text-sm font-black text-slate-900 dark:text-white">{{ user_obj.get_full_name|default:user_obj.username }}</p>
+                                <p class="text-[10px] text-slate-500 font-medium">{{ user_obj.email }}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-[10px] font-black uppercase text-slate-600 dark:text-slate-400">
+                            {{ user_obj.profile.id_type|replace:"_, "|title }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="flex gap-2">
+                            {% if user_obj.profile.id_front %}
+                            <a href="{{ user_obj.profile.id_front.url }}" target="_blank" class="text-[10px] font-black text-primary hover:underline">Front ID</a>
+                            {% endif %}
+                            {% if user_obj.profile.id_back %}
+                            <span class="text-slate-300">|</span>
+                            <a href="{{ user_obj.profile.id_back.url }}" target="_blank" class="text-[10px] font-black text-primary hover:underline">Back ID</a>
+                            {% endif %}
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <form method="POST" action="{% url 'admin_panel:kyc_action' user_obj.id %}" class="flex justify-end gap-2">
+                            {% csrf_token %}
+                            <button name="action" value="reject" class="size-8 rounded-lg border border-rose-200 text-rose-600 hover:bg-rose-50 flex items-center justify-center transition-all">
+                                <span class="material-symbols-outlined text-sm">close</span>
+                            </button>
+                            <button name="action" value="approve" class="size-8 rounded-lg bg-emerald-500 text-white hover:bg-emerald-600 flex items-center justify-center transition-all shadow-lg shadow-emerald-500/20">
+                                <span class="material-symbols-outlined text-sm">check</span>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="px-6 py-20 text-center">
+                        <div class="flex flex-col items-center gap-4">
+                            <span class="material-symbols-outlined text-4xl text-slate-300">verified_user</span>
+                            <p class="text-sm font-bold text-slate-500 tracking-tight">No pending KYC requests at the moment.</p>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

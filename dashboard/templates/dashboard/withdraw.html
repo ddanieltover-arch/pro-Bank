@@ -9,7 +9,9 @@
         <p class="text-slate-500 dark:text-slate-400 font-medium max-w-2xl">Move money from your secure ProBank account to your preferred external account or wallet.</p>
     </div>
 
-    <form method="POST" action="{% url 'dashboard:withdraw' %}" class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+    <form method="POST" action="{% url 'dashboard:withdraw' %}" 
+          x-data="{ amount: 0, currentBalance: {{ primary_account.balance|default:0 }}, destinationBank: '', destinationAccount: '' }" 
+          class="grid grid-cols-1 lg:grid-cols-3 gap-10">
         {% csrf_token %}
         <!-- Main Form -->
         <div class="lg:col-span-2 space-y-8">
@@ -18,33 +20,49 @@
                 <label class="block text-xs font-black text-slate-500 uppercase tracking-widest mb-6">Amount to Withdraw</label>
                 <div class="relative">
                     <span class="absolute left-6 top-1/2 -translate-y-1/2 text-4xl font-black text-primary">$</span>
-                    <input name="amount" type="number" step="0.01" class="w-full h-24 pl-12 pr-6 rounded-2xl border border-primary/20 bg-slate-50/50 dark:bg-primary/5 text-5xl font-black text-slate-900 dark:text-white focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all outline-none" placeholder="0.00" required>
+                    <input name="amount" type="number" step="0.01" x-model.number="amount"
+                           class="w-full h-24 pl-12 pr-6 rounded-2xl border border-primary/20 bg-slate-50/50 dark:bg-primary/5 text-5xl font-black text-slate-900 dark:text-white focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all outline-none" placeholder="0.00" required>
+                </div>
+                <!-- Balance Warning -->
+                <div x-show="amount > currentBalance" x-transition class="mt-4 flex items-center gap-2 text-rose-600 bg-rose-50 dark:bg-rose-900/20 p-3 rounded-xl">
+                    <span class="material-symbols-outlined text-sm">error</span>
+                    <p class="text-xs font-bold uppercase tracking-tight">Insufficient Balance (Available: ${{ primary_account.balance|default:0 }})</p>
                 </div>
             </div>
 
-            <!-- Withdrawal Method -->
-            <div class="bg-white dark:bg-background-dark p-8 rounded-2xl border border-primary/10 shadow-sm">
-                <h3 class="text-lg font-black text-slate-900 dark:text-white mb-8 border-b border-primary/5 pb-4">Select Withdrawal Method</h3>
+            <!-- Destination Details -->
+            <div class="bg-white dark:bg-background-dark p-8 rounded-2xl border border-primary/10 shadow-sm space-y-6">
+                <h3 class="text-lg font-black text-slate-900 dark:text-white mb-2 border-b border-primary/5 pb-4 uppercase tracking-tighter">Destination Bank Details</h3>
                 
-                <!-- Saved Bank Accounts -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-                    {% for account in accounts %}
-                    <label class="p-4 rounded-xl border-2 border-primary bg-primary/5 hover:bg-primary/10 flex items-center justify-between cursor-pointer group transition-all relative">
-                        <input type="radio" name="account" value="{{ account.id }}" class="absolute inset-0 opacity-0 cursor-pointer" required {% if forloop.first %}checked{% endif %}>
-                        <div class="flex items-center gap-3">
-                            <div class="size-10 bg-white dark:bg-background-dark rounded-lg flex items-center justify-center shadow-sm border border-primary/10">
-                                <span class="material-symbols-outlined text-primary">account_balance</span>
-                            </div>
-                            <div>
-                                <p class="text-sm font-black text-slate-900 dark:text-white">{{ account.account_type|title }}</p>
-                                <p class="text-[10px] text-slate-500 font-bold">•••• {{ account.account_number|slice:"-4:" }}</p>
-                            </div>
-                        </div>
-                    </label>
-                    {% endfor %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Bank Name</label>
+                        <input type="text" name="destination_bank" x-model="destinationBank" required
+                               class="w-full p-4 rounded-xl border border-primary/10 bg-slate-50 dark:bg-primary/5 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                               placeholder="e.g. Chase, Wells Fargo">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Account Number / IBAN</label>
+                        <input type="text" name="destination_account" x-model="destinationAccount" required
+                               class="w-full p-4 rounded-xl border border-primary/10 bg-slate-50 dark:bg-primary/5 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                               placeholder="1234567890">
+                    </div>
                 </div>
+            </div>
 
-                <p class="text-[10px] text-slate-500 font-bold mt-4 italic">* For security, withdrawals are only permitted to verified accounts.</p>
+            <!-- Withdrawal Method (Hidden selection if only one, but showing for context) -->
+            <div class="bg-white dark:bg-background-dark p-8 rounded-2xl border border-primary/10 shadow-sm opacity-50 grayscale pointer-events-none">
+                <h3 class="text-lg font-black text-slate-900 dark:text-white mb-8 border-b border-primary/5 pb-4">Funding Source</h3>
+                <div class="flex items-center gap-3">
+                    <div class="size-10 bg-white dark:bg-background-dark rounded-lg flex items-center justify-center shadow-sm border border-primary/10">
+                        <span class="material-symbols-outlined text-primary">account_balance</span>
+                    </div>
+                    <div>
+                        <p class="text-sm font-black text-slate-900 dark:text-white">{{ primary_account.account_type|title }}</p>
+                        <p class="text-[10px] text-slate-500 font-bold">•••• {{ primary_account.account_number|slice:"-4:" }}</p>
+                    </div>
+                </div>
+                <input type="hidden" name="account" value="{{ primary_account.id }}">
             </div>
         </div>
 
@@ -54,11 +72,18 @@
                 <h3 class="text-lg font-black text-slate-900 dark:text-white mb-8">Withdrawal Summary</h3>
                 <div class="space-y-6 mb-10 text-sm font-bold">
                     <div class="flex justify-between items-center text-sm font-medium">
+                        <span class="text-slate-500">Amount</span>
+                        <span class="text-slate-900 dark:text-white">$<span x-text="amount || '0.00'"></span></span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm font-medium">
                         <span class="text-slate-500">Transfer Fee</span>
                         <span class="text-green-600 dark:text-green-400 font-bold">FREE</span>
                     </div>
                 </div>
-                <button type="submit" class="w-full h-16 bg-primary text-white font-black rounded-xl shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all flex items-center justify-center gap-3">
+                <button type="submit" 
+                        :disabled="amount <= 0 || amount > currentBalance || !destinationBank || !destinationAccount"
+                        :class="(amount <= 0 || amount > currentBalance || !destinationBank || !destinationAccount) ? 'opacity-50 cursor-not-allowed bg-slate-400' : 'bg-primary hover:primary/90 shadow-primary/20'"
+                        class="w-full h-16 text-white font-black rounded-xl shadow-lg transition-all flex items-center justify-center gap-3">
                     <span class="material-symbols-outlined">verified_user</span>
                     Confirm Withdrawal
                 </button>

@@ -3,46 +3,48 @@
 
 {% block admin_content %}
 <!-- KPI Cards -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
     <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/5 shadow-sm">
-        <div class="flex items-center justify-between mb-4">
-            <div class="p-2 bg-primary/10 rounded-lg text-primary">
-                <span class="material-symbols-outlined">group</span>
-            </div>
+        <div class="p-2 bg-primary/10 rounded-lg text-primary w-min mb-4">
+            <span class="material-symbols-outlined">group</span>
         </div>
-        <p class="text-slate-500 text-sm font-medium">Total Users</p>
-        <h3 class="text-2xl font-bold mt-1">{{ total_users }}</h3>
+        <p class="text-slate-500 text-[10px] font-black uppercase tracking-widest">Total Users</p>
+        <h3 class="text-2xl font-black mt-1">{{ total_users }}</h3>
     </div>
     <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/5 shadow-sm">
-        <div class="flex items-center justify-between mb-4">
-            <div class="p-2 bg-primary/10 rounded-lg text-primary">
-                <span class="material-symbols-outlined">pending_actions</span>
-            </div>
+        <div class="p-2 bg-amber-500/10 rounded-lg text-amber-600 w-min mb-4">
+            <span class="material-symbols-outlined">pending_actions</span>
         </div>
-        <p class="text-slate-500 text-sm font-medium">Pending Refunds</p>
-        <h3 class="text-2xl font-bold mt-1">{{ pending_refunds }}</h3>
+        <p class="text-slate-500 text-[10px] font-black uppercase tracking-widest">Pending Refunds</p>
+        <h3 class="text-2xl font-black mt-1">{{ pending_refunds }}</h3>
     </div>
     <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/5 shadow-sm">
-        <p class="text-slate-500 text-sm font-medium">Total Processed</p>
-        <h3 class="text-2xl font-bold mt-1">${{ total_processed }}</h3>
+        <div class="p-2 bg-emerald-500/10 rounded-lg text-emerald-600 w-min mb-4">
+            <span class="material-symbols-outlined">payments</span>
+        </div>
+        <p class="text-slate-500 text-[10px] font-black uppercase tracking-widest">Total Processed</p>
+        <h3 class="text-2xl font-black mt-1">${{ total_processed|floatformat:2 }}</h3>
     </div>
     <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/5 shadow-sm">
-        <div class="flex items-center justify-between mb-4">
-            <div class="p-2 bg-primary/10 rounded-lg text-primary">
-                <span class="material-symbols-outlined">payments</span>
-            </div>
+        <div class="p-2 bg-blue-500/10 rounded-lg text-blue-600 w-min mb-4">
+            <span class="material-symbols-outlined">verified_user</span>
         </div>
-        <p class="text-slate-500 text-sm font-medium">Total Processed</p>
-        <h3 class="text-2xl font-bold mt-1">${{ total_processed }}</h3>
+        <p class="text-slate-500 text-[10px] font-black uppercase tracking-widest">Pending KYC</p>
+        <h3 class="text-2xl font-black mt-1">{{ pending_kyc }}</h3>
     </div>
     <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/5 shadow-sm">
-        <div class="flex items-center justify-between mb-4">
-            <div class="p-2 bg-primary/10 rounded-lg text-primary">
-                <span class="material-symbols-outlined">gavel</span>
-            </div>
+        <div class="p-2 bg-purple-500/10 rounded-lg text-purple-600 w-min mb-4">
+            <span class="material-symbols-outlined">credit_card</span>
         </div>
-        <p class="text-slate-500 text-sm font-medium">Active Disputes</p>
-        <h3 class="text-2xl font-bold mt-1">{{ active_disputes }}</h3>
+        <p class="text-slate-500 text-[10px] font-black uppercase tracking-widest">Pending Cards</p>
+        <h3 class="text-2xl font-black mt-1">{{ pending_cards }}</h3>
+    </div>
+    <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/5 shadow-sm">
+        <div class="p-2 bg-rose-500/10 rounded-lg text-rose-600 w-min mb-4">
+            <span class="material-symbols-outlined">gavel</span>
+        </div>
+        <p class="text-slate-500 text-[10px] font-black uppercase tracking-widest">Active Disputes</p>
+        <h3 class="text-2xl font-black mt-1">{{ active_disputes }}</h3>
     </div>
 </div>
 

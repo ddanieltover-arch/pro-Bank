@@ -1,29 +1,85 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Sum
 from decimal import Decimal
-from .models import BankAccount, Transaction, RefundRequest
+from .models import BankAccount, Transaction, RefundRequest, BankCard
 from .forms import RefundRequestForm
 from accounts.forms import UserForm, UserProfileForm
+from django.utils import timezone
+from datetime import timedelta
+import random
+import csv
+
+def kyc_required(view_func):
+    def _wrapped_view_func(request, *args, **kwargs):
+        if request.user.profile.kyc_status != 'verified':
+            messages.warning(request, "Please complete your KYC verification to perform this action.")
+            return redirect('dashboard:overview')
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view_func
+
+@login_required
+def kyc_upload(request):
+    if request.method == 'POST':
+        profile = request.user.profile
+        profile.id_type = request.POST.get('id_type')
+        profile.id_front = request.FILES.get('id_front')
+        profile.id_back = request.FILES.get('id_back')
+        profile.kyc_status = 'pending'
+        profile.save()
+        messages.info(request, "Identity documents submitted for verification.")
+        return redirect('dashboard:overview')
+    return render(request, 'dashboard/kyc.html', {'active_page': 'overview'})
+
+@login_required
+@kyc_required
+def generate_card(request):
+    if request.method == 'POST':
+        card_type = request.POST.get('card_type', 'virtual')
+        # Generate card details
+        num = "".join([str(random.randint(0, 9)) for _ in range(16)])
+        expiry = (timezone.now() + timedelta(days=365*5)).strftime("%m/%y")
+        cvv = "".join([str(random.randint(0, 9)) for _ in range(3)])
+        
+        BankCard.objects.create(
+            user=request.user,
+            card_type=card_type,
+            card_number=num,
+            expiry_date=expiry,
+            cvv=cvv,
+            status='pending'
+        )
+        messages.success(request, f"New {card_type} card requested. Awaiting administrator approval.")
+        return redirect('dashboard:cards')
+    return redirect('dashboard:cards')
 
 @login_required
 def overview(request):
     accounts = BankAccount.objects.filter(user=request.user)
-    primary_account = accounts.first()
-    total_balance = accounts.aggregate(Sum('balance'))['balance__sum'] or 0
+    # Ensure checking account exists
+    if not accounts.filter(account_type='checking').exists() and not request.user.is_staff:
+        acc_num = "".join([str(random.randint(0, 9)) for _ in range(12)])
+        BankAccount.objects.create(
+            user=request.user,
+            name="Checking Account",
+            account_type='checking',
+            account_number=acc_num,
+            balance=Decimal("0.00")
+        )
     
-    # Get recent transactions across all accounts
+    primary_account = accounts.filter(account_type='checking').first()
+    total_balance = accounts.aggregate(Sum('balance'))['balance__sum'] or Decimal("0.00")
+    
     recent_transactions = Transaction.objects.filter(
         account__user=request.user
     ).order_by('-date')[:5]
     
-    # Get pending refunds count and total
     pending_refunds = RefundRequest.objects.filter(user=request.user, status='pending')
     pending_count = pending_refunds.count()
-    pending_total = pending_refunds.aggregate(Sum('amount'))['amount__sum'] or 0
+    pending_total = pending_refunds.aggregate(Sum('amount'))['amount__sum'] or Decimal("0.00")
     
-    # Refund Breakdown (simplified for UI)
     all_refunds = RefundRequest.objects.filter(user=request.user)
     total_refunds_count = all_refunds.count()
     recovered_count = all_refunds.filter(status='approved').count()
@@ -48,30 +104,43 @@ def overview(request):
         'in_process_count': in_process_count,
         'recovered_percent': recovered_percent,
         'in_process_percent': in_process_percent,
-        'routing_number': '123456789', # Standard placeholder
+        'routing_number': '123456789',
     }
     return render(request, 'dashboard/overview.html', context)
+
+def health_check(request):
+    return HttpResponse("OK", content_type="text/plain")
 
 @login_required
 def accounts_view(request):
     accounts = BankAccount.objects.filter(user=request.user)
-    total_balance = accounts.aggregate(Sum('balance'))['balance__sum'] or 0
-    # For simplicity, we'll show transactions for the first account or all
     transactions = Transaction.objects.filter(account__user=request.user).order_by('-date')
-    
-    context = {
+    total_balance = accounts.aggregate(Sum('balance'))['balance__sum'] or Decimal("0.00")
+    return render(request, 'dashboard/accounts.html', {
         'active_page': 'accounts',
         'accounts': accounts,
         'transactions': transactions,
-        'total_balance': total_balance,
-    }
-    return render(request, 'dashboard/accounts.html', context)
+        'total_balance': total_balance
+    })
+
+@login_required
+def add_account(request):
+    if request.method == 'POST':
+        account_type = request.POST.get('account_type', 'checking')
+        acc_num = "".join([str(random.randint(0, 9)) for _ in range(12)])
+        BankAccount.objects.create(
+            user=request.user,
+            name=f"{account_type.title()} Account",
+            account_type=account_type,
+            account_number=acc_num,
+            balance=Decimal("0.00")
+        )
+        messages.success(request, f"New {account_type} account created successfully.")
+    return redirect('dashboard:accounts')
 
 @login_required
 def refunds(request):
     refund_requests = RefundRequest.objects.filter(user=request.user).order_by('-created_at')
-    
-    # Stats for the refunds page
     pending_count = refund_requests.filter(status='pending').count()
     approved_count = refund_requests.filter(status='approved').count()
     disputed_count = refund_requests.filter(status='disputed').count()
@@ -86,159 +155,119 @@ def refunds(request):
     return render(request, 'dashboard/refunds.html', context)
 
 @login_required
+def request_refund(request):
+    if request.method == 'POST':
+        order_id = request.POST.get('order_id')
+        amount = request.POST.get('amount')
+        reason = request.POST.get('reason')
+        details = request.POST.get('description')
+        proof = request.FILES.get('evidence')
+        
+        RefundRequest.objects.create(
+            user=request.user,
+            order_id=order_id,
+            amount=Decimal(amount),
+            reason=reason,
+            details=details,
+            proof_file=proof
+        )
+        messages.success(request, "Refund request submitted successfully.")
+        return redirect('dashboard:refunds')
+    return render(request, 'dashboard/request_refund.html', {'active_page': 'refunds'})
+
+@login_required
 def settings_view(request):
     user = request.user
     profile = user.profile
     
     if request.method == 'POST':
-        user.first_name = request.POST.get('first_name', user.first_name)
-        user.last_name = request.POST.get('last_name', user.last_name)
-        user.save()
-        
-        profile.bio = request.POST.get('bio', profile.bio)
-        profile.email_notifications = 'email_notifications' in request.POST
-        profile.push_notifications = 'push_notifications' in request.POST
-        
-        if 'avatar' in request.FILES:
-            profile.avatar = request.FILES['avatar']
+        if 'change_password' in request.POST:
+            from django.contrib.auth.forms import PasswordChangeForm
+            from django.contrib.auth import update_session_auth_hash
+            form = PasswordChangeForm(user, request.POST)
+            if form.is_valid():
+                user = form.save()
+                update_session_auth_hash(request, user)
+                messages.success(request, 'Password updated.')
+            else:
+                messages.error(request, 'Error updating password.')
+        else:
+            user.first_name = request.POST.get('first_name', user.first_name)
+            user.last_name = request.POST.get('last_name', user.last_name)
+            user.save()
             
-        profile.save()
-        messages.success(request, 'Settings saved successfully.')
+            profile.bio = request.POST.get('bio', profile.bio)
+            if 'avatar' in request.FILES:
+                profile.avatar = request.FILES['avatar']
+            profile.save()
+            messages.success(request, 'Profile updated.')
         return redirect('dashboard:settings')
             
-    context = {
-        'active_page': 'settings',
-    }
-    return render(request, 'dashboard/settings.html', context)
+    return render(request, 'dashboard/settings.html', {'active_page': 'settings'})
 
 @login_required
-def add_account(request):
-    if request.method == 'POST':
-        account_type = request.POST.get('account_type', 'checking')
-        name = f"{account_type.title()} Account"
-        # Generate random account number
-        import random
-        acc_num = "".join([str(random.randint(0, 9)) for _ in range(12)])
-        
-        BankAccount.objects.create(
-            user=request.user,
-            name=name,
-            account_type=account_type,
-            account_number=acc_num,
-            balance=0.00
-        )
-        messages.success(request, f'New {account_type} account created successfully!')
-        return redirect('dashboard:accounts')
-    return redirect('dashboard:accounts')
-
-@login_required
-def request_refund(request):
-    if request.method == 'POST':
-        form = RefundRequestForm(request.POST, request.FILES)
-        if form.is_valid():
-            refund = form.save(commit=False)
-            refund.user = request.user
-            refund.save()
-            messages.success(request, f'Refund request for Order {refund.order_id} has been submitted.')
-            return redirect('dashboard:refunds')
-    else:
-        form = RefundRequestForm()
-        
-    context = {
-        'active_page': 'refunds',
-        'form': form,
-    }
-    return render(request, 'dashboard/request_refund.html', context)
-
-@login_required
-def cards_view(request):
-    # For now, we'll reuse recent transactions as placeholder for card activity
-    card_transactions = Transaction.objects.filter(
-        account__user=request.user,
-        amount__lt=0
-    ).order_by('-date')[:5]
-    
-    context = {
-        'active_page': 'cards',
-        'card_transactions': card_transactions,
-    }
-    return render(request, 'dashboard/cards.html', context)
-
-@login_required
+@kyc_required
 def transfer_view(request):
     accounts = BankAccount.objects.filter(user=request.user)
     if request.method == 'POST':
-        from_account_id = request.POST.get('from_account')
-        to_account_id = request.POST.get('to_account')
-        amount = request.POST.get('amount')
+        from_acc_id = request.POST.get('from_account')
+        to_acc_num = request.POST.get('to_account')
+        amount = Decimal(request.POST.get('amount', 0))
         
-        try:
-            from_account = BankAccount.objects.get(id=from_account_id, user=request.user)
-            amount_dec = Decimal(amount)
+        from_acc = get_object_or_404(BankAccount, id=from_acc_id, user=request.user)
+        
+        if from_acc.balance >= amount:
+            from_acc.balance -= amount
+            from_acc.save()
             
-            if from_account.balance >= amount_dec:
-                from_account.balance -= amount_dec
-                from_account.save()
-                
-                # Create transaction
+            Transaction.objects.create(
+                account=from_acc,
+                description=f"Transfer to {to_acc_num}",
+                amount=-amount,
+                category="Transfer",
+                status="success"
+            )
+            
+            # If internal transfer
+            to_acc = BankAccount.objects.filter(account_number=to_acc_num).first()
+            if to_acc:
+                to_acc.balance += amount
+                to_acc.save()
                 Transaction.objects.create(
-                    account=from_account,
-                    description=f"Transfer to {to_account_id}",
-                    amount=-amount_dec,
+                    account=to_acc,
+                    description=f"Transfer from {from_acc.account_number}",
+                    amount=amount,
                     category="Transfer",
                     status="success"
                 )
-                
-                # If internal transfer
-                try:
-                    to_account = BankAccount.objects.get(id=to_account_id, user=request.user)
-                    to_account.balance += amount_dec
-                    to_account.save()
-                    Transaction.objects.create(
-                        account=to_account,
-                        description=f"Transfer from {from_account.account_number}",
-                        amount=amount_dec,
-                        category="Transfer",
-                        status="success"
-                    )
-                except:
-                    # External transfer simulation
-                    pass
-                    
-                messages.success(request, f"Successfully transferred ${amount_dec}!")
-                return redirect('dashboard:transfer_history')
-            else:
-                messages.error(request, "Insufficient funds.")
-        except Exception as e:
-            messages.error(request, f"Error: {str(e)}")
-
-    context = {
-        'active_page': 'transfer',
-        'accounts': accounts,
-    }
-    return render(request, 'dashboard/transfer.html', context)
+            
+            messages.success(request, "Transfer successful.")
+            return redirect('dashboard:transfer_history')
+        else:
+            messages.error(request, "Insufficient funds.")
+            
+    return render(request, 'dashboard/transfer.html', {'active_page': 'transfer', 'accounts': accounts})
 
 @login_required
 def transfer_history_view(request):
     transfers = Transaction.objects.filter(
         account__user=request.user,
-        description__icontains='Transfer'
+        category="Transfer"
     ).order_by('-date')
-    context = {
-        'active_page': 'transfers',
-        'transfers': transfers,
-    }
-    return render(request, 'dashboard/transfer_history.html', context)
+    return render(request, 'dashboard/transfer_history.html', {'active_page': 'transfers', 'transfers': transfers})
 
 @login_required
+@kyc_required
 def withdraw_view(request):
     accounts = BankAccount.objects.filter(user=request.user)
+    primary_account = accounts.first()
     if request.method == 'POST':
-        account_id = request.POST.get('account')
         amount = request.POST.get('amount')
+        dest_bank = request.POST.get('destination_bank')
+        dest_acc = request.POST.get('destination_account')
         
         try:
-            account = BankAccount.objects.get(id=account_id, user=request.user)
+            account = primary_account # Defaulting to primary for simplified UI
             amount_dec = Decimal(amount)
             
             if account.balance >= amount_dec:
@@ -247,27 +276,30 @@ def withdraw_view(request):
                 
                 Transaction.objects.create(
                     account=account,
-                    description="Withdrawal",
+                    description=f"Withdrawal to {dest_bank}",
                     amount=-amount_dec,
                     category="Withdrawal",
-                    status="success"
+                    status="pending", # Start as pending
+                    destination_bank=dest_bank,
+                    destination_account=dest_acc
                 )
                 
-                messages.success(request, f"Withdrawal of ${amount_dec} initiated successfully!")
+                # Notify admin
+                from admin_panel.models import SystemLog
+                SystemLog.objects.create(
+                    target_user=request.user,
+                    action='withdraw_funds',
+                    details=f"User {request.user.username} requested withdrawal of ${amount_dec} to {dest_bank}."
+                )
+                
+                messages.success(request, f"Withdrawal request for ${amount_dec} submitted!")
                 return redirect('dashboard:withdrawal_history')
             else:
                 messages.error(request, "Insufficient funds.")
         except Exception as e:
             messages.error(request, f"Error: {str(e)}")
 
-    context = {
-        'active_page': 'withdraw',
-        'accounts': accounts,
-    }
-    return render(request, 'dashboard/withdraw.html', context)
-
-import csv
-from django.http import HttpResponse
+    return render(request, 'dashboard/withdraw.html', {'active_page': 'withdraw', 'accounts': accounts, 'primary_account': primary_account})
 
 @login_required
 def export_transactions(request):
@@ -284,10 +316,26 @@ def export_transactions(request):
     return response
 
 @login_required
+def cards_view(request):
+    cards = BankCard.objects.filter(user=request.user).order_by('-created_at')
+    # For now, we'll reuse recent transactions as placeholder for card activity
+    card_transactions = Transaction.objects.filter(
+        account__user=request.user,
+        amount__lt=0
+    ).order_by('-date')[:5]
+    
+    context = {
+        'active_page': 'cards',
+        'cards': cards,
+        'card_transactions': card_transactions,
+    }
+    return render(request, 'dashboard/cards.html', context)
+
+@login_required
 def withdrawal_history_view(request):
     withdrawals = Transaction.objects.filter(
         account__user=request.user,
-        description__icontains='Withdraw'
+        category='Withdrawal'
     ).order_by('-date')
     context = {
         'active_page': 'withdrawals',

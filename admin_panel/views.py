@@ -1,11 +1,13 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
-from django.contrib import messages
-from dashboard.models import BankAccount, Transaction, RefundRequest
-from .models import SystemLog
 from django.db.models import Sum
-from decimal import Decimal
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+from dashboard.models import BankAccount, Transaction, RefundRequest, BankCard
+from .models import SystemLog
 
 @staff_member_required
 def dashboard(request):
@@ -14,6 +16,8 @@ def dashboard(request):
         'pending_refunds': RefundRequest.objects.filter(status='pending').count(),
         'total_processed': Transaction.objects.filter(status='success').aggregate(Sum('amount'))['amount__sum'] or 0,
         'active_disputes': RefundRequest.objects.filter(status='disputed').count(),
+        'pending_kyc': User.objects.filter(profile__kyc_status='pending').count(),
+        'pending_cards': BankCard.objects.filter(status='pending').count(),
         'recent_refunds': RefundRequest.objects.all().order_by('-created_at')[:5],
         'recent_logs': SystemLog.objects.all().order_by('-timestamp')[:10],
     }
@@ -27,66 +31,146 @@ def users(request):
 @staff_member_required
 def user_detail(request, user_id):
     target_user = get_object_or_404(User, id=user_id)
-    accounts = target_user.accounts.all()
-    recent_transactions = Transaction.objects.filter(account__user=target_user).order_by('-date')[:10]
-    return render(request, 'admin_panel/user_detail.html', {
-        'target_user': target_user,
-        'accounts': accounts,
-        'recent_transactions': recent_transactions
-    })
+    return render(request, 'admin_panel/user_detail.html', {'target_user': target_user})
 
 @staff_member_required
 def adjust_balance(request, user_id):
+    target_user = get_object_or_404(User, id=user_id)
     if request.method == 'POST':
-        target_user = get_object_or_404(User, id=user_id)
-        account_id = request.POST.get('account_id')
         amount = float(request.POST.get('amount', 0))
-        action = request.POST.get('action') # 'add' or 'withdraw'
-        
-        account = get_object_or_404(BankAccount, id=account_id, user=target_user)
-        
-        if action == 'add':
-            account.balance += (Decimal(amount) if isinstance(amount, float) else amount)
-            msg = f"Added ${amount} to {account.name}"
-            log_action = 'add_funds'
-        else:
-            account.balance -= (Decimal(amount) if isinstance(amount, float) else amount)
-            msg = f"Withdrawn ${amount} from {account.name}"
-            log_action = 'withdraw_funds'
-            
-        account.save()
-        
-        # Log the action
-        SystemLog.objects.create(
-            admin=request.user,
-            target_user=target_user,
-            action=log_action,
-            details=f"{msg} (New Balance: ${account.balance})"
-        )
-        
-        messages.success(request, msg)
-        return redirect('admin_panel:user_detail', user_id=user_id)
-    return redirect('admin_panel:users')
+        account = BankAccount.objects.filter(user=target_user).first()
+        if account:
+            account.balance += amount
+            account.save()
+            Transaction.objects.create(
+                account=account,
+                description="Admin Adjustment",
+                amount=amount,
+                category="Adjustment",
+                status="success"
+            )
+            messages.success(request, f"Balance adjusted for {target_user.username}")
+    return redirect('admin_panel:user_detail', user_id=user_id)
 
 @staff_member_required
 def refunds(request):
-    refund_list = RefundRequest.objects.all().order_by('-created_at')
-    return render(request, 'admin_panel/refunds.html', {'refund_list': refund_list})
+    refunds_list = RefundRequest.objects.all().order_by('-created_at')
+    return render(request, 'admin_panel/refunds.html', {'refunds_list': refunds_list})
+
+@staff_member_required
+def refund_action(request, refund_id):
+    refund = get_object_or_404(RefundRequest, id=refund_id)
+    action = request.POST.get('action') # 'approve' or 'reject'
+    
+    if action == 'approve':
+        refund.status = 'approved'
+        # Add funds to user's primary account
+        account = BankAccount.objects.filter(user=refund.user).first()
+        if account:
+            account.balance += refund.amount
+            account.save()
+            Transaction.objects.create(
+                account=account,
+                description=f"Refund Approved: {refund.order_id}",
+                amount=refund.amount,
+                category="Refund",
+                status="success"
+            )
+        messages.success(request, f"Refund {refund.order_id} approved and balance updated.")
+    else:
+        refund.status = 'rejected'
+        messages.warning(request, f"Refund {refund.order_id} rejected.")
+    
+    refund.save()
+    return redirect('admin_panel:refunds')
+
+@staff_member_required
+def kyc_list(request):
+    pending_kyc = User.objects.filter(profile__kyc_status='pending')
+    return render(request, 'admin_panel/kyc_list.html', {'pending_kyc': pending_kyc})
+
+@staff_member_required
+def kyc_action(request, user_id):
+    target_user = get_object_or_404(User, id=user_id)
+    action = request.POST.get('action') # 'approve' or 'reject'
+    
+    if action == 'approve':
+        target_user.profile.kyc_status = 'verified'
+        target_user.profile.is_verified = True
+        messages.success(request, f"KYC for {target_user.username} approved.")
+    else:
+        target_user.profile.kyc_status = 'unverified'
+        messages.warning(request, f"KYC for {target_user.username} rejected.")
+    
+    target_user.profile.save()
+    return redirect('admin_panel:kyc_list')
+
+@staff_member_required
+def card_list(request):
+    pending_cards = BankCard.objects.filter(status='pending')
+    return render(request, 'admin_panel/card_list.html', {'pending_cards': pending_cards})
+
+@staff_member_required
+def card_action(request, card_id):
+    card = get_object_or_404(BankCard, id=card_id)
+    action = request.POST.get('action') # 'approve' or 'reject'
+    
+    if action == 'approve':
+        card.status = 'active'
+        messages.success(request, f"{card.card_type.title()} card approved.")
+    else:
+        card.status = 'declined'
+        messages.warning(request, f"{card.card_type.title()} card rejected.")
+    
+    card.save()
+    return redirect('admin_panel:card_list')
 
 @staff_member_required
 def transactions(request):
-    txn_list = Transaction.objects.all().order_by('-date')
-    return render(request, 'admin_panel/transactions.html', {'txn_list': txn_list})
-
-@staff_member_required
-def settings(request):
-    return render(request, 'admin_panel/settings.html')
-
-@staff_member_required
-def suspended(request):
-    return render(request, 'admin_panel/account_suspended.html')
+    transactions_list = Transaction.objects.all().order_by('-timestamp')[:50]
+    return render(request, 'admin_panel/transactions.html', {'transactions_list': transactions_list})
 
 @staff_member_required
 def system_logs(request):
-    logs = SystemLog.objects.all().order_by('-timestamp')
+    logs = SystemLog.objects.all().order_by('-timestamp')[:100]
     return render(request, 'admin_panel/system_logs.html', {'logs': logs})
+
+@staff_member_required
+def settings(request):
+    return render(request, 'admin_panel/settings.html', {'user': request.user})
+
+@staff_member_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('admin_panel:settings')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'admin_panel/settings.html', {'form': form})
+
+@staff_member_required
+def suspended(request):
+    suspended_users = User.objects.filter(is_active=False)
+    return render(request, 'admin_panel/suspended.html', {'suspended_users': suspended_users})
+
+def admin_login(request):
+    if request.user.is_authenticated and request.user.is_staff:
+        return redirect('admin_panel:dashboard')
+        
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None and user.is_staff:
+            login(request, user)
+            return redirect('admin_panel:dashboard')
+        else:
+            messages.error(request, 'Invalid credentials or non-staff account.')
+            
+    return render(request, 'admin_panel/login.html')

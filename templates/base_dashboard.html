@@ -7,6 +7,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>{% block title %}BankSecure Dashboard{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
         rel="stylesheet" />
     <link rel="stylesheet"
@@ -49,13 +50,23 @@
             white-space: nowrap;
             direction: ltr;
         }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        .animate-blink {
+            animation: blink 1.5s infinite;
+        }
     </style>
 </head>
 
-<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display" x-data="{ mobileMenu: false }">
     <div class="flex min-h-screen">
         <!-- Side Navigation -->
-        <aside class="w-64 border-r border-primary/10 bg-white dark:bg-background-dark flex flex-col fixed h-full z-50">
+        <aside 
+            :class="mobileMenu ? 'translate-x-0' : '-translate-x-full'"
+            class="w-64 border-r border-primary/10 bg-white dark:bg-background-dark flex flex-col fixed h-full z-50 transition-transform lg:translate-x-0">
             <div class="p-6 flex items-center gap-3">
                 <a href="/" class="flex items-center gap-3">
                     <div class="bg-primary rounded-lg p-1.5 text-white">
@@ -121,30 +132,29 @@
                             </p>
                         </div>
                     </div>
-                    <a href="{% url 'dashboard:request_refund' %}"
+                <a href="/dashboard/cards/"
                         class="w-full bg-primary text-white text-sm font-bold py-2 px-4 rounded-lg hover:bg-primary/90 transition-all flex items-center justify-center gap-2">
                         <span class="material-symbols-outlined text-sm">add</span> New Refund
                     </a>
                 </div>
-                <a href="{% url 'accounts:logout' %}"
-                    class="flex items-center gap-2 mt-4 px-3 py-2 text-xs font-bold text-slate-500 hover:text-primary transition-colors">
-                    <span class="material-symbols-outlined text-sm">logout</span> Sign Out
-                </a>
             </div>
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 ml-64 min-h-screen bg-background-light dark:bg-background-dark">
+        <main class="flex-1 lg:ml-64 min-h-screen bg-background-light dark:bg-background-dark">
             <!-- Header -->
             <header
-                class="h-16 border-b border-primary/10 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md flex items-center justify-between px-8 sticky top-0 z-40">
-                <div class="flex items-center gap-4 flex-1 max-w-xl">
-                    <div class="relative w-full">
+                class="h-16 border-b border-primary/10 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md flex items-center justify-between px-4 lg:px-8 sticky top-0 z-40">
+                <div class="flex items-center gap-4 flex-1">
+                    <button @click="mobileMenu = !mobileMenu" class="lg:hidden text-slate-600 dark:text-slate-400">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                    <div class="relative w-full max-w-xl hidden md:block">
                         <span
                             class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
                         <input
                             class="w-full bg-slate-100 dark:bg-primary/5 border-none rounded-lg py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20 focus:bg-white dark:focus:bg-background-dark transition-all"
-                            placeholder="Search transactions, refunds..." type="text" />
+                            placeholder="Search transactions..." type="text" />
                     </div>
                 </div>
                 <div class="flex items-center gap-3 ml-4">
@@ -153,14 +163,45 @@
                         <span class="material-symbols-outlined">notifications</span>
                     </button>
                     <div class="h-6 w-px bg-slate-200 dark:bg-primary/20 mx-2"></div>
-                    <div class="flex items-center gap-2">
-                        <div
-                            class="size-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs">
-                            {{ user.username|slice:":2"|upper }}
+                    <div class="relative" x-data="{ userMenu: false }">
+                        <button @click="userMenu = !userMenu" class="flex items-center gap-2 p-1 rounded-lg hover:bg-slate-100 transition-colors">
+                            <div class="size-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs uppercase">
+                                {{ user.username|slice:":2" }}
+                            </div>
+                            <span class="material-symbols-outlined text-slate-400 text-sm">expand_more</span>
+                        </button>
+                        <div x-show="userMenu" @click.away="userMenu = false" 
+                             class="absolute right-0 mt-2 w-48 bg-white dark:bg-background-dark border border-primary/10 rounded-xl shadow-xl z-[60] py-2">
+                            <div class="px-4 py-2 border-b border-slate-100 dark:border-primary/10 mb-2">
+                                <p class="text-xs font-bold text-slate-900 dark:text-white truncate">{{ user.username }}</p>
+                                <p class="text-[10px] text-slate-500 truncate">{{ user.email }}</p>
+                            </div>
+                            <a href="{% url 'dashboard:settings' %}" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-primary/5 transition-colors">
+                                <span class="material-symbols-outlined text-sm">settings</span> Settings
+                            </a>
+                            <a href="{% url 'accounts:logout' %}" class="flex items-center gap-3 px-4 py-2 text-sm text-primary hover:bg-primary/5 transition-colors font-bold">
+                                <span class="material-symbols-outlined text-sm">logout</span> Sign Out
+                            </a>
                         </div>
                     </div>
                 </div>
             </header>
+
+            <!-- KYC Prompt -->
+            {% if user.profile.kyc_status == 'unverified' %}
+            <div class="bg-red-500/10 border-b border-red-500/20 px-8 py-3 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-red-500 animate-blink">warning</span>
+                    <p class="text-xs font-bold text-red-600 uppercase tracking-wider animate-blink">account inactive - do your kyc now</p>
+                </div>
+                <a href="/dashboard/kyc/" class="bg-red-500 text-white text-[10px] font-black px-4 py-1.5 rounded-full hover:bg-red-600 transition-all uppercase tracking-tighter">Verify Now</a>
+            </div>
+            {% elif user.profile.kyc_status == 'pending' %}
+            <div class="bg-amber-500/10 border-b border-amber-500/20 px-8 py-3 flex items-center gap-3">
+                <span class="material-symbols-outlined text-amber-500">hourglass_empty</span>
+                <p class="text-xs font-bold text-amber-600 uppercase tracking-wider">verification processing</p>
+            </div>
+            {% endif %}
 
             <!-- Messages -->
             {% include "core/includes/messages.html" %}

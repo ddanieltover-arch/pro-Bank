@@ -1,0 +1,83 @@
+{% extends "base_dashboard.html" %}
+{% block title %}Identity Verification | ProBank{% endblock %}
+
+{% block dashboard_content %}
+<div class="max-w-2xl mx-auto">
+    <div class="mb-8">
+        <h1 class="text-2xl font-black text-slate-900 dark:text-white mb-2 uppercase tracking-tight">Identity Verification</h1>
+        <p class="text-slate-500 text-sm">Please upload your official government ID to activate all banking features.</p>
+    </div>
+
+    <form action="{% url 'dashboard:kyc_upload' %}" method="POST" enctype="multipart/form-data" 
+          x-data="{ idType: 'national_id' }" class="space-y-6">
+        {% csrf_token %}
+        
+        <div class="bg-white dark:bg-background-dark border border-primary/10 rounded-2xl p-6 shadow-sm">
+            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-4">Select Document Type</label>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <template x-for="type in [
+                    {id: 'national_id', label: 'National ID', icon: 'badge'},
+                    {id: 'passport', label: 'Passport', icon: 'passport'},
+                    {id: 'drivers_license', label: 'Drivers License', icon: 'drive_eta'},
+                    {id: 'resident_permit', label: 'Resident Permit', icon: 'home'}
+                ]">
+                    <button type="button" 
+                            @click="idType = type.id"
+                            :class="idType === type.id ? 'border-primary bg-primary/5 text-primary' : 'border-slate-100 dark:border-primary/5 hover:border-primary/30'"
+                            class="flex flex-col items-center gap-2 p-4 border-2 rounded-xl transition-all">
+                        <span class="material-symbols-outlined" x-text="type.icon"></span>
+                        <span class="text-[10px] font-black uppercase text-center" x-text="type.label"></span>
+                    </button>
+                </template>
+            </div>
+            <input type="hidden" name="id_type" :value="idType">
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Front of ID -->
+            <div class="bg-white dark:bg-background-dark border border-primary/10 rounded-2xl p-6 shadow-sm">
+                <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-4" 
+                       x-text="idType === 'passport' ? 'Upload Passport Page' : 'Front of Document'">
+                </label>
+                <div class="relative group">
+                    <input type="file" name="id_front" required
+                           class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                    <div class="border-2 border-dashed border-slate-200 dark:border-primary/10 rounded-xl p-8 flex flex-col items-center justify-center gap-3 group-hover:border-primary/30 transition-all">
+                        <span class="material-symbols-outlined text-3xl text-slate-400 group-hover:text-primary transition-colors">upload_file</span>
+                        <p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Click or drag image</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back of ID (Hidden if Passport) -->
+            <div x-show="idType !== 'passport'" 
+                 class="bg-white dark:bg-background-dark border border-primary/10 rounded-2xl p-6 shadow-sm">
+                <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-4">Back of Document</label>
+                <div class="relative group">
+                    <input type="file" name="id_back" :required="idType !== 'passport'"
+                           class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                    <div class="border-2 border-dashed border-slate-200 dark:border-primary/10 rounded-xl p-8 flex flex-col items-center justify-center gap-3 group-hover:border-primary/30 transition-all">
+                        <span class="material-symbols-outlined text-3xl text-slate-400 group-hover:text-primary transition-colors">upload_file</span>
+                        <p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Click or drag image</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10">
+            <div class="flex gap-4">
+                <span class="material-symbols-outlined text-primary">info</span>
+                <div class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                    <p class="font-bold text-slate-900 dark:text-white mb-1 uppercase tracking-tight">Requirement Policy</p>
+                    <p>By submitting these documents, you authorize ProBank to verify your identity. Your data is encrypted and stored securely according to international banking standards.</p>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" 
+                class="w-full bg-primary text-white font-black py-4 rounded-2xl hover:bg-primary/90 transition-all uppercase tracking-widest shadow-lg shadow-primary/20">
+            Submit for Verification
+        </button>
+    </form>
+</div>
+{% endblock %}

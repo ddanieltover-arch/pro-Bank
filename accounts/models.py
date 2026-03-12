@@ -4,9 +4,24 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 class UserProfile(models.Model):
+    KYC_STATUS = (
+        ('unverified', 'Unverified'),
+        ('pending', 'Pending Verification'),
+        ('verified', 'Verified'),
+    )
+    ID_TYPES = (
+        ('national_id', 'National ID Card'),
+        ('passport', 'Passport'),
+        ('drivers_license', 'Driver\'s License'),
+        ('resident_permit', 'Resident Permit'),
+    )
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     bio = models.TextField(max_length=500, blank=True)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    kyc_status = models.CharField(max_length=20, choices=KYC_STATUS, default='unverified')
+    id_type = models.CharField(max_length=20, choices=ID_TYPES, blank=True)
+    id_front = models.ImageField(upload_to='kyc_docs/', null=True, blank=True)
+    id_back = models.ImageField(upload_to='kyc_docs/', null=True, blank=True)
     is_verified = models.BooleanField(default=False)
     two_factor_enabled = models.BooleanField(default=False)
     email_notifications = models.BooleanField(default=True)
