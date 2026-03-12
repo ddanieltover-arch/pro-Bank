@@ -135,7 +135,7 @@ def card_action(request, card_id):
 
 @staff_member_required
 def transactions(request):
-    transactions_list = Transaction.objects.all().order_by('-timestamp')[:50]
+    transactions_list = Transaction.objects.all().order_by('-date')[:50]
     return render(request, 'admin_panel/transactions.html', {'transactions_list': transactions_list})
 
 @staff_member_required

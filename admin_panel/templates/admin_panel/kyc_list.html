@@ -33,7 +33,7 @@
                     </td>
                     <td class="px-6 py-4">
                         <span class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-[10px] font-black uppercase text-slate-600 dark:text-slate-400">
-                            {{ user_obj.profile.id_type|replace:"_, "|title }}
+                            {{ user_obj.profile.get_id_type_display }}
                         </span>
                     </td>
                     <td class="px-6 py-4">
