@@ -322,6 +322,10 @@ def cards_view(request):
     }
     return render(request, 'dashboard/cards.html', context)
 
+def health_check(request):
+    """Simple endpoint for keep-alive pings."""
+    return HttpResponse("OK", status=200)
+
 @login_required
 def withdrawal_history_view(request):
     withdrawals = Transaction.objects.filter(
