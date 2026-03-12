@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.contrib import messages
@@ -8,6 +7,15 @@ from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from dashboard.models import BankAccount, Transaction, RefundRequest, BankCard
 from .models import SystemLog
+
+def staff_member_required(view_func=None):
+    actual_decorator = user_passes_test(
+        lambda u: u.is_active and u.is_staff,
+        login_url='admin_panel:login'
+    )
+    if view_func:
+        return actual_decorator(view_func)
+    return actual_decorator
 
 @staff_member_required
 def dashboard(request):
