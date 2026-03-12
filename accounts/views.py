@@ -75,6 +75,25 @@ def signup_view(request):
 
 @login_required
 def kyc_view(request):
+    if request.method == 'POST':
+        profile = request.user.profile
+        id_type = request.POST.get('id_type')
+        id_front = request.FILES.get('id_front')
+        id_back = request.FILES.get('id_back')
+        
+        if id_type:
+            profile.id_type = id_type
+        if id_front:
+            profile.id_front = id_front
+        if id_back:
+            profile.id_back = id_back
+            
+        profile.kyc_status = 'pending'
+        profile.save()
+        
+        messages.success(request, 'Documents uploaded successfully! We will review them shortly.')
+        return redirect('accounts:verification_success')
+        
     return render(request, 'accounts/kyc.html')
 
 

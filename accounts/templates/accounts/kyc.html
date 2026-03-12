@@ -63,46 +63,58 @@
         </div>
 
         <!-- Main Content: ID Upload -->
-        <div class="mt-8 px-4">
+        <div class="mt-8 px-4" x-data="{ idType: 'national_id', frontName: '', backName: '' }">
             <h2 class="text-slate-900 dark:text-white text-2xl font-bold leading-tight tracking-tight mb-6 flex items-center gap-2">
                 <span class="material-symbols-outlined text-primary">badge</span>
                 Upload Government ID
             </h2>
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <form method="POST" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {% csrf_token %}
+                <input type="hidden" name="id_type" :value="idType">
+                
                 <!-- Upload Zones -->
                 <div class="lg:col-span-2 space-y-6">
                     <div class="flex flex-col gap-3">
                         <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Select Document Type</label>
                         <div class="grid grid-cols-2 gap-4">
-                            <button class="flex items-center gap-3 p-4 border-2 border-primary rounded-xl bg-primary/5 text-slate-900 dark:text-white">
+                            <button type="button" @click="idType = 'passport'" :class="idType === 'passport' ? 'border-primary bg-primary/5 text-slate-900 dark:text-white' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400'" class="flex items-center gap-3 p-4 border-2 rounded-xl transition-all">
                                 <span class="material-symbols-outlined">menu_book</span>
                                 <span class="font-medium">Passport</span>
                             </button>
-                            <button class="flex items-center gap-3 p-4 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-primary/50 transition-colors text-slate-600 dark:text-slate-400">
+                            <button type="button" @click="idType = 'national_id'" :class="idType === 'national_id' ? 'border-primary bg-primary/5 text-slate-900 dark:text-white' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400'" class="flex items-center gap-3 p-4 border-2 rounded-xl transition-all">
                                 <span class="material-symbols-outlined">badge</span>
-                                <span class="font-medium">Driver's License</span>
+                                <span class="font-medium">National ID</span>
                             </button>
                         </div>
                     </div>
-                    <div class="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl p-12 flex flex-col items-center justify-center bg-white dark:bg-slate-900/20 hover:border-primary transition-colors cursor-pointer group">
+
+                    <!-- Front Upload -->
+                    <div @click="$refs.frontInput.click()" class="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl p-12 flex flex-col items-center justify-center bg-white dark:bg-slate-900/20 hover:border-primary transition-colors cursor-pointer group relative">
+                        <input type="file" name="id_front" x-ref="frontInput" class="hidden" accept="image/*" @change="frontName = $event.target.files[0].name" required>
                         <div class="size-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 group-hover:bg-primary/10 group-hover:text-primary transition-all mb-4">
-                            <span class="material-symbols-outlined text-3xl">cloud_upload</span>
+                            <span class="material-symbols-outlined text-3xl" x-show="!frontName">cloud_upload</span>
+                            <span class="material-symbols-outlined text-3xl text-emerald-500" x-show="frontName">check_circle</span>
                         </div>
-                        <p class="text-lg font-bold text-slate-900 dark:text-white">Click to upload or drag and drop</p>
-                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Front of your document (PDF, JPG, PNG up to 10MB)</p>
+                        <p class="text-lg font-bold text-slate-900 dark:text-white" x-text="frontName ? frontName : 'Click to upload Front ID'"></p>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">PDF, JPG, PNG up to 10MB</p>
                     </div>
-                    <div class="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl p-12 flex flex-col items-center justify-center bg-white dark:bg-slate-900/20 hover:border-primary transition-colors cursor-pointer group">
+
+                    <!-- Back Upload (Conditional) -->
+                    <div x-show="idType !== 'passport'" @click="$refs.backInput.click()" class="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl p-12 flex flex-col items-center justify-center bg-white dark:bg-slate-900/20 hover:border-primary transition-colors cursor-pointer group relative">
+                        <input type="file" name="id_back" x-ref="backInput" class="hidden" accept="image/*" @change="backName = $event.target.files[0].name">
                         <div class="size-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 group-hover:bg-primary/10 group-hover:text-primary transition-all mb-4">
-                            <span class="material-symbols-outlined text-3xl">cloud_upload</span>
+                            <span class="material-symbols-outlined text-3xl" x-show="!backName">cloud_upload</span>
+                            <span class="material-symbols-outlined text-3xl text-emerald-500" x-show="backName">check_circle</span>
                         </div>
-                        <p class="text-lg font-bold text-slate-900 dark:text-white">Back of your document</p>
+                        <p class="text-lg font-bold text-slate-900 dark:text-white" x-text="backName ? backName : 'Click to upload Back ID'"></p>
                         <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Not required for passports</p>
                     </div>
+
                     <div class="flex justify-end pt-4">
-                        <a href="{% url 'accounts:verification_success' %}" class="bg-primary text-white font-bold py-3 px-8 rounded-lg shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all flex items-center gap-2">
-                            Continue to Face ID
+                        <button type="submit" class="bg-primary text-white font-bold py-3 px-8 rounded-lg shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all flex items-center gap-2">
+                            Submit Documents
                             <span class="material-symbols-outlined">arrow_forward</span>
-                        </a>
+                        </button>
                     </div>
                 </div>
                 <!-- Guidance Section -->
