@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.db.models import Sum
+from decimal import Decimal
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
@@ -53,19 +55,44 @@ def user_detail(request, user_id):
 def adjust_balance(request, user_id):
     target_user = get_object_or_404(User, id=user_id)
     if request.method == 'POST':
-        amount = float(request.POST.get('amount', 0))
-        account = BankAccount.objects.filter(user=target_user).first()
-        if account:
-            account.balance += amount
-            account.save()
-            Transaction.objects.create(
-                account=account,
-                description="Admin Adjustment",
-                amount=amount,
-                category="Adjustment",
-                status="success"
-            )
-            messages.success(request, f"Balance adjusted for {target_user.username}")
+        action = request.POST.get('action', 'add')
+        amount_str = request.POST.get('amount', '0')
+        account_id = request.POST.get('account_id')
+        
+        try:
+            amount = Decimal(amount_str)
+            if action == 'withdraw':
+                amount = -amount
+
+            if account_id:
+                account = BankAccount.objects.get(id=account_id, user=target_user)
+            else:
+                account = BankAccount.objects.filter(user=target_user).first()
+
+            if account:
+                account.balance += amount
+                account.save()
+                
+                Transaction.objects.create(
+                    account=account,
+                    description=f"Admin {action.title()} Adjustment",
+                    amount=amount,
+                    category="Adjustment",
+                    status="success"
+                )
+                
+                # Log action
+                SystemLog.objects.create(
+                    admin=request.user,
+                    target_user=target_user,
+                    action=f'{action}_funds',
+                    details=f"Admin {request.user.username} {action}ed ${abs(amount)}."
+                )
+                
+                messages.success(request, f"Balance adjusted for {target_user.username}")
+        except Exception as e:
+            messages.error(request, f"Error adjusting balance: {str(e)}")
+            
     return redirect('admin_panel:user_detail', user_id=user_id)
 
 @staff_member_required
