@@ -129,8 +129,12 @@ def refund_action(request, refund_id):
 
 @staff_member_required
 def kyc_list(request):
-    pending_kyc = User.objects.filter(profile__kyc_status='pending')
-    return render(request, 'admin_panel/kyc_list.html', {'pending_kyc': pending_kyc})
+    status = request.GET.get('status', 'pending')
+    kyc_requests = User.objects.filter(profile__kyc_status=status)
+    return render(request, 'admin_panel/kyc_list.html', {
+        'kyc_requests': kyc_requests,
+        'current_status': status
+    })
 
 @staff_member_required
 def kyc_action(request, user_id):
@@ -162,6 +166,55 @@ def kyc_action(request, user_id):
     
     target_user.profile.save()
     return redirect('admin_panel:kyc_list')
+
+@staff_member_required
+def withdrawal_list(request):
+    status = request.GET.get('status', 'pending')
+    withdrawals = Transaction.objects.filter(
+        category='Withdrawal', 
+        status=status
+    ).order_by('-date')
+    return render(request, 'admin_panel/withdraw_list.html', {
+        'withdrawals': withdrawals,
+        'current_status': status
+    })
+
+@staff_member_required
+def withdrawal_action(request, tx_id):
+    withdrawal = get_object_or_404(Transaction, id=tx_id, category='Withdrawal')
+    action = request.POST.get('action') # 'approve' or 'reject'
+    
+    if action == 'approve':
+        withdrawal.status = 'success'
+        withdrawal.save()
+        messages.success(request, f"Withdrawal request for {withdrawal.account.user.username} approved.")
+    elif action == 'reject':
+        withdrawal.status = 'failed'
+        withdrawal.save()
+        
+        # Refund the amount back to the user
+        account = withdrawal.account
+        account.balance += abs(withdrawal.amount)
+        account.save()
+        
+        # Create a refund transaction entry
+        Transaction.objects.create(
+            account=account,
+            description=f"Rejected Withdrawal Refund: {withdrawal.id}",
+            amount=abs(withdrawal.amount),
+            category="Refund",
+            status="success"
+        )
+        
+        SystemLog.objects.create(
+            admin=request.user,
+            target_user=account.user,
+            action='reject_refund', # Reusing action for logging
+            details=f"Admin {request.user.username} rejected withdrawal {withdrawal.id} and refunded ${abs(withdrawal.amount)}."
+        )
+        messages.warning(request, f"Withdrawal request rejected. Funds returned to {account.user.username}.")
+    
+    return redirect('admin_panel:withdrawal_list')
 
 @staff_member_required
 def card_list(request):

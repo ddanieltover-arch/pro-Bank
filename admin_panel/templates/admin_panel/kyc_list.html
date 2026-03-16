@@ -3,8 +3,18 @@
 {% block admin_content %}
 <div class="flex flex-col gap-10">
     <div class="flex flex-col gap-2">
-        <h1 class="text-3xl font-black text-slate-900 dark:text-white uppercase">User KYC Requests</h1>
+        <h1 class="text-3xl font-black text-slate-900 dark:text-white uppercase">{{ current_status|title }} KYC Requests</h1>
         <p class="text-slate-500 font-medium">Review and verify user identity documents.</p>
+    </div>
+
+    <!-- Status Tabs -->
+    <div class="flex gap-4 border-b border-primary/10">
+        <a href="?status=pending" class="px-6 py-3 text-xs font-black uppercase tracking-widest transition-all {% if current_status == 'pending' %}text-primary border-b-2 border-primary{% else %}text-slate-400 hover:text-slate-600{% endif %}">
+            Pending
+        </a>
+        <a href="?status=verified" class="px-6 py-3 text-xs font-black uppercase tracking-widest transition-all {% if current_status == 'verified' %}text-primary border-b-2 border-primary{% else %}text-slate-400 hover:text-slate-600{% endif %}">
+            Approved
+        </a>
     </div>
 
     <div class="bg-white dark:bg-slate-900 rounded-3xl border border-primary/10 overflow-hidden shadow-sm">
@@ -18,7 +28,7 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-primary/5">
-                {% for user_obj in pending_kyc %}
+                {% for user_obj in kyc_requests %}
                 <tr class="hover:bg-slate-50/50 dark:hover:bg-primary/5 transition-colors">
                     <td class="px-6 py-4">
                         <div class="flex items-center gap-3">
@@ -48,6 +58,7 @@
                         </div>
                     </td>
                     <td class="px-6 py-4 text-right">
+                        {% if current_status == 'pending' %}
                         <form method="POST" action="{% url 'admin_panel:kyc_action' user_obj.id %}" class="flex justify-end gap-2">
                             {% csrf_token %}
                             <button name="action" value="reject" class="size-8 rounded-lg border border-rose-200 text-rose-600 hover:bg-rose-50 flex items-center justify-center transition-all">
@@ -57,6 +68,11 @@
                                 <span class="material-symbols-outlined text-sm">check</span>
                             </button>
                         </form>
+                        {% else %}
+                        <span class="text-[10px] font-black uppercase text-emerald-500 flex items-center justify-end gap-1">
+                            <span class="material-symbols-outlined text-sm">verified</span> Verified
+                        </span>
+                        {% endif %}
                     </td>
                 </tr>
                 {% empty %}

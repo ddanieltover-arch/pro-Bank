@@ -69,6 +69,10 @@
                     <span class="material-symbols-outlined text-[22px] group-hover:scale-110 transition-transform">credit_card</span>
                     <span class="text-sm font-black uppercase tracking-tight">Cards</span>
                 </a>
+                <a class="flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all group {% if 'withdrawal' in request.path %}bg-primary text-white shadow-2xl shadow-primary/30{% else %}text-slate-500 hover:bg-primary/5 hover:text-primary{% endif %}" href="{% url 'admin_panel:withdrawal_list' %}">
+                    <span class="material-symbols-outlined text-[22px] group-hover:scale-110 transition-transform">payments</span>
+                    <span class="text-sm font-black uppercase tracking-tight">Withdrawals</span>
+                </a>
                 <a class="flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all group {% if 'refunds' in request.path %}bg-primary text-white shadow-2xl shadow-primary/30{% else %}text-slate-500 hover:bg-primary/5 hover:text-primary{% endif %}" href="{% url 'admin_panel:refunds' %}">
                     <span class="material-symbols-outlined text-[22px] group-hover:scale-110 transition-transform">assignment_return</span>
                     <span class="text-sm font-black uppercase tracking-tight">Refunds</span>
