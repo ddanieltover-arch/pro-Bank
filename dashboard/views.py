@@ -332,8 +332,34 @@ def withdrawal_history_view(request):
         account__user=request.user,
         category='Withdrawal'
     ).order_by('-date')
+    
+    # Calculate statistics
+    now = timezone.now()
+    month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    year_start = now.replace(month=1, day=1, hour=0, minute=0, second=0, microsecond=0)
+    
+    month_total = withdrawals.filter(
+        status='success',
+        date__gte=month_start
+    ).aggregate(Sum('amount'))['amount__sum'] or Decimal("0.00")
+    
+    pending_total = withdrawals.filter(
+        status='pending'
+    ).aggregate(Sum('amount'))['amount__sum'] or Decimal("0.00")
+    
+    pending_count = withdrawals.filter(status='pending').count()
+    
+    ytd_volume = withdrawals.filter(
+        status='success',
+        date__gte=year_start
+    ).aggregate(Sum('amount'))['amount__sum'] or Decimal("0.00")
+    
     context = {
         'active_page': 'withdrawals',
         'withdrawals': withdrawals,
+        'month_total': abs(month_total),
+        'pending_total': abs(pending_total),
+        'pending_count': pending_count,
+        'ytd_volume': abs(ytd_volume),
     }
     return render(request, 'dashboard/withdrawal_history.html', context)

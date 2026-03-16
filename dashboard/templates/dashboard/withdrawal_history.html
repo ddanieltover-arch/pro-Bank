@@ -23,21 +23,18 @@
             </div>
             <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Total Withdrawn (Month)</p>
             <div class="flex items-baseline gap-3">
-                <p class="text-3xl font-black text-slate-900 dark:text-white">$4,250.00</p>
-                <span class="text-green-600 text-xs font-black flex items-center gap-1">
-                    <span class="material-symbols-outlined text-sm">trending_up</span> 12%
-                </span>
+                <p class="text-3xl font-black text-slate-900 dark:text-white">${{ month_total|floatformat:2 }}</p>
             </div>
         </div>
         <div class="bg-white dark:bg-background-dark p-6 rounded-2xl border border-primary/10 shadow-sm">
             <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Active Pending</p>
-            <p class="text-3xl font-black text-slate-900 dark:text-white">$1,120.00</p>
-            <p class="text-[10px] text-slate-400 font-bold mt-1">3 transactions in progress</p>
+            <p class="text-3xl font-black text-slate-900 dark:text-white">${{ pending_total|floatformat:2 }}</p>
+            <p class="text-[10px] text-slate-400 font-bold mt-1">{{ pending_count }} transaction{{ pending_count|pluralize }} in progress</p>
         </div>
         <div class="bg-white dark:bg-background-dark p-6 rounded-2xl border border-primary/10 shadow-sm">
             <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">YTD Volume</p>
-            <p class="text-3xl font-black text-slate-900 dark:text-white">$42,900.50</p>
-            <p class="text-[10px] text-slate-400 font-bold mt-1">Updated today at 9:00 AM</p>
+            <p class="text-3xl font-black text-slate-900 dark:text-white">${{ ytd_volume|floatformat:2 }}</p>
+            <p class="text-[10px] text-slate-400 font-bold mt-1">Total volume this year</p>
         </div>
     </div>
 
@@ -84,7 +81,7 @@
                             <p class="text-slate-900 dark:text-white">{{ tx.date|date:"M d, Y" }}</p>
                             <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">{{ tx.date|date:"H:i A" }}</p>
                         </td>
-                        <td class="px-8 py-5 text-slate-900 dark:text-white text-base font-black">${{ tx.amount|floatformat:2 }}</td>
+                        <td class="px-8 py-5 text-slate-900 dark:text-white text-base font-black">${{ tx.amount|floatformat:2|cut:"-" }}</td>
                         <td class="px-8 py-5">
                             <div class="flex items-center gap-3">
                                 <span class="material-symbols-outlined text-primary text-xl">account_balance</span>
@@ -92,7 +89,12 @@
                             </div>
                         </td>
                         <td class="px-8 py-5">
-                            <span class="px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">Completed</span>
+                            <span class="px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest 
+                                {% if tx.status == 'success' %}bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400
+                                {% elif tx.status == 'pending' %}bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400
+                                {% else %}bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400{% endif %}">
+                                {% if tx.status == 'success' %}Completed{% elif tx.status == 'pending' %}Pending{% else %}Rejected{% endif %}
+                            </span>
                         </td>
                         <td class="px-8 py-5 text-right">
                             <button class="text-primary hover:scale-110 transition-transform">
