@@ -47,7 +47,7 @@ def kyc_upload(request):
             [request.user.email]
         )
         
-        messages.info(request, "Identity documents submitted for verification.")
+        messages.info(request, "Identity documents submitted. A confirmation email is on its way.")
         return redirect('dashboard:overview')
     return render(request, 'dashboard/kyc.html', {'active_page': 'overview'})
 
@@ -92,7 +92,7 @@ def generate_card(request):
             [request.user.email]
         )
         
-        messages.success(request, f"New {card_type} card requested. Awaiting administrator approval.")
+        messages.success(request, f"New {card_type} card requested. A confirmation email is on its way.")
         return redirect('dashboard:cards')
     return redirect('dashboard:cards')
 

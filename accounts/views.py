@@ -90,9 +90,9 @@ def signup_view(request):
         
         login(request, user)
         if email_sent:
-            messages.success(request, f'Welcome to ProBank! Your account has been created, and a confirmation email has been sent to {user.email}.')
+            messages.success(request, f'Welcome to ProBank! Your account has been created, and your confirmation email is on its way to {user.email}.')
         else:
-            messages.warning(request, f'Welcome! Your account is ready, but we had trouble sending the confirmation email to {user.email}. Please check your spam folder later.')
+            messages.warning(request, f'Welcome! Your account is ready, but we had trouble preparing the confirmation email. Please contact support if you don\'t receive it soon.')
         return redirect('dashboard:overview')
     
     from .models import UserProfile
