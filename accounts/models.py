@@ -56,22 +56,28 @@ class UserProfile(models.Model):
 
     @property
     def currency_symbol(self):
-        symbols = {
-            'UK': '£', 'DE': '€', 'FR': '€', 'IT': '€', 'ES': '€',
-            'JP': '¥', 'CN': '¥', 'IN': '₹', 'BR': 'R$', 'KR': '₩',
-            'CH': 'CHF', 'ID': 'Rp', 'SA': '﷼',
-        }
-        return symbols.get(self.country, '$')
+        try:
+            symbols = {
+                'UK': '£', 'DE': '€', 'FR': '€', 'IT': '€', 'ES': '€',
+                'JP': '¥', 'CN': '¥', 'IN': '₹', 'BR': 'R$', 'KR': '₩',
+                'CH': 'CHF', 'ID': 'Rp', 'SA': '﷼',
+            }
+            return symbols.get(self.country, '$')
+        except:
+            return '$'
 
     @property
     def currency_code(self):
-        codes = {
-            'UK': 'GBP', 'Canada': 'CAD', 'AU': 'AUD', 'DE': 'EUR', 'FR': 'EUR',
-            'IT': 'EUR', 'ES': 'EUR', 'JP': 'JPY', 'CN': 'CNY', 'IN': 'INR',
-            'BR': 'BRL', 'MX': 'MXN', 'KR': 'KRW', 'SG': 'SGD', 'CH': 'CHF',
-            'NZ': 'NZD', 'AR': 'ARS', 'ID': 'IDR', 'SA': 'SAR', 'USA': 'USD', 'Other': 'USD'
-        }
-        return codes.get(self.country, 'USD')
+        try:
+            codes = {
+                'UK': 'GBP', 'Canada': 'CAD', 'AU': 'AUD', 'DE': 'EUR', 'FR': 'EUR',
+                'IT': 'EUR', 'ES': 'EUR', 'JP': 'JPY', 'CN': 'CNY', 'IN': 'INR',
+                'BR': 'BRL', 'MX': 'MXN', 'KR': 'KRW', 'SG': 'SGD', 'CH': 'CHF',
+                'NZ': 'NZD', 'AR': 'ARS', 'ID': 'IDR', 'SA': 'SAR', 'USA': 'USD', 'Other': 'USD'
+            }
+            return codes.get(self.country, 'USD')
+        except:
+            return 'USD'
 
     def __str__(self):
         return self.user.username

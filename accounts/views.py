@@ -93,7 +93,12 @@ def signup_view(request):
         return redirect('dashboard:overview')
     
     from .models import UserProfile
-    return render(request, 'accounts/signup.html', {'form': {}, 'countries': UserProfile.COUNTRY_CHOICES})
+    context = {
+        'form': {},
+        'form_data': {},
+        'countries': getattr(UserProfile, 'COUNTRY_CHOICES', [('Other', 'Other (USD, $)')])
+    }
+    return render(request, 'accounts/signup.html', context)
 
 
 @login_required
