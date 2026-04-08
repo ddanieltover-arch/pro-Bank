@@ -31,6 +31,22 @@ def kyc_upload(request):
         profile.id_back = request.FILES.get('id_back')
         profile.kyc_status = 'pending'
         profile.save()
+        
+        # Notify User
+        from accounts.email_utils import send_html_email
+        from django.urls import reverse
+        send_html_email(
+            "KYC Documents Received",
+            'emails/generic_notification.html',
+            {
+                'title': 'Identity Verification in Progress',
+                'message_text': 'We have received your identity documents. Our team will review them manually and update your status within 24-48 hours.',
+                'action_url': request.build_absolute_uri(reverse('dashboard:overview')),
+                'action_text': 'Go to Dashboard'
+            },
+            [request.user.email]
+        )
+        
         messages.info(request, "Identity documents submitted for verification.")
         return redirect('dashboard:overview')
     return render(request, 'dashboard/kyc.html', {'active_page': 'overview'})
@@ -60,6 +76,22 @@ def generate_card(request):
             cvv=cvv,
             status='pending'
         )
+        
+        # Notify User
+        from accounts.email_utils import send_html_email
+        from django.urls import reverse
+        send_html_email(
+            f"{card_type.title()} Card Requested",
+            'emails/generic_notification.html',
+            {
+                'title': 'Card Request Received',
+                'message_text': f'Your request for a new {card_type} bank card has been received. You will receive another notification once it has been approved and issued.',
+                'action_url': request.build_absolute_uri(reverse('dashboard:cards')),
+                'action_text': 'View Card Status'
+            },
+            [request.user.email]
+        )
+        
         messages.success(request, f"New {card_type} card requested. Awaiting administrator approval.")
         return redirect('dashboard:cards')
     return redirect('dashboard:cards')

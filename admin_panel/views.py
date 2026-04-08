@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.db.models import Sum
 from decimal import Decimal
+from django.utils import timezone
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, update_session_auth_hash
@@ -134,6 +135,9 @@ def refund_action(request, refund_id):
     refund = get_object_or_404(RefundRequest, id=refund_id)
     action = request.POST.get('action') # 'approve' or 'reject'
     
+    from accounts.email_utils import send_html_email
+    from django.urls import reverse
+    
     if action == 'approve':
         refund.status = 'approved'
         # Add funds to user's primary account
@@ -148,9 +152,42 @@ def refund_action(request, refund_id):
                 category="Refund",
                 status="success"
             )
+            
+            # Notify User
+            send_html_email(
+                f"Refund Approved: {refund.order_id}",
+                'emails/transaction_user.html',
+                {
+                    'title': 'Refund Successful',
+                    'message_text': f'Your refund request for Order #{refund.order_id} has been approved and the funds have been credited to your account.',
+                    'reference_id': f'REF-{refund.order_id}',
+                    'amount': f'{refund.amount:,.2f}',
+                    'currency': refund.user.profile.currency_symbol,
+                    'status': 'Completed',
+                    'date': timezone.now().strftime("%b %d, %Y %H:%M"),
+                    'is_negative': False,
+                    'dashboard_url': request.build_absolute_uri(reverse('dashboard:refunds'))
+                },
+                [refund.user.email]
+            )
+            
         messages.success(request, f"Refund {refund.order_id} approved and balance updated.")
     else:
         refund.status = 'rejected'
+        
+        # Notify User
+        send_html_email(
+            f"Refund Request Update: {refund.order_id}",
+            'emails/generic_notification.html',
+            {
+                'title': 'Refund Request Rejected',
+                'message_text': f'Your refund request for Order #{refund.order_id} has been reviewed and unfortunately could not be approved at this time. Please contact support for more details.',
+                'action_url': request.build_absolute_uri(reverse('dashboard:refunds')),
+                'action_text': 'View Refund Status'
+            },
+            [refund.user.email]
+        )
+        
         messages.warning(request, f"Refund {refund.order_id} rejected.")
     
     refund.save()
@@ -170,6 +207,9 @@ def kyc_action(request, user_id):
     target_user = get_object_or_404(User, id=user_id)
     action = request.POST.get('action') # 'approve' or 'reject'
     
+    from accounts.email_utils import send_html_email
+    from django.urls import reverse
+
     if action == 'approve':
         target_user.profile.kyc_status = 'verified'
         target_user.profile.is_verified = True
@@ -186,11 +226,35 @@ def kyc_action(request, user_id):
                 account_number=acc_num,
                 balance=Decimal("0.00")
             )
-            messages.success(request, f"KYC approved and Checking Account issued for {target_user.username}.")
-        else:
-            messages.success(request, f"KYC for {target_user.username} approved.")
+            
+        # Notify User
+        send_html_email(
+            "KYC Verification Successful",
+            'emails/generic_notification.html',
+            {
+                'title': 'Verification Approved',
+                'message_text': 'Congratulations! Your identity documents have been verified. You now have full access to all banking features, including withdrawals and card requests.',
+                'action_url': request.build_absolute_uri(reverse('dashboard:overview')),
+                'action_text': 'Go to Dashboard'
+            },
+            [target_user.email]
+        )
+        messages.success(request, f"KYC approved and account verified for {target_user.username}.")
     else:
         target_user.profile.kyc_status = 'unverified'
+        
+        # Notify User
+        send_html_email(
+            "KYC Verification Update",
+            'emails/generic_notification.html',
+            {
+                'title': 'Verification Rejected',
+                'message_text': 'Unfortunately, your identity verification could not be completed. This may be due to unclear document photos or mismatched information. Please re-upload your documents for another review.',
+                'action_url': request.build_absolute_uri(reverse('dashboard:overview')),
+                'action_text': 'Re-upload Documents'
+            },
+            [target_user.email]
+        )
         messages.warning(request, f"KYC for {target_user.username} rejected.")
     
     target_user.profile.save()
@@ -213,9 +277,31 @@ def withdrawal_action(request, tx_id):
     withdrawal = get_object_or_404(Transaction, id=tx_id, category='Withdrawal')
     action = request.POST.get('action') # 'approve' or 'reject'
     
+    from accounts.email_utils import send_html_email
+    from django.urls import reverse
+
     if action == 'approve':
         withdrawal.status = 'success'
         withdrawal.save()
+        
+        # Notify User
+        send_html_email(
+            "Withdrawal Successful",
+            'emails/transaction_user.html',
+            {
+                'title': 'Withdrawal Completed',
+                'message_text': f'Your withdrawal request to {withdrawal.destination_bank} has been approved and processed. The funds should appear in your destination account shortly.',
+                'reference_id': f'TX-{withdrawal.id}',
+                'amount': f'{abs(withdrawal.amount):,.2f}',
+                'currency': withdrawal.account.user.profile.currency_symbol,
+                'status': 'Completed',
+                'date': timezone.now().strftime("%b %d, %Y %H:%M"),
+                'is_negative': True,
+                'dashboard_url': request.build_absolute_uri(reverse('dashboard:withdrawal_history'))
+            },
+            [withdrawal.account.user.email]
+        )
+        
         messages.success(request, f"Withdrawal request for {withdrawal.account.user.username} approved.")
     elif action == 'reject':
         withdrawal.status = 'failed'
@@ -233,6 +319,24 @@ def withdrawal_action(request, tx_id):
             amount=abs(withdrawal.amount),
             category="Refund",
             status="success"
+        )
+        
+        # Notify User
+        send_html_email(
+            "Withdrawal Request Update",
+            'emails/transaction_user.html',
+            {
+                'title': 'Withdrawal Rejected',
+                'message_text': f'Your withdrawal request to {withdrawal.destination_bank} was rejected. The funds have been returned to your ProBank balance.',
+                'reference_id': f'TX-{withdrawal.id}',
+                'amount': f'{abs(withdrawal.amount):,.2f}',
+                'currency': withdrawal.account.user.profile.currency_symbol,
+                'status': 'Rejected',
+                'date': timezone.now().strftime("%b %d, %Y %H:%M"),
+                'is_negative': False,
+                'dashboard_url': request.build_absolute_uri(reverse('dashboard:withdrawal_history'))
+            },
+            [withdrawal.account.user.email]
         )
         
         SystemLog.objects.create(
@@ -255,11 +359,40 @@ def card_action(request, card_id):
     card = get_object_or_404(BankCard, id=card_id)
     action = request.POST.get('action') # 'approve' or 'reject'
     
+    from accounts.email_utils import send_html_email
+    from django.urls import reverse
+
     if action == 'approve':
         card.status = 'active'
+        
+        # Notify User
+        send_html_email(
+            "Bank Card Approved",
+            'emails/generic_notification.html',
+            {
+                'title': 'Card Issued Successfully',
+                'message_text': f'Your request for a {card.card_type} bank card has been approved. Your new card (ending in {card.card_number[-4:]}) is now active and ready for use.',
+                'action_url': request.build_absolute_uri(reverse('dashboard:cards')),
+                'action_text': 'View My Cards'
+            },
+            [card.user.email]
+        )
         messages.success(request, f"{card.card_type.title()} card approved.")
     else:
         card.status = 'declined'
+        
+        # Notify User
+        send_html_email(
+            "Bank Card Request Update",
+            'emails/generic_notification.html',
+            {
+                'title': 'Card Request Declined',
+                'message_text': f'Your request for a {card.card_type} bank card was unfortunately declined. Please ensure your account has sufficient verification and contact support if you believe this is an error.',
+                'action_url': request.build_absolute_uri(reverse('dashboard:cards')),
+                'action_text': 'View My Cards'
+            },
+            [card.user.email]
+        )
         messages.warning(request, f"{card.card_type.title()} card rejected.")
     
     card.save()
