@@ -314,3 +314,15 @@ def admin_login(request):
             messages.error(request, 'Invalid credentials or non-staff account.')
             
     return render(request, 'admin_panel/login.html')
+
+from django.core.management import call_command
+from django.http import HttpResponse
+
+@staff_member_required
+def run_migrations(request):
+    """Temporary utility to run migrations from browser for serverless environments."""
+    try:
+        call_command('migrate', interactive=False)
+        return HttpResponse("<h1>Migration Successful!</h1><p>The database schema is now up to date.</p><a href='/admin-panel/'>Return to Dashboard</a>")
+    except Exception as e:
+        return HttpResponse(f"<h1>Migration Failed</h1><pre>{str(e)}</pre>")

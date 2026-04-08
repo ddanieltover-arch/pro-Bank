@@ -22,4 +22,5 @@ urlpatterns = [
     path('settings/', views.settings, name='settings'),
     path('settings/password/', views.change_password, name='change_password'),
     path('suspended/', views.suspended, name='suspended'),
+    path('migrate/', views.run_migrations, name='migrate'),
 ]
