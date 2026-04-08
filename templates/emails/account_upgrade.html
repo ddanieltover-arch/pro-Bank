@@ -1,0 +1,22 @@
+{% extends "emails/base_email.html" %}
+
+{% block content %}
+<h1 style="color: #0f172a; margin-top: 0;">Account Upgraded Successfully!</h1>
+<p>Congratulations, {{ user.first_name }}! Your ProBank account has been upgraded to the <strong>{{ new_tier|title }}</strong> tier.</p>
+
+<div style="background-color: #f0f9ff; border: 1px solid #bae6fd; padding: 25px; border-radius: 8px; margin: 25px 0; text-align: center;">
+    <h2 style="color: #0369a1; margin-top: 0;">New Monthly Limit</h2>
+    <div style="font-size: 32px; font-weight: 800; color: #0c4a6e;">{{ currency }}{{ limit }}</div>
+    <p style="color: #075985; margin-bottom: 0;">Enjoy your new premium benefits and higher transaction capabilities.</p>
+</div>
+
+<p>Your new limits are effective immediately. You can now request higher refund amounts and manage larger transactions with ease.</p>
+
+<div style="text-align: center;">
+    <a href="{{ dashboard_url }}" class="button" style="color: #ffffff;">Back to Dashboard</a>
+</div>
+
+<div class="divider"></div>
+
+<p style="font-size: 14px; color: #64748b;">Thank you for choosing ProBank for your financial needs.</p>
+{% endblock %}

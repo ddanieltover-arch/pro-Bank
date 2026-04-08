@@ -12,23 +12,28 @@
 <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
     <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
-            <thead>
-                <tr class="bg-slate-50/50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
-                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase">Transaction ID</th>
-                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase">Timestamp</th>
-                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase">Amount</th>
-                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase">Status</th>
-                </tr>
-            </thead>
             <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                {% for txn in transactions_list %}
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
-                    <td class="px-6 py-4 font-mono text-xs">TXN-49210-ZP</td>
-                    <td class="px-6 py-4 text-sm">Oct 24, 2023 18:22:10</td>
-                    <td class="px-6 py-4 font-bold text-emerald-600">+$2,400.00</td>
+                    <td class="px-6 py-4 font-mono text-xs hidden sm:table-cell">#{{ txn.id|add:10000 }}</td>
+                    <td class="px-6 py-4 text-sm hidden md:table-cell">{{ txn.date|date:"M d, Y H:i" }}</td>
                     <td class="px-6 py-4">
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-green-100 text-green-700">Success</span>
+                        <div class="flex flex-col">
+                            <span class="font-bold {% if txn.amount > 0 %}text-emerald-600{% else %}text-rose-600{% endif %}">
+                                {% if txn.amount > 0 %}+{% endif %}{{ txn.account.user.profile.currency_symbol }}{{ txn.amount|stringformat:"f"|cut:"-" }}
+                            </span>
+                            <span class="text-[10px] text-slate-500 md:hidden">{{ txn.date|date:"M d, H:i" }}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-green-100 text-green-700">{{ txn.status|title }}</span>
                     </td>
                 </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="px-6 py-8 text-center text-slate-500 italic">No transactions recorded.</td>
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

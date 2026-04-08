@@ -22,12 +22,12 @@
                         </p>
                     </div>
                     <div class="flex flex-wrap gap-3">
-                        <button class="flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary text-white text-base font-bold transition-transform active:scale-95">
+                        <a href="{% url 'accounts:signup' %}" class="flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary text-white text-base font-bold transition-transform active:scale-95 inline-flex">
                             <span class="truncate">Get Started</span>
-                        </button>
-                        <button class="flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary/10 text-primary text-base font-bold hover:bg-primary/20 transition-all">
+                        </a>
+                        <a href="#" class="flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary/10 text-primary text-base font-bold hover:bg-primary/20 transition-all inline-flex">
                             <span class="truncate">View Rates</span>
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -124,7 +124,7 @@
                 <div class="bg-white/90 dark:bg-background-dark/90 backdrop-blur-sm p-6 rounded-xl shadow-2xl border border-primary/20">
                     <h4 class="text-lg font-bold mb-2">Ready to go global?</h4>
                     <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">Join 15M+ users banking globally.</p>
-                    <button class="bg-primary text-white px-8 py-3 rounded-lg font-bold">Open Your Account</button>
+                    <a href="{% url 'accounts:signup' %}" class="bg-primary text-white px-8 py-3 rounded-lg font-bold inline-block">Open Your Account</a>
                 </div>
             </div>
         </div>

@@ -1,0 +1,37 @@
+{% extends "emails/base_email.html" %}
+
+{% block content %}
+<h1 style="color: #0f172a; margin-top: 0;">{{ title }}</h1>
+<p>{{ message_text }}</p>
+
+<div style="background-color: #f1f5f9; padding: 20px; border-radius: 6px; margin: 20px 0;">
+    <div style="margin-bottom: 15px;">
+        <span class="label">Reference ID</span>
+        <span class="value">{{ reference_id }}</span>
+    </div>
+    <div style="margin-bottom: 15px;">
+        <span class="label">Amount</span>
+        <span class="value" style="color: {% if is_negative %}#ef4444{% else %}#10b981{% endif %};">
+            {{ currency }}{{ amount }}
+        </span>
+    </div>
+    <div style="margin-bottom: 15px;">
+        <span class="label">Status</span>
+        <span class="value" style="color: #3b82f6; text-transform: uppercase; font-size: 14px;">{{ status }}</span>
+    </div>
+    <div>
+        <span class="label">Date</span>
+        <span class="value">{{ date }}</span>
+    </div>
+</div>
+
+<p>You can track the progress of this transaction in your dashboard activity log.</p>
+
+<div style="text-align: center;">
+    <a href="{{ dashboard_url }}" class="button" style="color: #ffffff;">View Transaction History</a>
+</div>
+
+<div class="divider"></div>
+
+<p style="font-size: 14px; color: #64748b;">If you did not authorize this activity, please contact our security team immediately at refunds@my-probank.com.</p>
+{% endblock %}

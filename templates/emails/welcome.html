@@ -1,0 +1,21 @@
+{% extends "emails/base_email.html" %}
+
+{% block content %}
+<h1 style="color: #0f172a; margin-top: 0;">Welcome to ProBank, {{ user.first_name }}!</h1>
+<p>We're thrilled to have you on board. Your account has been successfully created and you now have access to our smart banking and refund solutions.</p>
+
+<p>With ProBank, you can:</p>
+<ul style="padding-left: 20px;">
+    <li>Manage your physical and virtual cards seamlessly</li>
+    <li>Recover funds with our expert refund assistance</li>
+    <li>Enjoy high-limit banking tiered to your needs</li>
+</ul>
+
+<div style="text-align: center;">
+    <a href="{{ login_url }}" class="button" style="color: #ffffff;">Access Your Dashboard</a>
+</div>
+
+<div class="divider"></div>
+
+<p style="font-size: 14px; color: #64748b;">If you have any questions, our support team is available via WhatsApp or email 24/7.</p>
+{% endblock %}

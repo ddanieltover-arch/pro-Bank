@@ -22,7 +22,7 @@
             <thead>
                 <tr class="bg-slate-50 dark:bg-primary/5">
                     <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest">User</th>
-                    <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest">ID Type</th>
+                    <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest hidden sm:table-cell">ID Type</th>
                     <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest">Documents</th>
                     <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest text-right">Actions</th>
                 </tr>
@@ -37,11 +37,11 @@
                             </div>
                             <div>
                                 <p class="text-sm font-black text-slate-900 dark:text-white">{{ user_obj.get_full_name|default:user_obj.username }}</p>
-                                <p class="text-[10px] text-slate-500 font-medium">{{ user_obj.email }}</p>
+                                <p class="text-[10px] text-slate-500 font-medium hidden md:block">{{ user_obj.email }}</p>
                             </div>
                         </div>
                     </td>
-                    <td class="px-6 py-4">
+                    <td class="px-6 py-4 hidden sm:table-cell">
                         <span class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-[10px] font-black uppercase text-slate-600 dark:text-slate-400">
                             {{ user_obj.profile.get_id_type_display }}
                         </span>

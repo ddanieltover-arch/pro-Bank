@@ -3,7 +3,7 @@
 
 {% block admin_content %}
 <!-- KPI Cards -->
-<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 py-4">
     <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/5 shadow-sm">
         <div class="p-2 bg-primary/10 rounded-lg text-primary w-min mb-4">
             <span class="material-symbols-outlined">group</span>
@@ -23,7 +23,13 @@
             <span class="material-symbols-outlined">payments</span>
         </div>
         <p class="text-slate-500 text-[10px] font-black uppercase tracking-widest">Total Processed</p>
-        <h3 class="text-2xl font-black mt-1">${{ total_processed|floatformat:2 }}</h3>
+        <div class="flex flex-col gap-1 mt-1">
+            {% for ct in currency_totals %}
+            <h3 class="text-xl font-black leading-tight">{{ ct.symbol }}{{ ct.total|floatformat:2 }}</h3>
+            {% empty %}
+            <h3 class="text-xl font-black leading-tight">$0.00</h3>
+            {% endfor %}
+        </div>
     </div>
     <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/5 shadow-sm">
         <div class="p-2 bg-blue-500/10 rounded-lg text-blue-600 w-min mb-4">
@@ -60,7 +66,7 @@
                 <thead class="bg-slate-50 dark:bg-slate-800/50 text-slate-500 text-xs uppercase tracking-wider">
                     <tr>
                         <th class="px-6 py-4 font-semibold">Customer Name</th>
-                        <th class="px-6 py-4 font-semibold">Order ID</th>
+                        <th class="px-6 py-4 font-semibold hidden sm:table-cell">Order ID</th>
                         <th class="px-6 py-4 font-semibold">Amount</th>
                         <th class="px-6 py-4 font-semibold">Status</th>
                         <th class="px-6 py-4 font-semibold">Actions</th>
@@ -77,8 +83,8 @@
                                 <span class="text-sm font-medium">{{ refund.user.get_full_name|default:refund.user.username }}</span>
                             </div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">#{{ refund.order_id }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold">${{ refund.amount }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 hidden sm:table-cell">#{{ refund.order_id }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold">{{ refund.user.profile.currency_symbol }}{{ refund.amount }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <span class="px-2.5 py-1 rounded-full text-xs font-semibold 
                                 {% if refund.status == 'pending' %}bg-amber-100 text-amber-700

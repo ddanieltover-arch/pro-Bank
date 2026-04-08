@@ -85,7 +85,7 @@
                 <tr x-show="(activeTab === 'pending' && '{{ refund.status }}' === 'pending') || (activeTab === 'completed' && '{{ refund.status }}' !== 'pending')"
                     class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors text-slate-900 dark:text-white">
                     <td class="px-6 py-4 text-sm font-medium">#{{ refund.order_id }}</td>
-                    <td class="px-6 py-4 text-sm font-bold">${{ refund.amount|floatformat:2 }}</td>
+                    <td class="px-6 py-4 text-sm font-bold">{{ user.profile.currency_symbol }}{{ refund.amount|floatformat:2 }}</td>
                     <td class="px-6 py-4">
                         <span class="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold 
                             {% if refund.status == 'pending' %}bg-amber-100 text-amber-700

@@ -34,7 +34,7 @@
                         <span class="material-symbols-outlined text-primary text-lg">verified</span>
                         <div>
                             <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Refund Limit</p>
-                            <p class="text-sm font-bold text-slate-700 dark:text-slate-300">${{ tier.limit|floatformat:0 }} Max</p>
+                            <p class="text-sm font-bold text-slate-700 dark:text-slate-300">{{ user.profile.currency_symbol }}{{ tier.limit|floatformat:0 }} Max</p>
                         </div>
                     </li>
                     <li class="flex items-center gap-3">
@@ -78,9 +78,9 @@
         </div>
         <div class="flex-1 text-center md:text-left">
             <h4 class="text-xl font-black text-slate-900 dark:text-white mb-2 uppercase tracking-tight">Need a Custom Enterprise Plan?</h4>
-            <p class="text-slate-500 dark:text-slate-400 text-sm font-medium">If your recovery needs exceed $50,000, contact our institutional banking team for white-glove service and dedicated account management.</p>
+            <p class="text-slate-500 dark:text-slate-400 text-sm font-medium">If your recovery needs exceed {{ user.profile.currency_symbol }}50,000, contact our institutional banking team for white-glove service and dedicated account management.</p>
         </div>
-        <a href="mailto:support@probank.com" class="bg-primary text-white px-8 py-4 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">Contact Us</a>
+        <a href="mailto:refunds@my-probank.com" class="bg-primary text-white px-8 py-4 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">Contact Us</a>
     </div>
 </div>
 {% endblock %}

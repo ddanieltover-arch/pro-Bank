@@ -40,6 +40,8 @@ def signup_view(request):
         last_name = request.POST.get('last_name', '')
         username = request.POST.get('username', '')
         email = request.POST.get('email', '')
+        phone_number = request.POST.get('phone_number', '')
+        country = request.POST.get('country', 'USA')
         password1 = request.POST.get('password1', '')
         password2 = request.POST.get('password2', '')
         
@@ -54,9 +56,11 @@ def signup_view(request):
             errors.append('Password must be at least 8 characters.')
         
         if errors:
+            from .models import UserProfile
             return render(request, 'accounts/signup.html', {
                 'errors': errors,
                 'form_data': request.POST,
+                'countries': UserProfile.COUNTRY_CHOICES
             })
         
         user = User.objects.create_user(
@@ -66,11 +70,30 @@ def signup_view(request):
             first_name=first_name,
             last_name=last_name,
         )
+        # Update phone number and country in profile
+        user.profile.phone_number = phone_number
+        user.profile.country = country
+        user.profile.save()
+        
+        # Send Welcome Email
+        from .email_utils import send_html_email
+        from django.urls import reverse
+        send_html_email(
+            f"Welcome to ProBank, {user.first_name}!",
+            'emails/welcome.html',
+            {
+                'user': user,
+                'login_url': request.build_absolute_uri(reverse('accounts:login'))
+            },
+            [user.email]
+        )
+        
         login(request, user)
         messages.success(request, 'Welcome to ProBank! Your account has been created.')
         return redirect('dashboard:overview')
     
-    return render(request, 'accounts/signup.html', {'form': {}})
+    from .models import UserProfile
+    return render(request, 'accounts/signup.html', {'form': {}, 'countries': UserProfile.COUNTRY_CHOICES})
 
 
 @login_required

@@ -22,16 +22,11 @@
             <div class="space-y-2">
                 <div class="flex justify-between items-end">
                     <label class="text-xs font-black text-slate-500 uppercase tracking-wider">Refund Amount</label>
-                    <div class="bg-primary/5 border border-primary/10 rounded px-2 py-0.5 flex items-center gap-1.5">
-                        <span class="material-symbols-outlined text-[10px] text-primary">verified</span>
-                        <span class="text-[9px] font-black text-primary uppercase leading-none">Max Limit: ${{ tier_limit|floatformat:2 }}</span>
-                    </div>
                 </div>
                 <div class="relative">
-                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-primary font-black">$</span>
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-primary font-black">{{ user.profile.currency_symbol }}</span>
                     <input type="number" name="amount" step="0.01" class="w-full h-12 pl-10 pr-4 rounded-xl border border-primary/20 bg-slate-50 dark:bg-primary/5 text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="0.00" required>
                 </div>
-                <p class="text-[10px] text-slate-400 font-medium">Refunds above your current limit require an <a href="{% url 'dashboard:upgrade_account' %}" class="text-primary hover:underline font-bold">account upgrade</a>.</p>
             </div>
 
             <!-- Reason -->

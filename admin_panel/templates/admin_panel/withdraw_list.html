@@ -26,7 +26,7 @@
                 <tr class="bg-slate-50 dark:bg-primary/5">
                     <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest">User / Account</th>
                     <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest">Amount</th>
-                    <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest">Destination</th>
+                    <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest hidden md:table-cell">Destination</th>
                     <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest text-right">Actions</th>
                 </tr>
             </thead>
@@ -45,10 +45,10 @@
                         </div>
                     </td>
                     <td class="px-6 py-4">
-                        <p class="text-sm font-black text-rose-600">${{ tx.amount|floatformat:2|cut:"-" }}</p>
+                        <p class="text-sm font-black text-rose-600">{{ tx.account.user.profile.currency_symbol }}{{ tx.amount|floatformat:2|cut:"-" }}</p>
                         <p class="text-[10px] text-slate-400 font-medium">{{ tx.date|date:"M d, Y H:i" }}</p>
                     </td>
-                    <td class="px-6 py-4">
+                    <td class="px-6 py-4 hidden md:table-cell">
                         <p class="text-[10px] font-black text-slate-900 dark:text-white uppercase">{{ tx.destination_bank }}</p>
                         <p class="text-[10px] text-slate-500 font-medium">{{ tx.destination_account }}</p>
                     </td>

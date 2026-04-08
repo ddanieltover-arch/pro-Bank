@@ -21,10 +21,35 @@ def staff_member_required(view_func=None):
 
 @staff_member_required
 def dashboard(request):
+    # Group processed totals by currency
+    processed_by_country = Transaction.objects.filter(status='success').values('account__user__profile__country').annotate(total=Sum('amount'))
+    
+    # Map country to symbol
+    from accounts.models import UserProfile
+    currency_totals = []
+    symbol_map = {
+        'UK': '£', 'DE': '€', 'FR': '€', 'IT': '€', 'ES': '€',
+        'JP': '¥', 'CN': '¥', 'IN': '₹', 'BR': 'R$', 'KR': '₩',
+        'CH': 'CHF', 'ID': 'Rp', 'SA': '﷼', 'USA': '$', 'Canada': '$', 'AU': '$', 'MX': '$', 'SG': '$', 'NZ': '$', 'AR': '$', 'Other': '$'
+    }
+    
+    for item in processed_by_country:
+        country = item['account__user__profile__country']
+        symbol = symbol_map.get(country, '$')
+        # Check if symbol already in list to aggregate (e.g. multiple countries using $)
+        found = False
+        for ct in currency_totals:
+            if ct['symbol'] == symbol:
+                ct['total'] += item['total']
+                found = True
+                break
+        if not found:
+            currency_totals.append({'symbol': symbol, 'total': item['total']})
+
     context = {
         'total_users': User.objects.count(),
         'pending_refunds': RefundRequest.objects.filter(status='pending').count(),
-        'total_processed': Transaction.objects.filter(status='success').aggregate(Sum('amount'))['amount__sum'] or 0,
+        'currency_totals': currency_totals,
         'active_disputes': RefundRequest.objects.filter(status='disputed').count(),
         'pending_kyc': User.objects.filter(profile__kyc_status='pending').count(),
         'pending_cards': BankCard.objects.filter(status='pending').count(),
@@ -86,7 +111,7 @@ def adjust_balance(request, user_id):
                     admin=request.user,
                     target_user=target_user,
                     action=f'{action}_funds',
-                    details=f"Admin {request.user.username} {action}ed ${abs(amount)}."
+                    details=f"Admin {request.user.username} {action}ed {target_user.profile.currency_symbol}{abs(amount)}."
                 )
                 
                 messages.success(request, f"Balance adjusted for {target_user.username}")
@@ -210,7 +235,7 @@ def withdrawal_action(request, tx_id):
             admin=request.user,
             target_user=account.user,
             action='reject_refund', # Reusing action for logging
-            details=f"Admin {request.user.username} rejected withdrawal {withdrawal.id} and refunded ${abs(withdrawal.amount)}."
+            details=f"Admin {request.user.username} rejected withdrawal {withdrawal.id} and refunded {account.user.profile.currency_symbol}{abs(withdrawal.amount)}."
         )
         messages.warning(request, f"Withdrawal request rejected. Funds returned to {account.user.username}.")
     

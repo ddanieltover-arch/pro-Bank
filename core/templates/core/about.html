@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}About Us | ProBank{% endblock %}
 
 {% block content %}
@@ -100,7 +101,7 @@
             <!-- Leader 1 -->
             <div class="flex flex-col items-center">
                 <div class="w-48 h-48 rounded-full overflow-hidden mb-6 border-4 border-primary/10">
-                    <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQ6fDXS9_uTuHUvjPHoBnArpt4G7DywBDfb4MRJg62AFGaHjzBTUPkTeL5AJK132YqP-IqF6rtdXQlBEiWjzZxPpiR6qz-t9cx5AsPcamlhRo-_osnJmJZXaLeFz5910I66rKO5xZ921Ut6RGWJLdvGY12NRRGj7Z5oA7RcP5ylVt-b6lGAws5NRJ0kyBB5TOfaQDLrPwkIW2fgo5p1liB1ejVtlhO6odBFl7ZWVTJVlr_34-O-eYhVFCzx7dSYLtrpF_0C0Y521EA"/>
+                    <img class="w-full h-full object-cover" src="{% static 'img/team/marcus.png' %}"/>
                 </div>
                 <h4 class="text-xl font-bold">Marcus Thorne</h4>
                 <p class="text-primary font-medium mb-4">CEO & Founder</p>
@@ -109,7 +110,7 @@
             <!-- Leader 2 -->
             <div class="flex flex-col items-center">
                 <div class="w-48 h-48 rounded-full overflow-hidden mb-6 border-4 border-primary/10">
-                    <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgtxCIBg8uUexAkNPclkn-UxCe4w17FdVYuiV2ykCD5mgrh-IZBP8d8ZimIfm4uphVXLcPHww6B9Ggx3REsMUH5mKndJ-OfU_6bxSF-IB7U40MQVFdlQUgRSUK7-PbKILHKDbp_-u4OXoLCJX493vjFoQCPQnNx1H0nqrJ9us6CzvmW63ewGCwrFRZ61--dg1pU5-q3fqEJVOYzCyTsYXoBrAlGLKcgJZ8q3amhc7x3grkDmTB9b2QABqIo5Ckb6f9RMmLbWANjrpP"/>
+                    <img class="w-full h-full object-cover" src="{% static 'img/team/sarah.png' %}"/>
                 </div>
                 <h4 class="text-xl font-bold">Sarah Jenkins</h4>
                 <p class="text-primary font-medium mb-4">Chief Technology Officer</p>
@@ -118,7 +119,7 @@
             <!-- Leader 3 -->
             <div class="flex flex-col items-center">
                 <div class="w-48 h-48 rounded-full overflow-hidden mb-6 border-4 border-primary/10">
-                    <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3RpgdQNLk7qsadXS6ZUmDShwwvhoeflyfWqxfb_V4DLbbe0ciXG0ufQhD5Dd861xJmO92skBCYu87GbVw2ShUvIXp97t8yylXpePRxE50XLgx1znB3iYfWTLbwaGuhae7BhD6t5-9lhVRIyyuWABx4cx-wy6R7yE8z1O9bnux9CFAyrBRlGiHQrNIQT51UjtTAIhLlEtFYvgQoYbBT7xsj5Jgs_Zxax1TQhQIEFbIGNprnem05G2y0m-GnFFgnC_BPLCImAp0LJOc"/>
+                    <img class="w-full h-full object-cover" src="{% static 'img/team/david.png' %}"/>
                 </div>
                 <h4 class="text-xl font-bold">David Chen</h4>
                 <p class="text-primary font-medium mb-4">Chief Compliance Officer</p>
@@ -135,8 +136,8 @@
             <h2 class="text-3xl font-bold mb-4 relative z-10">Ready to take control of your finances?</h2>
             <p class="text-white/80 mb-8 max-w-lg mx-auto relative z-10">Join over 1 million users who trust ProBank for their daily banking and refund needs.</p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
-                <button class="bg-white text-primary px-8 py-3 rounded-lg font-bold hover:bg-slate-100 transition-colors">Open Account</button>
-                <button class="border border-white text-white px-8 py-3 rounded-lg font-bold hover:bg-white/10 transition-colors">Contact Support</button>
+                <a href="{% url 'accounts:signup' %}" class="bg-white text-primary px-8 py-3 rounded-lg font-bold hover:bg-slate-100 transition-colors inline-block">Open Account</a>
+                <a href="{% url 'core:contact' %}" class="border border-white text-white px-8 py-3 rounded-lg font-bold hover:bg-white/10 transition-colors inline-block">Contact Support</a>
             </div>
         </div>
     </div>

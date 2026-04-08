@@ -188,7 +188,7 @@
                         <p class="text-sm text-slate-600 dark:text-slate-400">{{ tx.date|date:"M d, Y" }}</p>
                     </td>
                     <td class="px-6 py-4 text-right">
-                        <p class="text-sm font-bold text-slate-900 dark:text-white">-${{ tx.amount|floatformat:2|slice:"1:" }}</p>
+                        <p class="text-sm font-bold text-slate-900 dark:text-white">-{{ user.profile.currency_symbol }}{{ tx.amount|floatformat:2|slice:"1:" }}</p>
                     </td>
                 </tr>
                 {% empty %}

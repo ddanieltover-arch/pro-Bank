@@ -20,12 +20,12 @@
                     </p>
                 </div>
                 <div class="flex flex-wrap gap-4">
-                    <button class="flex min-w-[200px] cursor-pointer items-center justify-center rounded-lg h-14 px-8 bg-primary text-white text-base font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform">
+                    <a href="{% url 'accounts:signup' %}" class="flex min-w-[200px] cursor-pointer items-center justify-center rounded-lg h-14 px-8 bg-primary text-white text-base font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform inline-flex">
                         Start Recovering Now
-                    </button>
-                    <button class="flex min-w-[200px] cursor-pointer items-center justify-center rounded-lg h-14 px-8 border-2 border-primary/20 text-slate-900 dark:text-white text-base font-bold hover:bg-primary/5 transition-colors">
+                    </a>
+                    <a href="#demo" class="flex min-w-[200px] cursor-pointer items-center justify-center rounded-lg h-14 px-8 border-2 border-primary/20 text-slate-900 dark:text-white text-base font-bold hover:bg-primary/5 transition-colors inline-flex">
                         View Demo
-                    </button>
+                    </a>
                 </div>
             </div>
             <div class="relative">
@@ -192,12 +192,12 @@
                 <h2 class="text-white text-4xl md:text-5xl font-black max-w-2xl leading-tight">Ready to reclaim your lost revenue?</h2>
                 <p class="text-slate-400 text-lg max-w-xl">Join 500+ enterprises using ProBank's Refund Engine to automate their financial recovery operations.</p>
                 <div class="flex flex-col sm:flex-row gap-4">
-                    <button class="bg-primary text-white font-bold py-4 px-10 rounded-xl hover:scale-105 transition-transform">
+                    <a href="{% url 'accounts:signup' %}" class="bg-primary text-white font-bold py-4 px-10 rounded-xl hover:scale-105 transition-transform inline-flex items-center justify-center">
                         Create Free Account
-                    </button>
-                    <button class="bg-white/10 text-white font-bold py-4 px-10 rounded-xl hover:bg-white/20 transition-colors backdrop-blur-sm">
+                    </a>
+                    <a href="{% url 'core:contact' %}" class="bg-white/10 text-white font-bold py-4 px-10 rounded-xl hover:bg-white/20 transition-colors backdrop-blur-sm inline-flex items-center justify-center">
                         Talk to Sales
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>

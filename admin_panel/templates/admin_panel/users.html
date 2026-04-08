@@ -35,9 +35,10 @@
             <thead>
                 <tr class="bg-slate-50/50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
                     <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Name & Email</th>
-                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Role</th>
+                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider hidden md:table-cell">Role</th>
                     <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
-                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Last Login</th>
+                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider hidden lg:table-cell">Country</th>
+                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider hidden sm:table-cell">Last Login</th>
                     <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Actions</th>
                 </tr>
             </thead>
@@ -55,13 +56,14 @@
                             </div>
                         </div>
                     </td>
-                    <td class="px-6 py-4">{% if target_user.is_staff %}Admin{% else %}User{% endif %}</td>
+                    <td class="px-6 py-4 hidden md:table-cell">{% if target_user.is_staff %}Admin{% else %}User{% endif %}</td>
                     <td class="px-6 py-4">
                         <span class="px-2 py-0.5 rounded-full text-[10px] font-bold {% if target_user.is_active %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
                             {% if target_user.is_active %}Active{% else %}Inactive{% endif %}
                         </span>
                     </td>
-                    <td class="px-6 py-4 text-slate-500 text-sm">{{ target_user.last_login|date:"M d, H:i"|default:"Never" }}</td>
+                    <td class="px-6 py-4 text-sm font-medium text-slate-600 dark:text-slate-400 hidden lg:table-cell">{{ target_user.profile.get_country_display }}</td>
+                    <td class="px-6 py-4 text-slate-500 text-sm hidden sm:table-cell">{{ target_user.last_login|date:"M d, H:i"|default:"Never" }}</td>
                     <td class="px-6 py-4 text-right">
                         <a href="{% url 'admin_panel:user_detail' user_id=target_user.id %}" class="text-primary font-bold text-sm">View</a>
                     </td>

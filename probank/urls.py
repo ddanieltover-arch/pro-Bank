@@ -27,5 +27,5 @@ urlpatterns = [
     path('', include('core.urls')),
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Serve media files regardless of DEBUG status for consistent asset visibility on live/local
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

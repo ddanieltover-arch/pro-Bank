@@ -12,13 +12,7 @@ from datetime import timedelta
 import random
 import csv
 
-TIER_LIMITS = {
-    'basic': Decimal('2500.00'),
-    'bronze': Decimal('5000.00'),
-    'silver': Decimal('10000.00'),
-    'gold': Decimal('25000.00'),
-    'premium': Decimal('50000.00'),
-}
+
 
 def kyc_required(view_func):
     def _wrapped_view_func(request, *args, **kwargs):
@@ -165,12 +159,6 @@ def request_refund(request):
         
         try:
             amount = Decimal(amount_str)
-            user_tier = request.user.profile.account_level
-            limit = TIER_LIMITS.get(user_tier, Decimal('2500.00'))
-            
-            if amount > limit:
-                messages.error(request, f"Your current account tier ({user_tier.title()}) has a refund limit of ${limit:,.2f}. Upgrade your account to request higher amounts.")
-                return redirect('dashboard:request_refund')
 
             RefundRequest.objects.create(
                 user=request.user,
@@ -181,6 +169,36 @@ def request_refund(request):
                 proof_file=proof
             )
             messages.success(request, "Refund request submitted successfully.")
+            
+            # Send Email Notifications
+            from accounts.email_utils import send_html_email, notify_admin
+            from django.urls import reverse
+            
+            # Notify User
+            send_html_email(
+                "Refund Request Submitted",
+                'emails/transaction_user.html',
+                {
+                    'title': 'Refund Request Received',
+                    'message_text': f'Your refund request for Order #{order_id} has been received. Our team will review the evidence provided and update you shortly.',
+                    'reference_id': f'REF-{order_id}',
+                    'amount': f'{amount:,.2f}',
+                    'currency': request.user.profile.currency_symbol,
+                    'status': 'Under Review',
+                    'date': timezone.now().strftime("%b %d, %Y %H:%M"),
+                    'is_negative': False,
+                    'dashboard_url': request.build_absolute_uri(reverse('dashboard:refunds'))
+                },
+                [request.user.email]
+            )
+            
+            # Notify Admin
+            notify_admin(
+                "New Refund Request",
+                f"User {request.user.username} has submitted a refund request for Order #{order_id}.",
+                f"Amount: {request.user.profile.currency_symbol}{amount}\nReason: {reason}\nDetails: {details}"
+            )
+            
             return redirect('dashboard:refunds')
         except Exception as e:
             messages.error(request, f"Error processing request: {str(e)}")
@@ -188,33 +206,10 @@ def request_refund(request):
             
     context = {
         'active_page': 'refunds',
-        'tier_limit': TIER_LIMITS.get(request.user.profile.account_level, Decimal('2500.00'))
     }
     return render(request, 'dashboard/request_refund.html', context)
 
-@login_required
-def upgrade_account(request):
-    if request.method == 'POST':
-        new_tier = request.POST.get('tier')
-        if new_tier in dict(request.user.profile.ACCOUNT_TIERS):
-            profile = request.user.profile
-            profile.account_level = new_tier
-            profile.save()
-            messages.success(request, f"Successfully upgraded to {new_tier.title()} account!")
-            return redirect('dashboard:overview')
-    
-    context = {
-        'active_page': 'overview',
-        'tiers': [
-            {'id': 'basic', 'name': 'Basic', 'limit': TIER_LIMITS['basic'], 'price': 'Free'},
-            {'id': 'bronze', 'name': 'Bronze', 'limit': TIER_LIMITS['bronze'], 'price': '$9.99/mo'},
-            {'id': 'silver', 'name': 'Silver', 'limit': TIER_LIMITS['silver'], 'price': '$19.99/mo'},
-            {'id': 'gold', 'name': 'Gold', 'limit': TIER_LIMITS['gold'], 'price': '$49.99/mo'},
-            {'id': 'premium', 'name': 'Premium', 'limit': TIER_LIMITS['premium'], 'price': '$99.99/mo'},
-        ],
-        'current_tier': request.user.profile.account_level
-    }
-    return render(request, 'dashboard/upgrade.html', context)
+
 
 @login_required
 def settings_view(request):
@@ -279,10 +274,40 @@ def withdraw_view(request):
                 SystemLog.objects.create(
                     target_user=request.user,
                     action='withdraw_funds',
-                    details=f"User {request.user.username} requested withdrawal of ${amount_dec} to {dest_bank}."
+                    details=f"User {request.user.username} requested withdrawal of {request.user.profile.currency_symbol}{amount_dec} to {dest_bank}."
                 )
                 
-                messages.success(request, f"Withdrawal request for ${amount_dec} submitted!")
+                messages.success(request, f"Withdrawal request for {request.user.profile.currency_symbol}{amount_dec} submitted!")
+                
+                # Send Email Notifications
+                from accounts.email_utils import send_html_email, notify_admin
+                from django.urls import reverse
+                
+                # Notify User
+                send_html_email(
+                    "Withdrawal Request Received",
+                    'emails/transaction_user.html',
+                    {
+                        'title': 'Withdrawal Pending',
+                        'message_text': f'Your request to withdraw funds to {dest_bank} has been received and is currently pending review.',
+                        'reference_id': f'WD-{random.randint(10000, 99999)}',
+                        'amount': f'{amount_dec:,.2f}',
+                        'currency': request.user.profile.currency_symbol,
+                        'status': 'Pending',
+                        'date': timezone.now().strftime("%b %d, %Y %H:%M"),
+                        'is_negative': True,
+                        'dashboard_url': request.build_absolute_uri(reverse('dashboard:withdrawal_history'))
+                    },
+                    [request.user.email]
+                )
+                
+                # Notify Admin
+                notify_admin(
+                    "New Withdrawal Request",
+                    f"User {request.user.username} has requested a withdrawal.",
+                    f"Amount: {request.user.profile.currency_symbol}{amount_dec}\nBank: {dest_bank}\nAccount: {dest_acc}"
+                )
+                
                 return redirect('dashboard:withdrawal_history')
             else:
                 messages.error(request, "Insufficient funds.")
