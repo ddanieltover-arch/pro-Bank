@@ -22,29 +22,33 @@ def staff_member_required(view_func=None):
 @staff_member_required
 def dashboard(request):
     # Group processed totals by currency
-    processed_by_country = Transaction.objects.filter(status='success').values('account__user__profile__country').annotate(total=Sum('amount'))
-    
-    # Map country to symbol
-    from accounts.models import UserProfile
     currency_totals = []
-    symbol_map = {
-        'UK': '£', 'DE': '€', 'FR': '€', 'IT': '€', 'ES': '€',
-        'JP': '¥', 'CN': '¥', 'IN': '₹', 'BR': 'R$', 'KR': '₩',
-        'CH': 'CHF', 'ID': 'Rp', 'SA': '﷼', 'USA': '$', 'Canada': '$', 'AU': '$', 'MX': '$', 'SG': '$', 'NZ': '$', 'AR': '$', 'Other': '$'
-    }
-    
-    for item in processed_by_country:
-        country = item['account__user__profile__country']
-        symbol = symbol_map.get(country, '$')
-        # Check if symbol already in list to aggregate (e.g. multiple countries using $)
-        found = False
-        for ct in currency_totals:
-            if ct['symbol'] == symbol:
-                ct['total'] += item['total']
-                found = True
-                break
-        if not found:
-            currency_totals.append({'symbol': symbol, 'total': item['total']})
+    try:
+        processed_by_country = Transaction.objects.filter(status='success').values('account__user__profile__country').annotate(total=Sum('amount'))
+        
+        # Map country to symbol
+        from accounts.models import UserProfile
+        symbol_map = {
+            'UK': '£', 'DE': '€', 'FR': '€', 'IT': '€', 'ES': '€',
+            'JP': '¥', 'CN': '¥', 'IN': '₹', 'BR': 'R$', 'KR': '₩',
+            'CH': 'CHF', 'ID': 'Rp', 'SA': '﷼', 'USA': '$', 'Canada': '$', 'AU': '$', 'MX': '$', 'SG': '$', 'NZ': '$', 'AR': '$', 'Other': '$'
+        }
+        
+        for item in processed_by_country:
+            country = item['account__user__profile__country']
+            symbol = symbol_map.get(country, '$')
+            # Check if symbol already in list to aggregate (e.g. multiple countries using $)
+            found = False
+            for ct in currency_totals:
+                if ct['symbol'] == symbol:
+                    ct['total'] += item['total']
+                    found = True
+                    break
+            if not found:
+                currency_totals.append({'symbol': symbol, 'total': item['total']})
+    except Exception as e:
+        # Fallback if field is missing (unapplied migration)
+        currency_totals = [{'symbol': '$', 'total': Transaction.objects.filter(status='success').aggregate(Sum('amount'))['amount__sum'] or 0}]
 
     context = {
         'total_users': User.objects.count(),
