@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
         rel="stylesheet" />
     <link rel="stylesheet"
@@ -169,6 +170,84 @@
             <p class="text-[9px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-tight">Chat with us</p>
         </div>
     </a>
+    <!-- Global Refund Notifications -->
+    <div x-data="refundNotifications()" x-init="init()" class="fixed bottom-24 right-6 z-[110] w-[90%] max-w-sm pointer-events-none">
+        <template x-if="show">
+            <div x-show="show" 
+                 x-transition:enter="transition ease-out duration-500"
+                 x-transition:enter-start="opacity-0 translate-y-10"
+                 x-transition:enter-end="opacity-100 translate-y-0"
+                 x-transition:leave="transition ease-in duration-300"
+                 x-transition:leave-start="opacity-100 translate-y-0"
+                 x-transition:leave-end="opacity-0 translate-y-10"
+                 class="bg-white dark:bg-slate-800 border-l-4 border-emerald-500 shadow-2xl rounded-2xl p-4 flex items-center gap-4">
+                
+                <div class="h-10 w-10 flex-shrink-0 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-full flex flex-col items-center justify-center">
+                    <span class="material-symbols-outlined text-xl">check_circle</span>
+                </div>
+                <div>
+                    <p class="text-xs md:text-sm text-slate-800 dark:text-slate-200 leading-snug" x-html="message"></p>
+                    <p class="text-[10px] uppercase tracking-widest font-bold text-slate-400 mt-1">Just now</p>
+                </div>
+            </div>
+        </template>
+    </div>
+
+    <!-- Refund Notification Scripts -->
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('refundNotifications', () => ({
+                show: false,
+                message: '',
+                
+                names: ["Paul John", "Sarah Jenkins", "Michael Chen", "Emma Watson", "David Okafor", "Aisha Khan", "Liam Smith", "Wei Zhang", "Maria Garcia", "James Wilson", "Elena Rossi", "Omar Hassan"],
+                locations: [
+                    { loc: "California, USA", curr: "$" },
+                    { loc: "London, UK", curr: "£" },
+                    { loc: "Beijing, China", curr: "¥" },
+                    { loc: "Toronto, Canada", curr: "$" },
+                    { loc: "Sydney, Australia", curr: "$" },
+                    { loc: "Lagos, Nigeria", curr: "₦" },
+                    { loc: "Berlin, Germany", curr: "€" },
+                    { loc: "Tokyo, Japan", curr: "¥" },
+                    { loc: "Dubai, UAE", curr: "د.إ" },
+                    { loc: "Paris, France", curr: "€" }
+                ],
+                
+                getRandomInt(min, max) {
+                    return Math.floor(Math.random() * (max - min + 1)) + min;
+                },
+                
+                generateMessage() {
+                    const name = this.names[this.getRandomInt(0, this.names.length - 1)];
+                    const locationObj = this.locations[this.getRandomInt(0, this.locations.length - 1)];
+                    const amount = this.getRandomInt(10, 150) * 100;
+                    
+                    return `<strong>${name}</strong> from ${locationObj.loc} requested a refund of <strong>${locationObj.curr}${amount.toLocaleString()}</strong> and it is approved.`;
+                },
+                
+                init() {
+                    // Initial delay before first notification
+                    setTimeout(() => this.triggerToast(), 3000);
+                },
+                
+                triggerToast() {
+                    this.message = this.generateMessage();
+                    this.show = true;
+                    
+                    // Hide after 5 seconds
+                    setTimeout(() => {
+                        this.show = false;
+                    }, 5000);
+                    
+                    // Trigger next toast between 6 to 12 seconds
+                    const nextDelay = this.getRandomInt(6000, 12000);
+                    setTimeout(() => this.triggerToast(), nextDelay + 5000);
+                }
+            }))
+        });
+    </script>
+    
     {% block extra_js %}{% endblock %}
 </body>
 
