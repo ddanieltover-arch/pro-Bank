@@ -1,37 +1,49 @@
 {% extends "emails/base_email.html" %}
 
 {% block content %}
-<h1 style="color: #0f172a; margin-top: 0;">{{ title }}</h1>
-<p>{{ message_text }}</p>
-
-<div style="background-color: #f1f5f9; padding: 20px; border-radius: 6px; margin: 20px 0;">
-    <div style="margin-bottom: 15px;">
-        <span class="label">Reference ID</span>
-        <span class="value">{{ reference_id }}</span>
-    </div>
-    <div style="margin-bottom: 15px;">
-        <span class="label">Amount</span>
-        <span class="value" style="color: {% if is_negative %}#ef4444{% else %}#10b981{% endif %};">
-            {{ currency }}{{ amount }}
-        </span>
-    </div>
-    <div style="margin-bottom: 15px;">
-        <span class="label">Status</span>
-        <span class="value" style="color: #3b82f6; text-transform: uppercase; font-size: 14px;">{{ status }}</span>
-    </div>
-    <div>
-        <span class="label">Date</span>
-        <span class="value">{{ date }}</span>
-    </div>
+<div style="text-align: right; margin-bottom: 20px;">
+    <span class="badge {% if status == 'Completed' or status == 'success' %}badge-success{% elif status == 'Pending' %}badge-warning{% else %}badge-info{% endif %}">
+        {{ status|upper }}
+    </span>
 </div>
 
-<p>You can track the progress of this transaction in your dashboard activity log.</p>
+<h1 style="color: #0f172a; margin-top: 0; font-size: 24px; font-weight: 800;">{{ title }}</h1>
+<p style="color: #475569;">{{ message_text }}</p>
+
+<div style="background-color: #f8fafc; padding: 30px; border-radius: 12px; border: 1px solid #f1f5f9; margin: 30px 0;">
+    <table width="100%" style="border-spacing: 0;">
+        <tr>
+            <td style="padding-bottom: 20px;">
+                <span class="label">Reference ID</span>
+                <span class="value">#{{ reference_id }}</span>
+            </td>
+            <td style="padding-bottom: 20px; text-align: right;">
+                <span class="label">Amount</span>
+                <span class="value" style="color: {% if is_negative %}#ef4444{% else %}#10b981{% endif %};">
+                    {{ currency }}{{ amount }}
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label">Date & Time</span>
+                <span class="value">{{ date }}</span>
+            </td>
+            <td style="text-align: right;">
+                <span class="label">Account Type</span>
+                <span class="value">Checking</span>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<p style="color: #475569;">You can track the live progress of this transaction and download the receipt in your dashboard activity log.</p>
 
 <div style="text-align: center;">
-    <a href="{{ dashboard_url }}" class="button" style="color: #ffffff;">View Transaction History</a>
+    <a href="{{ dashboard_url }}" class="button">View Transaction Details</a>
 </div>
 
 <div class="divider"></div>
 
-<p style="font-size: 14px; color: #64748b;">If you did not authorize this activity, please contact our security team immediately at refunds@my-probank.com.</p>
+<p style="font-size: 13px; color: #94a3b8; text-align: center; font-style: italic;">If you did not authorize this activity, please contact our security team immediately at refunds@my-probank.com.</p>
 {% endblock %}

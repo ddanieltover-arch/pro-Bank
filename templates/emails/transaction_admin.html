@@ -1,20 +1,25 @@
 {% extends "emails/base_email.html" %}
 
 {% block content %}
-<h1 style="color: #0f172a; margin-top: 0;">New System Activity</h1>
-<p style="font-weight: bold; color: #3b82f6;">{{ message_text }}</p>
-
-<div style="background-color: #f8fafc; border-left: 4px solid #0f172a; padding: 20px; margin: 20px 0;">
-    <p style="margin: 0; font-family: monospace; font-size: 14px; white-space: pre-wrap;">{{ details }}</p>
+<div style="text-align: right; margin-bottom: 20px;">
+    <span class="badge badge-info">ADMIN ALERT</span>
 </div>
 
-<p>Action is required in the Administration Panel to approve or review this activity.</p>
+<h1 style="color: #0f172a; margin-top: 0; font-size: 24px; font-weight: 800; letter-spacing: -0.025em;">System Event Notification</h1>
+<p style="color: #1e293b; font-weight: 600; font-size: 18px;">{{ message_text }}</p>
+
+<div style="background-color: #0f172a; color: #ffffff; padding: 30px; border-radius: 12px; margin: 30px 0; border: 1px solid #1e293b;">
+    <h3 style="margin-top: 0; color: #3b82f6; font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em;">EVENT DETAILS</h3>
+    <pre style="margin: 0; font-family: 'Courier New', Courier, monospace; font-size: 13px; white-space: pre-wrap; color: #cbd5e1; line-height: 1.6;">{{ details }}</pre>
+</div>
+
+<p style="color: #475569;">Administrative action may be required. Please log in to the ProBank Administration Panel to review and process this request.</p>
 
 <div style="text-align: center;">
-    <a href="{{ admin_url }}" class="button" style="background-color: #0f172a; color: #ffffff;">Open Admin Panel</a>
+    <a href="{{ admin_url }}" class="button" style="background-color: #3b82f6;">Open Admin Terminal</a>
 </div>
 
 <div class="divider"></div>
 
-<p style="font-size: 12px; color: #94a3b8; text-align: center;">This is an automated system notification for ProBank Administrators.</p>
+<p style="font-size: 12px; color: #94a3b8; text-align: center;">CONFIDENTIAL: This is an internal system notification. Do not forward or share outside the ProBank Security team.</p>
 {% endblock %}
