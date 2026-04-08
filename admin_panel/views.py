@@ -300,8 +300,14 @@ def suspended(request):
     return render(request, 'admin_panel/suspended.html', {'suspended_users': suspended_users})
 
 def admin_login(request):
+    next_url = request.GET.get('next') or request.POST.get('next') or 'admin_panel:dashboard'
+    # Default to named url if it matches the fallback, otherwise treat as path
+    if next_url == 'admin_panel:dashboard':
+        from django.urls import reverse
+        next_url = reverse('admin_panel:dashboard')
+        
     if request.user.is_authenticated and request.user.is_staff:
-        return redirect('admin_panel:dashboard')
+        return redirect(next_url)
         
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -309,20 +315,41 @@ def admin_login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None and user.is_staff:
             login(request, user)
-            return redirect('admin_panel:dashboard')
+            return redirect(next_url)
         else:
             messages.error(request, 'Invalid credentials or non-staff account.')
             
-    return render(request, 'admin_panel/login.html')
+    return render(request, 'admin_panel/login.html', {'next': request.GET.get('next', '')})
 
 from django.core.management import call_command
 from django.http import HttpResponse
 
-@staff_member_required
 def run_migrations(request):
     """Temporary utility to run migrations from browser for serverless environments."""
+    token = request.GET.get('token')
+    if token != 'probank-init':
+        return HttpResponse("<h1>Unauthorized</h1><p>You must provide the setup token.</p>", status=403)
+        
     try:
         call_command('migrate', interactive=False)
-        return HttpResponse("<h1>Migration Successful!</h1><p>The database schema is now up to date.</p><a href='/admin-panel/'>Return to Dashboard</a>")
+        message = "<h1>Migration Successful!</h1><p>The database schema is now up to date.</p>"
+        
+        # Create Admin Account Automatically
+        try:
+            from django.contrib.auth.models import User
+            username = 'proadmin'
+            email = 'admin@probank.com'
+            password = 'admin123'
+            
+            if not User.objects.filter(username=username).exists():
+                User.objects.create_superuser(username, email, password)
+                message += f"<p><strong>Admin created successfully.</strong><br>Username: {username}<br>Password: {password}</p>"
+            else:
+                message += f"<p>Admin account '{username}' already exists.</p>"
+        except Exception as admin_err:
+            message += f"<p>Warning: Failed to create admin account: {str(admin_err)}</p>"
+            
+        message += "<a href='/admin-panel/'>Return to Dashboard Login</a>"
+        return HttpResponse(message)
     except Exception as e:
         return HttpResponse(f"<h1>Migration Failed</h1><pre>{str(e)}</pre>")
