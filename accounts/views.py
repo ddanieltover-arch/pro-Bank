@@ -78,7 +78,7 @@ def signup_view(request):
         # Send Welcome Email
         from .email_utils import send_html_email
         from django.urls import reverse
-        send_html_email(
+        email_sent = send_html_email(
             f"Welcome to ProBank, {user.first_name}!",
             'emails/welcome.html',
             {
@@ -89,7 +89,10 @@ def signup_view(request):
         )
         
         login(request, user)
-        messages.success(request, 'Welcome to ProBank! Your account has been created.')
+        if email_sent:
+            messages.success(request, f'Welcome to ProBank! Your account has been created, and a confirmation email has been sent to {user.email}.')
+        else:
+            messages.warning(request, f'Welcome! Your account is ready, but we had trouble sending the confirmation email to {user.email}. Please check your spam folder later.')
         return redirect('dashboard:overview')
     
     from .models import UserProfile

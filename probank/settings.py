@@ -29,6 +29,7 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-3q)!z+l9bdrt=rq=zi7%2
 DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*').split(',')
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 # Application definition
