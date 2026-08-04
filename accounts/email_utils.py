@@ -3,45 +3,34 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.conf import settings
 import logging
-import threading
 
 logger = logging.getLogger(__name__)
 
 
-class EmailThread(threading.Thread):
-    def __init__(self, subject, text_content, html_content, from_email, recipient_list, reply_to=None):
-        self.subject = subject
-        self.text_content = text_content
-        self.html_content = html_content
-        self.from_email = from_email
-        self.recipient_list = recipient_list
-        self.reply_to = reply_to or []
-        threading.Thread.__init__(self)
-
-    def run(self):
-        try:
-            email = EmailMultiAlternatives(
-                self.subject,
-                self.text_content,
-                self.from_email,
-                self.recipient_list,
-                reply_to=self.reply_to or None,
-            )
-            email.attach_alternative(self.html_content, "text/html")
-            email.send()
-            logger.info(f"Background email sent: {self.subject} to {self.recipient_list}")
-        except Exception as e:
-            import sys
-            sys.stderr.write(f"ASYNC EMAIL ERROR: Failed to send email '{self.subject}': {str(e)}\n")
-            logger.error(f"Async email failed: {str(e)}")
+def _deliver_email(subject, text_content, html_content, from_email, recipient_list, reply_to=None):
+    """Send one email via the configured Django email backend (Resend)."""
+    email = EmailMultiAlternatives(
+        subject,
+        text_content,
+        from_email,
+        recipient_list,
+        reply_to=reply_to or None,
+    )
+    email.attach_alternative(html_content, 'text/html')
+    sent = email.send(fail_silently=False)
+    logger.info('Email sent: %s → %s (count=%s)', subject, recipient_list, sent)
+    return sent > 0
 
 
 def send_html_email(subject, template_name, context, recipient_list, from_email=None, reply_to=None):
     """
-    Helper function to send branded HTML emails in the background via Resend.
+    Send a branded HTML email via Resend.
+
+    Sends synchronously so delivery errors surface in logs (and don't die
+    silently when gunicorn recycles the worker after the HTTP response).
     """
     if not recipient_list:
-        return
+        return False
 
     if not from_email:
         from_email = settings.DEFAULT_FROM_EMAIL
@@ -49,43 +38,48 @@ def send_html_email(subject, template_name, context, recipient_list, from_email=
     try:
         html_content = render_to_string(template_name, context)
         text_content = strip_tags(html_content)
-
-        EmailThread(
+        return _deliver_email(
             subject,
             text_content,
             html_content,
             from_email,
-            recipient_list,
+            list(recipient_list),
             reply_to=reply_to,
-        ).start()
-        return True
+        )
     except Exception as e:
-        import sys
-        sys.stderr.write(f"EMAIL PREP ERROR: Failed to prepare email '{subject}': {str(e)}\n")
-        logger.error(f"Email prep failed: {str(e)}")
+        logger.exception("Failed to send email '%s' to %s: %s", subject, recipient_list, e)
         return False
 
 
-def notify_admin(subject, message_text, details=None):
+def notify_admin(subject, message_text, details=None, reply_to=None):
     """
-    Quick helper to notify admin about system events.
+    Notify admin about system events.
     """
     context = {
         'message_text': message_text,
         'details': details,
         'is_admin': True,
     }
+    admin_email = getattr(settings, 'ADMIN_NOTIFICATION_EMAIL', None)
     admin_emails = [
         email for name, email in getattr(
             settings,
             'ADMINS',
-            [('Admin', settings.ADMIN_NOTIFICATION_EMAIL)],
+            [('Admin', admin_email)] if admin_email else [],
         )
+        if email
     ]
+    if not admin_emails and admin_email:
+        admin_emails = [admin_email]
+
+    if not admin_emails:
+        logger.error('No ADMIN_NOTIFICATION_EMAIL / ADMINS configured; admin notify skipped.')
+        return False
 
     return send_html_email(
-        f"[ADMIN] {subject}",
+        f'[ADMIN] {subject}',
         'emails/transaction_admin.html',
         context,
         admin_emails,
+        reply_to=reply_to,
     )

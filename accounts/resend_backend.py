@@ -1,6 +1,7 @@
 """
 Django email backend that sends mail through the Resend HTTP API.
 """
+import base64
 import logging
 
 import resend
@@ -27,7 +28,10 @@ class ResendEmailBackend(BaseEmailBackend):
         if not api_key:
             logger.error('RESEND_API_KEY is not configured; cannot send email.')
             if not self.fail_silently:
-                raise RuntimeError('RESEND_API_KEY is not configured.')
+                raise RuntimeError(
+                    'RESEND_API_KEY is not configured. '
+                    'Set it in your host environment (e.g. Render → Environment).'
+                )
             return 0
 
         resend.api_key = api_key
@@ -38,7 +42,7 @@ class ResendEmailBackend(BaseEmailBackend):
                 self._send(message)
                 sent_count += 1
             except Exception as exc:
-                logger.error('Resend email failed: %s', exc)
+                logger.exception('Resend email failed (%s → %s): %s', message.subject, message.to, exc)
                 if not self.fail_silently:
                     raise
 
@@ -48,6 +52,7 @@ class ResendEmailBackend(BaseEmailBackend):
         from_email = message.from_email or settings.DEFAULT_FROM_EMAIL
         to = list(message.to or [])
         if not to:
+            logger.warning('Skipping email with empty recipient list: %s', message.subject)
             return
 
         params = {
@@ -78,8 +83,6 @@ class ResendEmailBackend(BaseEmailBackend):
         else:
             params['text'] = text_body or ' '
 
-        import base64
-
         attachments = []
         for attachment in getattr(message, 'attachments', []) or []:
             if isinstance(attachment, tuple) and len(attachment) >= 2:
@@ -93,5 +96,6 @@ class ResendEmailBackend(BaseEmailBackend):
         if attachments:
             params['attachments'] = attachments
 
-        resend.Emails.send(params)
-        logger.info('Resend email sent: %s → %s', message.subject, to)
+        result = resend.Emails.send(params)
+        email_id = result.get('id') if isinstance(result, dict) else result
+        logger.info('Resend accepted email id=%s subject=%s to=%s', email_id, message.subject, to)

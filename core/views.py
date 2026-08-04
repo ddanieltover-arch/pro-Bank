@@ -26,13 +26,13 @@ def contact(request):
                 f"Subject: {subject}\n\n"
                 f"Message:\n{message_text}"
             )
-            notify_admin(
+            admin_ok = notify_admin(
                 subject=f"Contact: {subject}",
                 message_text=f"New contact inquiry from {name}",
                 details=details,
+                reply_to=[email],
             )
-            # Confirmation to the sender
-            send_html_email(
+            user_ok = send_html_email(
                 subject="We received your message — ProBank",
                 template_name='emails/generic_notification.html',
                 context={
@@ -45,7 +45,13 @@ def contact(request):
                 },
                 recipient_list=[email],
             )
-            messages.success(request, f'Thank you {name}! Your message has been sent.')
+            if admin_ok or user_ok:
+                messages.success(request, f'Thank you {name}! Your message has been sent.')
+            else:
+                messages.error(
+                    request,
+                    'We could not send your message right now. Please email refunds@my-probank.com directly.',
+                )
         else:
             messages.error(request, 'Please fill in your name, email, and message.')
         return redirect('core:contact')
