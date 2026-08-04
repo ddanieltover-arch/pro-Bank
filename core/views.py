@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
+from accounts.email_utils import notify_admin, send_html_email
+
 
 def home(request):
     return render(request, 'core/index.html')
@@ -12,12 +14,40 @@ def about(request):
 
 def contact(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        subject = request.POST.get('subject')
-        message_text = request.POST.get('message')
-        # In production, send email or save to database
-        messages.success(request, f'Thank you {name}! Your message has been sent.')
+        name = (request.POST.get('name') or '').strip()
+        email = (request.POST.get('email') or '').strip()
+        subject = (request.POST.get('subject') or 'Contact form inquiry').strip()
+        message_text = (request.POST.get('message') or '').strip()
+
+        if name and email and message_text:
+            details = (
+                f"Name: {name}\n"
+                f"Email: {email}\n"
+                f"Subject: {subject}\n\n"
+                f"Message:\n{message_text}"
+            )
+            notify_admin(
+                subject=f"Contact: {subject}",
+                message_text=f"New contact inquiry from {name}",
+                details=details,
+            )
+            # Confirmation to the sender
+            send_html_email(
+                subject="We received your message — ProBank",
+                template_name='emails/generic_notification.html',
+                context={
+                    'title': 'Message received',
+                    'message_text': (
+                        f"Hi {name}, thanks for contacting ProBank. "
+                        "Our team has received your message and will get back to you shortly."
+                    ),
+                    'status': 'Received',
+                },
+                recipient_list=[email],
+            )
+            messages.success(request, f'Thank you {name}! Your message has been sent.')
+        else:
+            messages.error(request, 'Please fill in your name, email, and message.')
         return redirect('core:contact')
     return render(request, 'core/contact.html')
 
@@ -48,4 +78,3 @@ def terms_of_service(request):
 
 def security(request):
     return render(request, 'core/security.html')
-

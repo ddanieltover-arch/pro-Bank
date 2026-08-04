@@ -7,13 +7,15 @@ import threading
 
 logger = logging.getLogger(__name__)
 
+
 class EmailThread(threading.Thread):
-    def __init__(self, subject, text_content, html_content, from_email, recipient_list):
+    def __init__(self, subject, text_content, html_content, from_email, recipient_list, reply_to=None):
         self.subject = subject
         self.text_content = text_content
         self.html_content = html_content
         self.from_email = from_email
         self.recipient_list = recipient_list
+        self.reply_to = reply_to or []
         threading.Thread.__init__(self)
 
     def run(self):
@@ -22,7 +24,8 @@ class EmailThread(threading.Thread):
                 self.subject,
                 self.text_content,
                 self.from_email,
-                self.recipient_list
+                self.recipient_list,
+                reply_to=self.reply_to or None,
             )
             email.attach_alternative(self.html_content, "text/html")
             email.send()
@@ -32,28 +35,36 @@ class EmailThread(threading.Thread):
             sys.stderr.write(f"ASYNC EMAIL ERROR: Failed to send email '{self.subject}': {str(e)}\n")
             logger.error(f"Async email failed: {str(e)}")
 
-def send_html_email(subject, template_name, context, recipient_list, from_email=None):
+
+def send_html_email(subject, template_name, context, recipient_list, from_email=None, reply_to=None):
     """
-    Helper function to send branded HTML emails in the background.
+    Helper function to send branded HTML emails in the background via Resend.
     """
     if not recipient_list:
         return
-        
+
     if not from_email:
         from_email = settings.DEFAULT_FROM_EMAIL
-        
+
     try:
         html_content = render_to_string(template_name, context)
         text_content = strip_tags(html_content)
-        
-        # Start a background thread
-        EmailThread(subject, text_content, html_content, from_email, recipient_list).start()
+
+        EmailThread(
+            subject,
+            text_content,
+            html_content,
+            from_email,
+            recipient_list,
+            reply_to=reply_to,
+        ).start()
         return True
     except Exception as e:
         import sys
         sys.stderr.write(f"EMAIL PREP ERROR: Failed to prepare email '{subject}': {str(e)}\n")
         logger.error(f"Email prep failed: {str(e)}")
         return False
+
 
 def notify_admin(subject, message_text, details=None):
     """
@@ -64,12 +75,17 @@ def notify_admin(subject, message_text, details=None):
         'details': details,
         'is_admin': True,
     }
-    # Using a list of admins from settings if available, otherwise fallback
-    admin_emails = [email for name, email in getattr(settings, 'ADMINS', [('Admin', 'refunds@my-probank.com')])]
-    
+    admin_emails = [
+        email for name, email in getattr(
+            settings,
+            'ADMINS',
+            [('Admin', settings.ADMIN_NOTIFICATION_EMAIL)],
+        )
+    ]
+
     return send_html_email(
         f"[ADMIN] {subject}",
         'emails/transaction_admin.html',
         context,
-        admin_emails
+        admin_emails,
     )

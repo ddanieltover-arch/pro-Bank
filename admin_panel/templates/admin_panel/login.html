@@ -46,8 +46,11 @@
 
             {% include "core/includes/messages.html" %}
 
-            <form method="POST" class="space-y-6 relative z-10">
+            <form method="POST" class="space-y-6 relative z-10" action="?next={{ next|urlencode }}">
                 {% csrf_token %}
+                {% if next %}
+                <input type="hidden" name="next" value="{{ next }}">
+                {% endif %}
                 <div class="space-y-2">
                     <label class="text-[10px] font-black uppercase text-slate-500 tracking-widest px-1">Staff Username</label>
                     <div class="relative">
