@@ -3,7 +3,7 @@
 {% block title %}Account Settings | ProBank{% endblock %}
 
 {% block dashboard_content %}
-<div class="flex flex-col gap-6" x-data="{ tab: 'profile' }">
+<div class="flex flex-col gap-6" x-data="{ tab: '{{ active_tab|default:'profile' }}' }">
     <div class="flex flex-col gap-2">
         <h1 class="text-slate-900 dark:text-slate-100 text-3xl font-black leading-tight tracking-tight uppercase">Dashboard Settings</h1>
         <p class="text-slate-500 dark:text-slate-400 text-base font-normal">Manage your account profile and security preferences.</p>
@@ -11,10 +11,10 @@
 
     <!-- Tabs -->
     <div class="flex gap-8 border-b border-primary/10 mb-8 overflow-x-auto whitespace-nowrap scrollbar-hide">
-        <button @click="tab = 'profile'" 
+        <button type="button" @click="tab = 'profile'"
                 :class="tab === 'profile' ? 'border-primary text-primary' : 'border-transparent text-slate-500'"
                 class="pb-4 text-sm font-bold border-b-2 hover:text-primary transition-all">Profile</button>
-        <button @click="tab = 'security'" 
+        <button type="button" @click="tab = 'security'"
                 :class="tab === 'security' ? 'border-primary text-primary' : 'border-transparent text-slate-500'"
                 class="pb-4 text-sm font-bold border-b-2 hover:text-primary transition-all">Security</button>
     </div>
@@ -26,13 +26,13 @@
             <section>
                 <div class="mb-6">
                     <h2 class="text-lg font-bold">Profile Information</h2>
-                    <p class="text-sm text-slate-500">Update your photo and personal details.</p>
+                    <p class="text-sm text-slate-500">Update your photo and personal details. Username and email cannot be changed.</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="flex flex-col items-center p-8 bg-white dark:bg-slate-900 rounded-2xl border border-primary/10 shadow-sm">
                         <div class="size-28 rounded-full bg-primary/10 flex items-center justify-center mb-4 relative group border-4 border-white dark:border-slate-800 shadow-xl">
                             {% if user.profile.avatar %}
-                                <img src="{{ user.profile.avatar.url }}" class="size-full rounded-full object-cover">
+                                <img src="{{ user.profile.avatar.url }}" class="size-full rounded-full object-cover" alt="Avatar">
                             {% else %}
                                 <span class="material-symbols-outlined text-4xl text-primary">person</span>
                             {% endif %}
@@ -43,18 +43,69 @@
                         </div>
                         <p class="text-sm font-bold text-slate-900 dark:text-white">Change Avatar</p>
                     </div>
-                    <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-1.5">
-                            <label class="text-xs font-black uppercase tracking-wider text-slate-500">First Name</label>
-                            <input name="first_name" class="w-full bg-white dark:bg-slate-900 border border-primary/10 rounded-xl px-4 py-3 outline-none" type="text" value="{{ user.first_name }}" />
+                    <div class="md:col-span-2 space-y-5">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">First Name</label>
+                                <input
+                                    class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                                    placeholder="John" type="text" name="first_name"
+                                    value="{{ user.first_name }}" required />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Last Name</label>
+                                <input
+                                    class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                                    placeholder="Doe" type="text" name="last_name"
+                                    value="{{ user.last_name }}" required />
+                            </div>
                         </div>
-                        <div class="space-y-1.5">
-                            <label class="text-xs font-black uppercase tracking-wider text-slate-500">Last Name</label>
-                            <input name="last_name" class="w-full bg-white dark:bg-slate-900 border border-primary/10 rounded-xl px-4 py-3 outline-none" type="text" value="{{ user.last_name }}" />
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Username</label>
+                            <div class="relative">
+                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">person</span>
+                                <input
+                                    class="w-full pl-10 pr-4 py-3 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-500 cursor-not-allowed outline-none"
+                                    type="text" value="{{ user.username }}" disabled readonly />
+                            </div>
                         </div>
-                        <div class="space-y-1.5 md:col-span-2">
-                            <label class="text-xs font-black uppercase tracking-wider text-slate-500">Bio</label>
-                            <textarea name="bio" class="w-full bg-white dark:bg-slate-900 border border-primary/10 rounded-xl px-4 py-3 outline-none" rows="3">{{ user.profile.bio }}</textarea>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Email Address</label>
+                            <div class="relative">
+                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">mail</span>
+                                <input
+                                    class="w-full pl-10 pr-4 py-3 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-500 cursor-not-allowed outline-none"
+                                    type="email" value="{{ user.email }}" disabled readonly />
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Phone Number</label>
+                            <div class="relative">
+                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">call</span>
+                                <input
+                                    class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                                    placeholder="+44 1234 567890" type="tel" name="phone_number"
+                                    value="{{ user.profile.phone_number }}" />
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Country</label>
+                            <div class="relative">
+                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">public</span>
+                                <select name="country"
+                                    class="w-full pl-10 pr-10 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all appearance-none">
+                                    {% for code, label in countries %}
+                                    <option value="{{ code }}" {% if user.profile.country == code %}selected{% endif %}>{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                                <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl pointer-events-none">expand_more</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Bio</label>
+                            <textarea name="bio" rows="3"
+                                class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                                placeholder="Tell us a little about yourself">{{ user.profile.bio }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -75,18 +126,33 @@
                     <h2 class="text-lg font-bold">Change Password</h2>
                     <p class="text-sm text-slate-500">Ensure your account is using a long, random password to stay secure.</p>
                 </div>
-                <div class="max-w-md space-y-6">
-                    <div class="space-y-1.5">
-                        <label class="text-xs font-black uppercase tracking-wider text-slate-500">Current Password</label>
-                        <input name="old_password" type="password" class="w-full bg-white dark:bg-slate-900 border border-primary/10 rounded-xl px-4 py-3 outline-none" required>
+                <div class="max-w-md space-y-5">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Current Password</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">lock</span>
+                            <input name="old_password" type="password" required
+                                class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                                placeholder="••••••••" />
+                        </div>
                     </div>
-                    <div class="space-y-1.5">
-                        <label class="text-xs font-black uppercase tracking-wider text-slate-500">New Password</label>
-                        <input name="new_password1" type="password" class="w-full bg-white dark:bg-slate-900 border border-primary/10 rounded-xl px-4 py-3 outline-none" required>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">New Password</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">lock</span>
+                            <input name="new_password1" type="password" required
+                                class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                                placeholder="••••••••" />
+                        </div>
                     </div>
-                    <div class="space-y-1.5">
-                        <label class="text-xs font-black uppercase tracking-wider text-slate-500">Confirm New Password</label>
-                        <input name="new_password2" type="password" class="w-full bg-white dark:bg-slate-900 border border-primary/10 rounded-xl px-4 py-3 outline-none" required>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Confirm New Password</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">lock</span>
+                            <input name="new_password2" type="password" required
+                                class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                                placeholder="••••••••" />
+                        </div>
                     </div>
                 </div>
             </section>
@@ -95,6 +161,5 @@
             </div>
         </form>
     </div>
-</div>
 </div>
 {% endblock %}

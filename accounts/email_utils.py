@@ -7,6 +7,25 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def get_email_brand_context(extra=None):
+    """Shared ProBank branding values for every HTML email template."""
+    site_url = getattr(settings, 'SITE_URL', 'https://my-probank.com').rstrip('/')
+    static_base = f'{site_url}/{settings.STATIC_URL.lstrip("/")}'
+    context = {
+        'site_url': site_url,
+        'logo_url': f'{static_base}emails/probank-logo-white.png',
+        'logo_icon_url': f'{static_base}emails/probank-icon.png',
+        'support_email': getattr(settings, 'ADMIN_NOTIFICATION_EMAIL', 'refunds@my-probank.com'),
+        'privacy_url': f'{site_url}/privacy-policy/',
+        'terms_url': f'{site_url}/terms-of-service/',
+        'contact_url': f'{site_url}/contact/',
+        'admin_url': f'{site_url}/admin-panel/',
+    }
+    if extra:
+        context.update(extra)
+    return context
+
+
 def _deliver_email(subject, text_content, html_content, from_email, recipient_list, reply_to=None):
     """Send one email via the configured Django email backend (Resend)."""
     email = EmailMultiAlternatives(
@@ -36,7 +55,7 @@ def send_html_email(subject, template_name, context, recipient_list, from_email=
         from_email = settings.DEFAULT_FROM_EMAIL
 
     try:
-        html_content = render_to_string(template_name, context)
+        html_content = render_to_string(template_name, get_email_brand_context(context))
         text_content = strip_tags(html_content)
         return _deliver_email(
             subject,

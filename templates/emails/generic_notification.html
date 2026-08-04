@@ -1,24 +1,26 @@
 {% extends "emails/base_email.html" %}
 
 {% block content %}
-<h1 style="color: #0f172a; margin-top: 0; font-size: 26px; font-weight: 800; letter-spacing: -0.025em;">{{ title }}</h1>
-<p style="color: #475569; font-size: 17px; line-height: 1.7;">{{ message_text }}</p>
+<h1 style="color:#211111;margin-top:0;font-size:26px;font-weight:800;letter-spacing:-0.025em;font-family:'Inter','Segoe UI',sans-serif;">{{ title }}</h1>
+<p style="color:#475569;font-size:17px;line-height:1.7;">{{ message_text }}</p>
 
 {% if details %}
-<div style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 25px; border-radius: 12px; margin: 30px 0;">
-    <p style="margin: 0; font-family: 'Courier New', Courier, monospace; white-space: pre-wrap; font-size: 14px; color: #334155; line-height: 1.6;">{{ details }}</p>
+<div class="card" style="background-color:#f8f6f6;border:1px solid #efe8e8;padding:25px;border-radius:12px;margin:28px 0;">
+    <p style="margin:0;font-family:'Courier New',Courier,monospace;white-space:pre-wrap;font-size:14px;color:#334155;line-height:1.6;">{{ details }}</p>
 </div>
 {% endif %}
 
-<p style="color: #64748b;">{{ footer_text|default:"Our team is currently processing your request and will notify you of any further updates. No immediate action is required from your side." }}</p>
+<p style="color:#64748b;">{{ footer_text|default:"Our team is currently processing your request and will notify you of any further updates. No immediate action is required from your side." }}</p>
 
-<div style="text-align: center;">
-    <a href="{% if action_url %}{{ action_url }}{% elif dashboard_url %}{{ dashboard_url }}{% else %}#{% endif %}" class="button" style="background-color: #0f172a;">
-        {{ action_text|default:"Log In to ProBank" }}
-    </a>
-</div>
+{% if action_url %}
+{% include "emails/_cta_button.html" with cta_url=action_url cta_text=action_text|default:"Log In to ProBank" %}
+{% elif dashboard_url %}
+{% include "emails/_cta_button.html" with cta_url=dashboard_url cta_text=action_text|default:"Log In to ProBank" %}
+{% else %}
+{% include "emails/_cta_button.html" with cta_url=site_url|default:"https://my-probank.com" cta_text=action_text|default:"Log In to ProBank" %}
+{% endif %}
 
-<div class="divider"></div>
+<div class="divider" style="border-bottom:2px solid #f1eaea;margin:28px 0;"></div>
 
-<p style="font-size: 13px; color: #94a3b8; text-align: center; font-style: italic;">This is an automated security notification from your ProBank portal.</p>
+<p style="font-size:13px;color:#94a3b8;text-align:center;font-style:italic;margin:0;">This is an automated security notification from your ProBank portal.</p>
 {% endblock %}

@@ -51,6 +51,9 @@ class Transaction(models.Model):
     # Withdrawal details
     destination_bank = models.CharField(max_length=100, blank=True)
     destination_account = models.CharField(max_length=50, blank=True)
+    destination_account_name = models.CharField(max_length=150, blank=True)
+    destination_sort_code = models.CharField(max_length=8, blank=True)
+    destination_reference = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
         return f"{self.description} - {self.amount}"

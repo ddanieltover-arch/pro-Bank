@@ -1,25 +1,23 @@
 {% extends "emails/base_email.html" %}
 
 {% block content %}
-<div style="text-align: right; margin-bottom: 20px;">
-    <span class="badge badge-info">ADMIN ALERT</span>
+<div style="text-align:right;margin-bottom:20px;">
+    <span class="badge badge-primary" style="display:inline-block;padding:5px 12px;border-radius:9999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;background-color:#fee2e2;color:#991b1b;">Admin Alert</span>
 </div>
 
-<h1 style="color: #0f172a; margin-top: 0; font-size: 24px; font-weight: 800; letter-spacing: -0.025em;">System Event Notification</h1>
-<p style="color: #1e293b; font-weight: 600; font-size: 18px;">{{ message_text }}</p>
+<h1 style="color:#211111;margin-top:0;font-size:24px;font-weight:800;letter-spacing:-0.025em;font-family:'Inter','Segoe UI',sans-serif;">System Event Notification</h1>
+<p style="color:#211111;font-weight:600;font-size:18px;">{{ message_text }}</p>
 
-<div style="background-color: #0f172a; color: #ffffff; padding: 30px; border-radius: 12px; margin: 30px 0; border: 1px solid #1e293b;">
-    <h3 style="margin-top: 0; color: #3b82f6; font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em;">EVENT DETAILS</h3>
-    <pre style="margin: 0; font-family: 'Courier New', Courier, monospace; font-size: 13px; white-space: pre-wrap; color: #cbd5e1; line-height: 1.6;">{{ details }}</pre>
+<div style="background-color:#211111;color:#ffffff;padding:28px;border-radius:12px;margin:28px 0;border:1px solid #3a1a1a;">
+    <h3 style="margin-top:0;color:#e53734;font-size:13px;text-transform:uppercase;letter-spacing:0.1em;font-weight:800;">Event Details</h3>
+    <pre style="margin:0;font-family:'Courier New',Courier,monospace;font-size:13px;white-space:pre-wrap;color:#e7dede;line-height:1.6;">{{ details }}</pre>
 </div>
 
-<p style="color: #475569;">Administrative action may be required. Please log in to the ProBank Administration Panel to review and process this request.</p>
+<p style="color:#475569;">Administrative action may be required. Please log in to the ProBank Administration Panel to review and process this request.</p>
 
-<div style="text-align: center;">
-    <a href="{{ admin_url }}" class="button" style="background-color: #3b82f6;">Open Admin Terminal</a>
-</div>
+{% include "emails/_cta_button.html" with cta_url=admin_url|default:"https://my-probank.com/admin-panel/" cta_text="Open Admin Terminal" %}
 
-<div class="divider"></div>
+<div class="divider" style="border-bottom:2px solid #f1eaea;margin:28px 0;"></div>
 
-<p style="font-size: 12px; color: #94a3b8; text-align: center;">CONFIDENTIAL: This is an internal system notification. Do not forward or share outside the ProBank Security team.</p>
+<p style="font-size:12px;color:#94a3b8;text-align:center;margin:0;">CONFIDENTIAL: This is an internal system notification. Do not forward or share outside the ProBank Security team.</p>
 {% endblock %}

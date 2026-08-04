@@ -172,3 +172,6 @@ RESEND_API_KEY = config('RESEND_API_KEY', default='')
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='ProBank <onboarding@resend.dev>')
 ADMIN_NOTIFICATION_EMAIL = config('ADMIN_NOTIFICATION_EMAIL', default='refunds@my-probank.com')
 ADMINS = [('ProBank Admin', ADMIN_NOTIFICATION_EMAIL)]
+
+# Absolute site URL used for email logos, CTAs, and footer links
+SITE_URL = config('SITE_URL', default='https://my-probank.com').rstrip('/')

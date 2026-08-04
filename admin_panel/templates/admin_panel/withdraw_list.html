@@ -49,8 +49,14 @@
                         <p class="text-[10px] text-slate-400 font-medium">{{ tx.date|date:"M d, Y H:i" }}</p>
                     </td>
                     <td class="px-6 py-4 hidden md:table-cell">
+                        {% if tx.destination_account_name %}
+                        <p class="text-[10px] font-black text-slate-900 dark:text-white uppercase">{{ tx.destination_account_name }}</p>
+                        {% endif %}
                         <p class="text-[10px] font-black text-slate-900 dark:text-white uppercase">{{ tx.destination_bank }}</p>
-                        <p class="text-[10px] text-slate-500 font-medium">{{ tx.destination_account }}</p>
+                        <p class="text-[10px] text-slate-500 font-medium">{{ tx.destination_account }}{% if tx.destination_sort_code %} · {{ tx.destination_sort_code }}{% endif %}</p>
+                        {% if tx.destination_reference %}
+                        <p class="text-[10px] text-slate-400 font-medium">Ref: {{ tx.destination_reference }}</p>
+                        {% endif %}
                     </td>
                     <td class="px-6 py-4 text-right">
                         {% if tx.status == 'pending' %}

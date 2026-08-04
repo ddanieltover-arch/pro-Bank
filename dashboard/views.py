@@ -77,19 +77,36 @@ def generate_card(request):
             status='pending'
         )
         
-        # Notify User
-        from accounts.email_utils import send_html_email
+        # Notify user + admin
+        from accounts.email_utils import send_html_email, notify_admin
         from django.urls import reverse
         send_html_email(
             f"{card_type.title()} Card Requested",
-            'emails/generic_notification.html',
+            'emails/card_request_user.html',
             {
                 'title': 'Card Request Received',
-                'message_text': f'Your request for a new {card_type} bank card has been received. You will receive another notification once it has been approved and issued.',
+                'message_text': (
+                    f'Your request for a new {card_type} bank card has been received. '
+                    'You will receive another notification once it has been approved and issued.'
+                ),
+                'card_type': card_type.title(),
+                'status': 'Pending Review',
+                'date': timezone.now().strftime("%b %d, %Y %H:%M"),
+                'last_four': num[-4:],
                 'action_url': request.build_absolute_uri(reverse('dashboard:cards')),
-                'action_text': 'View Card Status'
+                'action_text': 'View Card Status',
             },
             [request.user.email]
+        )
+        notify_admin(
+            "New Card Request",
+            f"User {request.user.username} has requested a new {card_type} bank card.",
+            (
+                f"User: {request.user.get_full_name() or request.user.username} ({request.user.email})\n"
+                f"Card Type: {card_type.title()}\n"
+                f"Status: Pending\n"
+                f"Requested: {timezone.now().strftime('%b %d, %Y %H:%M')}"
+            ),
         )
         
         messages.success(request, f"New {card_type} card requested. A confirmation email is on its way.")
@@ -228,7 +245,13 @@ def request_refund(request):
             notify_admin(
                 "New Refund Request",
                 f"User {request.user.username} has submitted a refund request for Order #{order_id}.",
-                f"Amount: {request.user.profile.currency_symbol}{amount}\nReason: {reason}\nDetails: {details}"
+                (
+                    f"User: {request.user.get_full_name() or request.user.username} ({request.user.email})\n"
+                    f"Order ID: #{order_id}\n"
+                    f"Amount: {request.user.profile.currency_symbol}{amount}\n"
+                    f"Reason: {reason}\n"
+                    f"Details: {details or 'N/A'}"
+                ),
             )
             
             return redirect('dashboard:refunds')
@@ -245,62 +268,94 @@ def request_refund(request):
 
 @login_required
 def settings_view(request):
+    from accounts.models import UserProfile
+
     user = request.user
     profile = user.profile
-    
+    active_tab = 'profile'
+
     if request.method == 'POST':
         if 'change_password' in request.POST:
             from django.contrib.auth.forms import PasswordChangeForm
             from django.contrib.auth import update_session_auth_hash
             form = PasswordChangeForm(user, request.POST)
+            active_tab = 'security'
             if form.is_valid():
                 user = form.save()
                 update_session_auth_hash(request, user)
                 messages.success(request, 'Password updated.')
+                return redirect('dashboard:settings')
             else:
-                messages.error(request, 'Error updating password.')
+                for error in form.errors.values():
+                    messages.error(request, error.as_text())
         else:
-            user.first_name = request.POST.get('first_name', user.first_name)
-            user.last_name = request.POST.get('last_name', user.last_name)
+            user.first_name = request.POST.get('first_name', user.first_name).strip()
+            user.last_name = request.POST.get('last_name', user.last_name).strip()
             user.save()
-            
+
             profile.bio = request.POST.get('bio', profile.bio)
+            profile.phone_number = request.POST.get('phone_number', profile.phone_number).strip()
+            country = request.POST.get('country', profile.country)
+            valid_countries = {code for code, _ in UserProfile.COUNTRY_CHOICES}
+            if country in valid_countries:
+                profile.country = country
             if 'avatar' in request.FILES:
                 profile.avatar = request.FILES['avatar']
             profile.save()
             messages.success(request, 'Profile updated.')
-        return redirect('dashboard:settings')
-            
-    return render(request, 'dashboard/settings.html', {'active_page': 'settings'})
+            return redirect('dashboard:settings')
+
+    return render(request, 'dashboard/settings.html', {
+        'active_page': 'settings',
+        'active_tab': active_tab,
+        'countries': UserProfile.COUNTRY_CHOICES,
+    })
 
 @login_required
 @kyc_required
 def withdraw_view(request):
     accounts = BankAccount.objects.filter(user=request.user)
     primary_account = accounts.first()
+    is_uk = getattr(request.user.profile, 'country', '') == 'UK'
     if request.method == 'POST':
         amount = request.POST.get('amount')
-        dest_bank = request.POST.get('destination_bank')
-        dest_acc = request.POST.get('destination_account')
-        
+        dest_bank = (request.POST.get('destination_bank') or '').strip()
+        dest_acc = (request.POST.get('destination_account') or '').strip()
+        dest_account_name = (request.POST.get('destination_account_name') or '').strip()
+        dest_sort_code = (request.POST.get('destination_sort_code') or '').strip()
+        dest_reference = (request.POST.get('destination_reference') or '').strip()
+
         try:
-            account = primary_account # Defaulting to primary for simplified UI
+            account = primary_account  # Defaulting to primary for simplified UI
             amount_dec = Decimal(amount)
-            
+
+            if is_uk:
+                if not all([dest_account_name, dest_acc, dest_sort_code, dest_bank]):
+                    messages.error(request, "Please complete all required UK bank details.")
+                    return render(request, 'dashboard/withdraw.html', {
+                        'active_page': 'withdraw',
+                        'accounts': accounts,
+                        'primary_account': primary_account,
+                        'is_uk': is_uk,
+                    })
+
             if account.balance >= amount_dec:
                 account.balance -= amount_dec
                 account.save()
-                
+
                 Transaction.objects.create(
                     account=account,
                     description=f"Withdrawal to {dest_bank}",
                     amount=-amount_dec,
                     category="Withdrawal",
-                    status="pending", # Start as pending
+                    status="pending",  # Start as pending
                     destination_bank=dest_bank,
-                    destination_account=dest_acc
+                    destination_account=dest_acc,
+                    destination_account_name=dest_account_name,
+                    destination_sort_code=dest_sort_code,
+                    destination_reference=dest_reference,
                 )
-                
+
                 # Notify admin
                 from admin_panel.models import SystemLog
                 SystemLog.objects.create(
@@ -308,13 +363,13 @@ def withdraw_view(request):
                     action='withdraw_funds',
                     details=f"User {request.user.username} requested withdrawal of {request.user.profile.currency_symbol}{amount_dec} to {dest_bank}."
                 )
-                
+
                 messages.success(request, f"Withdrawal request for {request.user.profile.currency_symbol}{amount_dec} submitted!")
-                
+
                 # Send Email Notifications
                 from accounts.email_utils import send_html_email, notify_admin
                 from django.urls import reverse
-                
+
                 # Notify User
                 send_html_email(
                     "Withdrawal Request Received",
@@ -328,25 +383,50 @@ def withdraw_view(request):
                         'status': 'Pending',
                         'date': timezone.now().strftime("%b %d, %Y %H:%M"),
                         'is_negative': True,
+                        'transfer_fee': 'FREE',
+                        'destination_bank': dest_bank,
+                        'destination_account': dest_acc,
+                        'destination_account_name': dest_account_name,
+                        'destination_sort_code': dest_sort_code,
+                        'destination_reference': dest_reference,
                         'dashboard_url': request.build_absolute_uri(reverse('dashboard:withdrawal_history'))
                     },
                     [request.user.email]
                 )
-                
+
+                admin_lines = [
+                    f"User: {request.user.get_full_name() or request.user.username} ({request.user.email})",
+                    f"Amount: {request.user.profile.currency_symbol}{amount_dec}",
+                    f"Transfer Fee: FREE",
+                    f"Bank: {dest_bank}",
+                    f"Account: {dest_acc}",
+                ]
+                if dest_account_name:
+                    admin_lines.insert(3, f"Account Name: {dest_account_name}")
+                if dest_sort_code:
+                    admin_lines.append(f"Sort Code: {dest_sort_code}")
+                if dest_reference:
+                    admin_lines.append(f"Reference: {dest_reference}")
+
                 # Notify Admin
                 notify_admin(
                     "New Withdrawal Request",
                     f"User {request.user.username} has requested a withdrawal.",
-                    f"Amount: {request.user.profile.currency_symbol}{amount_dec}\nBank: {dest_bank}\nAccount: {dest_acc}"
+                    "\n".join(admin_lines),
                 )
-                
+
                 return redirect('dashboard:withdrawal_history')
             else:
                 messages.error(request, "Insufficient funds.")
         except Exception as e:
             messages.error(request, f"Error: {str(e)}")
 
-    return render(request, 'dashboard/withdraw.html', {'active_page': 'withdraw', 'accounts': accounts, 'primary_account': primary_account})
+    return render(request, 'dashboard/withdraw.html', {
+        'active_page': 'withdraw',
+        'accounts': accounts,
+        'primary_account': primary_account,
+        'is_uk': is_uk,
+    })
 
 @login_required
 def export_transactions(request):

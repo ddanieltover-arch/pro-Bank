@@ -1,0 +1,14 @@
+{# Responsive bulletproof CTA — requires: cta_url, cta_text; optional: cta_secondary #}
+{% with href=cta_url|default:"#" label=cta_text|default:"Continue" %}
+<div class="btn-wrap" style="margin:28px 0;text-align:center;">
+    <table role="presentation" class="btn-table" cellspacing="0" cellpadding="0" border="0" align="center" style="margin:0 auto;width:auto;max-width:100%;">
+        <tr>
+            <td align="center" class="btn-td{% if cta_secondary %} btn-secondary{% endif %}" bgcolor="{% if cta_secondary %}#211111{% else %}#e53734{% endif %}" style="border-radius:10px;background-color:{% if cta_secondary %}#211111{% else %}#e53734{% endif %};">
+                <a href="{{ href }}" class="btn-a" target="_blank" style="display:inline-block;padding:16px 36px;font-family:'Inter','Segoe UI',sans-serif;font-size:15px;font-weight:700;line-height:1.2;color:#ffffff !important;text-decoration:none;border-radius:10px;background-color:{% if cta_secondary %}#211111{% else %}#e53734{% endif %};border:1px solid {% if cta_secondary %}#211111{% else %}#e53734{% endif %};text-align:center;mso-padding-alt:16px 36px;">
+                    <!--[if mso]>&nbsp;&nbsp;&nbsp;<![endif]-->{{ label }}<!--[if mso]>&nbsp;&nbsp;&nbsp;<![endif]-->
+                </a>
+            </td>
+        </tr>
+    </table>
+</div>
+{% endwith %}

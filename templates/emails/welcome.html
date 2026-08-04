@@ -1,25 +1,23 @@
 {% extends "emails/base_email.html" %}
 
 {% block content %}
-<h1 style="color: #0f172a; margin-top: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.025em;">Welcome to ProBank, {{ user.first_name }}!</h1>
-<p style="color: #475569; font-size: 18px;">We're thrilled to have you on board. Your account has been successfully created and you now have access to our smart banking and premium refund solutions.</p>
+<h1 style="color:#211111;margin-top:0;font-size:28px;font-weight:800;letter-spacing:-0.025em;font-family:'Inter','Segoe UI',sans-serif;">Welcome to ProBank, {{ user.first_name }}!</h1>
+<p style="color:#475569;font-size:18px;margin:0 0 16px;">We're thrilled to have you on board. Your account has been successfully created and you now have access to our smart banking and premium refund solutions.</p>
 
-<div style="background-color: #f1f5f9; padding: 30px; border-radius: 12px; margin: 30px 0;">
-    <h3 style="margin-top: 0; color: #0f172a; font-weight: 800; font-size: 18px;">With your new account, you can:</h3>
-    <ul style="padding-left: 20px; color: #475569; margin-bottom: 0; line-height: 1.6;">
-        <li style="margin-bottom: 12px;">Manage physical and virtual cards with ease</li>
-        <li style="margin-bottom: 12px;">Recover funds with expert refund assistance</li>
-        <li style="margin-bottom: 0;">Enjoy high-limit banking tiered to your needs</li>
+<div class="card" style="background-color:#f8f6f6;border:1px solid #efe8e8;padding:28px;border-radius:12px;margin:28px 0;">
+    <h3 style="margin-top:0;color:#211111;font-weight:800;font-size:18px;">With your new account, you can:</h3>
+    <ul style="padding-left:20px;color:#475569;margin-bottom:0;line-height:1.6;">
+        <li style="margin-bottom:12px;">Manage physical and virtual cards with ease</li>
+        <li style="margin-bottom:12px;">Recover funds with expert refund assistance</li>
+        <li style="margin-bottom:0;">Enjoy high-limit banking tiered to your needs</li>
     </ul>
 </div>
 
-<p style="color: #475569;">To get started, please log in to your dashboard to complete your profile verification.</p>
+<p style="color:#475569;">To get started, please log in to your dashboard to complete your profile verification.</p>
 
-<div style="text-align: center;">
-    <a href="{{ login_url }}" class="button">Access Your Dashboard</a>
-</div>
+{% include "emails/_cta_button.html" with cta_url=login_url cta_text="Access Your Dashboard" %}
 
-<div class="divider"></div>
+<div class="divider" style="border-bottom:2px solid #f1eaea;margin:28px 0;"></div>
 
-<p style="font-size: 14px; color: #64748b; text-align: center;">Need immediate assistance? Our support team (Aaron and the core team) is available via WhatsApp or email 24/7.</p>
+<p style="font-size:14px;color:#64748b;text-align:center;margin:0;">Need immediate assistance? Our support team is available via WhatsApp or email 24/7.</p>
 {% endblock %}

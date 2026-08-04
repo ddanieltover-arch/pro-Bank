@@ -1,6 +1,7 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
+from .email_utils import get_email_brand_context
 
 app_name = 'accounts'
 
@@ -14,6 +15,7 @@ urlpatterns = [
         html_email_template_name='registration/password_reset_email.html',
         subject_template_name='accounts/password_reset_subject.txt',
         success_url='/accounts/password-reset/done/',
+        extra_email_context=get_email_brand_context(),
     ), name='password_reset'),
     path('password-reset/done/', auth_views.PasswordResetDoneView.as_view(
         template_name='accounts/password_reset_done.html',

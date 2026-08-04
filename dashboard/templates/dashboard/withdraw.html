@@ -9,8 +9,24 @@
         <p class="text-slate-500 dark:text-slate-400 font-medium max-w-2xl">Move money from your secure ProBank account to your preferred external account or wallet.</p>
     </div>
 
-    <form method="POST" action="{% url 'dashboard:withdraw' %}" 
-          x-data="{ amount: 0, currentBalance: {{ primary_account.balance|default:0 }}, destinationBank: '', destinationAccount: '' }" 
+    <form method="POST" action="{% url 'dashboard:withdraw' %}"
+          x-data="{
+              amount: 0,
+              currentBalance: {{ primary_account.balance|default:0 }},
+              isUk: {{ is_uk|yesno:'true,false' }},
+              destinationBank: '',
+              destinationAccount: '',
+              destinationAccountName: '',
+              destinationSortCode: '',
+              destinationReference: '',
+              get canSubmit() {
+                  if (this.amount <= 0 || this.amount > this.currentBalance) return false;
+                  if (this.isUk) {
+                      return this.destinationAccountName && this.destinationAccount && this.destinationSortCode && this.destinationBank;
+                  }
+                  return this.destinationBank && this.destinationAccount;
+              }
+          }"
           class="grid grid-cols-1 lg:grid-cols-3 gap-10">
         {% csrf_token %}
         <!-- Main Form -->
@@ -33,7 +49,51 @@
             <!-- Destination Details -->
             <div class="bg-white dark:bg-background-dark p-8 rounded-2xl border border-primary/10 shadow-sm space-y-6">
                 <h3 class="text-lg font-black text-slate-900 dark:text-white mb-2 border-b border-primary/5 pb-4 uppercase tracking-tighter">Destination Bank Details</h3>
-                
+
+                {% if is_uk %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Account Name</label>
+                        <input type="text" name="destination_account_name" x-model="destinationAccountName" required
+                               class="w-full p-4 rounded-xl border border-primary/10 bg-slate-50 dark:bg-primary/5 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                               placeholder="e.g. Jane Smith"
+                               autocomplete="name">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Account Number</label>
+                        <input type="text" name="destination_account" x-model="destinationAccount" required
+                               class="w-full p-4 rounded-xl border border-primary/10 bg-slate-50 dark:bg-primary/5 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                               placeholder="12345678"
+                               inputmode="numeric"
+                               pattern="[0-9]{8}"
+                               maxlength="8"
+                               title="Enter an 8-digit UK account number">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Sort Code</label>
+                        <input type="text" name="destination_sort_code" x-model="destinationSortCode" required
+                               class="w-full p-4 rounded-xl border border-primary/10 bg-slate-50 dark:bg-primary/5 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                               placeholder="12-34-56"
+                               inputmode="numeric"
+                               pattern="[0-9]{2}-?[0-9]{2}-?[0-9]{2}"
+                               maxlength="8"
+                               title="Enter a UK sort code, e.g. 12-34-56">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Bank Name</label>
+                        <input type="text" name="destination_bank" x-model="destinationBank" required
+                               class="w-full p-4 rounded-xl border border-primary/10 bg-slate-50 dark:bg-primary/5 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                               placeholder="e.g. Barclays, HSBC, NatWest">
+                    </div>
+                    <div class="space-y-2 md:col-span-2">
+                        <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Reference <span class="normal-case tracking-normal font-bold opacity-70">(optional)</span></label>
+                        <input type="text" name="destination_reference" x-model="destinationReference"
+                               class="w-full p-4 rounded-xl border border-primary/10 bg-slate-50 dark:bg-primary/5 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                               placeholder="e.g. Invoice 1042"
+                               maxlength="100">
+                    </div>
+                </div>
+                {% else %}
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-2">
                         <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Bank Name</label>
@@ -48,6 +108,7 @@
                                placeholder="1234567890">
                     </div>
                 </div>
+                {% endif %}
             </div>
 
             <!-- Withdrawal Method (Hidden selection if only one, but showing for context) -->
@@ -80,9 +141,9 @@
                         <span class="text-green-600 dark:text-green-400 font-bold">FREE</span>
                     </div>
                 </div>
-                <button type="submit" 
-                        :disabled="amount <= 0 || amount > currentBalance || !destinationBank || !destinationAccount"
-                        :class="(amount <= 0 || amount > currentBalance || !destinationBank || !destinationAccount) ? 'opacity-50 cursor-not-allowed bg-slate-400' : 'bg-primary hover:primary/90 shadow-primary/20'"
+                <button type="submit"
+                        :disabled="!canSubmit"
+                        :class="!canSubmit ? 'opacity-50 cursor-not-allowed bg-slate-400' : 'bg-primary hover:primary/90 shadow-primary/20'"
                         class="w-full h-16 text-white font-black rounded-xl shadow-lg transition-all flex items-center justify-center gap-3">
                     <span class="material-symbols-outlined">verified_user</span>
                     Confirm Withdrawal
