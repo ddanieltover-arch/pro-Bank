@@ -9,6 +9,7 @@ urlpatterns = [
     path('accounts/', views.accounts_view, name='accounts'),
     path('refunds/', views.refunds, name='refunds'),
     path('settings/', views.settings_view, name='settings'),
+    path('support/', views.support_view, name='support'),
     path('refunds/request/', views.request_refund, name='request_refund'),
     path('cards/', views.cards_view, name='cards'),
     path('cards/generate/', views.generate_card, name='generate_card'),

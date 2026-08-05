@@ -32,8 +32,8 @@ def kyc_upload(request):
         profile.kyc_status = 'pending'
         profile.save()
         
-        # Notify User
-        from accounts.email_utils import send_html_email
+        # Notify user + admin
+        from accounts.email_utils import send_html_email, notify_admin
         from django.urls import reverse
         send_html_email(
             "KYC Documents Received",
@@ -45,6 +45,18 @@ def kyc_upload(request):
                 'action_text': 'Go to Dashboard'
             },
             [request.user.email]
+        )
+        notify_admin(
+            "New KYC Submission",
+            f"User {request.user.username} has submitted identity documents for verification.",
+            (
+                f"User: {request.user.get_full_name() or request.user.username} ({request.user.email})\n"
+                f"ID Type: {profile.id_type or 'N/A'}\n"
+                f"Status: Pending\n"
+                f"Front uploaded: {'Yes' if profile.id_front else 'No'}\n"
+                f"Back uploaded: {'Yes' if profile.id_back else 'No'}\n"
+                f"Submitted: {timezone.now().strftime('%b %d, %Y %H:%M')}"
+            ),
         )
         
         messages.info(request, "Identity documents submitted. A confirmation email is on its way.")
@@ -118,31 +130,29 @@ def overview(request):
     accounts = BankAccount.objects.filter(user=request.user)
     # Ensure checking account exists
     if not accounts.filter(account_type='checking').exists() and not request.user.is_staff:
-        acc_num = "".join([str(random.randint(0, 9)) for _ in range(12)])
-        BankAccount.objects.create(
-            user=request.user,
-            name="Checking Account",
-            account_type='checking',
-            account_number=acc_num,
-            balance=Decimal("0.00")
-        )
-    
+        BankAccount.create_for_user(request.user)
+        accounts = BankAccount.objects.filter(user=request.user)
+
     primary_account = accounts.filter(account_type='checking').first()
+    is_uk = getattr(request.user.profile, 'country', '') == 'UK'
+    if primary_account and is_uk:
+        primary_account.ensure_uk_details()
+
     total_balance = accounts.aggregate(Sum('balance'))['balance__sum'] or Decimal("0.00")
-    
+
     recent_transactions = Transaction.objects.filter(
         account__user=request.user
     ).order_by('-date')[:5]
-    
+
     pending_refunds = RefundRequest.objects.filter(user=request.user, status='pending')
     pending_count = pending_refunds.count()
     pending_total = pending_refunds.aggregate(Sum('amount'))['amount__sum'] or Decimal("0.00")
-    
+
     all_refunds = RefundRequest.objects.filter(user=request.user)
     total_refunds_count = all_refunds.count()
     recovered_count = all_refunds.filter(status='approved').count()
     in_process_count = all_refunds.filter(status='pending').count()
-    
+
     recovered_percent = 0
     in_process_percent = 0
     if total_refunds_count > 0:
@@ -163,6 +173,8 @@ def overview(request):
         'recovered_percent': recovered_percent,
         'in_process_percent': in_process_percent,
         'routing_number': '123456789',
+        'is_uk': is_uk,
+        'account_holder_name': request.user.get_full_name() or request.user.username,
     }
     return render(request, 'dashboard/overview.html', context)
 
@@ -310,6 +322,63 @@ def settings_view(request):
         'active_tab': active_tab,
         'countries': UserProfile.COUNTRY_CHOICES,
     })
+
+
+@login_required
+def support_view(request):
+    user = request.user
+    if request.method == 'POST':
+        from accounts.email_utils import notify_admin, send_html_email
+
+        subject = (request.POST.get('subject') or 'Support request').strip()
+        message_text = (request.POST.get('message') or '').strip()
+        name = f"{user.first_name} {user.last_name}".strip() or user.username
+        email = user.email
+
+        if message_text:
+            details = (
+                f"User: {user.username} (ID: {user.id})\n"
+                f"Name: {name}\n"
+                f"Email: {email}\n"
+                f"Subject: {subject}\n\n"
+                f"Message:\n{message_text}"
+            )
+            admin_ok = notify_admin(
+                subject=f"Support: {subject}",
+                message_text=f"New support request from {name}",
+                details=details,
+                reply_to=[email] if email else None,
+            )
+            user_ok = False
+            if email:
+                user_ok = send_html_email(
+                    subject="We received your support request — ProBank",
+                    template_name='emails/generic_notification.html',
+                    context={
+                        'title': 'Support request received',
+                        'message_text': (
+                            f"Hi {name}, thanks for contacting ProBank Support. "
+                            "Our team has received your message and will get back to you shortly."
+                        ),
+                        'status': 'Received',
+                    },
+                    recipient_list=[email],
+                )
+            if admin_ok or user_ok:
+                messages.success(request, 'Your message has been sent. Our support team will reply soon.')
+            else:
+                messages.error(
+                    request,
+                    'We could not send your message right now. Please try WhatsApp or email refunds@my-probank.com.',
+                )
+        else:
+            messages.error(request, 'Please enter a message before submitting.')
+        return redirect('dashboard:support')
+
+    return render(request, 'dashboard/support.html', {
+        'active_page': 'support',
+    })
+
 
 @login_required
 @kyc_required

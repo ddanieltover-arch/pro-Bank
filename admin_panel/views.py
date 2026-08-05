@@ -216,16 +216,7 @@ def kyc_action(request, user_id):
         
         # Auto-issue account if not exists
         if not BankAccount.objects.filter(user=target_user).exists():
-            import random
-            from decimal import Decimal
-            acc_num = "".join([str(random.randint(0, 9)) for _ in range(12)])
-            BankAccount.objects.create(
-                user=target_user,
-                name="Checking Account",
-                account_type='checking',
-                account_number=acc_num,
-                balance=Decimal("0.00")
-            )
+            BankAccount.create_for_user(target_user)
             
         # Notify User
         send_html_email(

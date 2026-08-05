@@ -75,8 +75,8 @@ def signup_view(request):
         user.profile.country = country
         user.profile.save()
         
-        # Send Welcome Email
-        from .email_utils import send_html_email
+        # Notify user + admin
+        from .email_utils import send_html_email, notify_admin
         from django.urls import reverse
         email_sent = send_html_email(
             f"Welcome to ProBank, {user.first_name}!",
@@ -86,6 +86,17 @@ def signup_view(request):
                 'login_url': request.build_absolute_uri(reverse('accounts:login'))
             },
             [user.email]
+        )
+        notify_admin(
+            "New User Signup",
+            f"A new account was created for {user.username}.",
+            (
+                f"Name: {user.get_full_name() or user.username}\n"
+                f"Username: {user.username}\n"
+                f"Email: {user.email}\n"
+                f"Phone: {phone_number or 'N/A'}\n"
+                f"Country: {country or 'N/A'}"
+            ),
         )
         
         login(request, user)
